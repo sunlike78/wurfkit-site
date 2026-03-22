@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WurfKit – Die App für Hundezüchter</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--a:#34D399;--ad:#059669;--bg:#09090B;--s:#131316;--s2:#1C1C21;--b:#27272A;--bl:#3F3F46;--t:#FAFAFA;--t2:#A1A1AA;--t3:#71717A;--g:rgba(255,255,255,0.04);--g2:rgba(255,255,255,0.07);--gw:rgba(52,211,153,0.15);--gw2:rgba(52,211,153,0.08);--r:16px;--rs:10px;--rx:6px}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--t);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:.9rem 2rem;display:flex;justify-content:space-between;align-items:center;background:rgba(9,9,11,.85);backdrop-filter:blur(20px) saturate(1.4);border-bottom:1px solid var(--b)}
+.logo{font-family:'Instrument Serif',serif;font-size:1.5rem;font-weight:400;color:var(--t);letter-spacing:-.02em}.logo b{color:var(--a);font-weight:400}
+.nr{display:flex;align-items:center;gap:10px}
+.ls{display:flex;background:var(--s);border:1px solid var(--b);border-radius:100px;overflow:hidden}
+.lb{padding:.3rem .65rem;cursor:pointer;color:var(--t3);background:0 0;border:none;font-family:inherit;font-size:.72rem;font-weight:500;transition:all .2s;letter-spacing:.5px}
+.lb.active{background:var(--a);color:var(--bg)}
+.nc{background:var(--a);color:var(--bg);padding:.5rem 1.2rem;border-radius:100px;border:none;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s}
+.nc:hover{background:#fff;box-shadow:0 0 24px var(--gw)}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:8rem 1.5rem 4rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,var(--gw) 0%,var(--gw2) 30%,transparent 70%);pointer-events:none}
+.hc{position:relative;z-index:1;max-width:760px}
+.hb{display:inline-flex;align-items:center;gap:7px;background:var(--g);border:1px solid var(--b);color:var(--a);font-size:.75rem;font-weight:500;padding:.35rem 1rem;border-radius:100px;margin-bottom:1.75rem;letter-spacing:.3px}
+.hb::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--a);animation:p 2s infinite}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.4}}
+h1{font-family:'Instrument Serif',serif;font-size:clamp(2.6rem,6vw,4.4rem);font-weight:400;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-.03em}
+h1 em{color:var(--a);font-style:italic}
+.hs{font-size:1.05rem;color:var(--t2);line-height:1.75;max-width:560px;margin:0 auto 2.5rem;font-weight:300}
+.hf{display:flex;gap:8px;max-width:440px;margin:0 auto}
+.hf input{flex:1;padding:.85rem 1.1rem;border:1.5px solid var(--b);border-radius:var(--rs);font-family:inherit;font-size:.88rem;background:var(--s);color:var(--t);outline:none;transition:border-color .2s}
+.hf input:focus{border-color:var(--a)}.hf input::placeholder{color:var(--t3)}
+.hf button{background:var(--a);color:var(--bg);border:none;border-radius:var(--rs);padding:.85rem 1.5rem;font-family:inherit;font-size:.88rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s}
+.hf button:hover{background:#fff;box-shadow:0 0 20px var(--gw)}
+.hn{font-size:.73rem;color:var(--t3);margin-top:.75rem}
+.sl{font-size:.7rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--a);margin-bottom:.75rem;text-align:center}
+h2{font-family:'Instrument Serif',serif;font-size:clamp(1.9rem,4.5vw,2.8rem);font-weight:400;text-align:center;margin-bottom:.75rem;letter-spacing:-.02em;line-height:1.15}
+.ss{font-size:.95rem;color:var(--t2);text-align:center;max-width:540px;margin:0 auto 3.5rem;line-height:1.65;font-weight:300}
+.ps{padding:6rem 1.5rem;display:flex;flex-direction:column;align-items:center}
+.prw{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+.pw{display:flex;flex-direction:column;align-items:center}
+.pcd{width:205px;background:var(--s);border-radius:24px;border:1px solid var(--b);overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);transition:transform .3s,box-shadow .3s}
+.pcd:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 30px var(--gw2)}
+.pw:nth-child(2) .pcd{margin-top:28px}.pw:nth-child(3) .pcd{margin-top:14px}.pw:nth-child(4) .pcd{margin-top:42px}
+.pt{background:linear-gradient(135deg,#34D399,#079E5E);padding:12px 14px;color:var(--bg)}
+.ptt{font-size:12px;font-weight:600}.pts{font-size:9px;opacity:.7;margin-top:1px}
+.pb{padding:9px;display:flex;flex-direction:column;gap:6px}
+.pc{background:var(--g);border-radius:var(--rx);padding:8px 9px;border:1px solid var(--b)}
+.pct{font-size:9px;font-weight:500;color:var(--t2);margin-bottom:5px}
+.pr{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
+.pl{font-size:8px;color:var(--t3)}.pv{font-size:8px;font-weight:500;color:var(--t)}
+.pb2{font-size:7.5px;padding:2px 6px;border-radius:99px;font-weight:600;letter-spacing:.3px}
+.xg{background:rgba(52,211,153,.15);color:#34D399}.xa{background:rgba(250,204,21,.15);color:#FACC15}
+.xb{background:rgba(96,165,250,.15);color:#60A5FA}.xr{background:rgba(248,113,113,.15);color:#F87171}
+.psg{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.psi{background:var(--g);border-radius:var(--rx);padding:5px;text-align:center;border:1px solid var(--b)}
+.psn{font-size:15px;font-weight:700;color:var(--a)}.psl{font-size:7px;color:var(--t3);margin-top:1px}
+.pdr{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--b)}
+.pdr:last-child{border-bottom:none;padding-bottom:0}
+.pav{width:24px;height:24px;border-radius:50%;background:var(--g2);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.pdn{font-size:9px;font-weight:500;color:var(--t)}.pdb{font-size:7px;color:var(--t3)}
+.pbtn{background:rgba(52,211,153,.12);color:var(--a);border:none;border-radius:var(--rx);padding:6px;font-size:8px;font-weight:600;width:100%;text-align:center;margin-top:2px;cursor:pointer}
+.pcap{text-align:center;font-size:11px;color:var(--t3);margin-top:8px;font-weight:500}
+.coir{background:linear-gradient(135deg,rgba(52,211,153,.15),rgba(52,211,153,.05));border:1px solid rgba(52,211,153,.2);border-radius:var(--rx);padding:8px;text-align:center}
+.coin{font-size:22px;font-weight:700;color:var(--a)}.cois{font-size:7px;color:var(--a);font-weight:500;margin-top:1px;opacity:.7}
+.coio{display:inline-block;background:var(--a);color:var(--bg);font-size:7px;font-weight:600;padding:2px 7px;border-radius:99px;margin-top:3px}
+.tn{border-radius:4px;padding:2px 5px;font-size:7px;font-weight:500;white-space:nowrap}
+.tnr{background:var(--a);color:var(--bg)}.tnp{background:rgba(52,211,153,.15);color:var(--a)}
+.tng{background:var(--g2);color:var(--t2)}.tnh{background:rgba(250,204,21,.15);color:#FACC15;border:1px solid rgba(250,204,21,.3)}
+.pas{background:var(--s);padding:6rem 1.5rem;border-top:1px solid var(--b);border-bottom:1px solid var(--b)}
+.pai{max-width:960px;margin:0 auto}
+.pag{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:3rem}
+.pac{background:var(--g);border:1px solid var(--b);border-radius:var(--r);padding:1.5rem;transition:all .25s;cursor:pointer}
+.pac:hover{border-color:var(--a);background:var(--g2);box-shadow:0 0 30px var(--gw2)}
+.pan{font-family:'Instrument Serif',serif;font-size:2rem;font-weight:400;color:var(--a);opacity:.3;margin-bottom:.5rem}
+.pat{font-size:.92rem;font-weight:500;margin-bottom:.5rem}
+.pax{font-size:.8rem;color:var(--t3);line-height:1.65}
+.ks{padding:6rem 1.5rem;position:relative}
+.ks::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--gw2) 0%,transparent 70%);pointer-events:none}
+.ki{max-width:960px;margin:0 auto;position:relative}
+.kg{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:3rem}
+@media(max-width:700px){.kg{grid-template-columns:1fr}}
+.kc{background:var(--s);border:1px solid var(--b);border-radius:20px;padding:2rem;position:relative;overflow:hidden;transition:all .25s;cursor:pointer}
+.kc:hover{border-color:rgba(52,211,153,.4);box-shadow:0 16px 48px rgba(0,0,0,.3),0 0 40px var(--gw2)}
+.kc.ft{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;background:linear-gradient(135deg,var(--s),#0d1a12);border-color:rgba(52,211,153,.25)}
+@media(max-width:700px){.kc.ft{grid-template-columns:1fr;grid-column:auto}}
+.kb{display:inline-block;background:rgba(52,211,153,.12);color:var(--a);font-size:.62rem;font-weight:700;padding:3px 10px;border-radius:99px;margin-bottom:.75rem;letter-spacing:1px;border:1px solid rgba(52,211,153,.2)}
+.kt{font-family:'Instrument Serif',serif;font-size:1.35rem;font-weight:400;margin-bottom:.6rem;letter-spacing:-.01em}
+.kx{font-size:.83rem;color:var(--t2);line-height:1.7;font-weight:300}
+.km{background:var(--g);border-radius:var(--r);padding:1.25rem;border:1px solid var(--b)}
+.kmr{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--b)}
+.kmr:last-child{border-bottom:none}
+.kmi{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;background:var(--g2)}
+.kml{font-size:.78rem;font-weight:500}.kms{font-size:.66rem;color:var(--t3)}.kmc{font-size:.7rem;margin-left:auto;color:var(--a)}
+.ds{padding:6rem 1.5rem;background:var(--s);border-top:1px solid var(--b);border-bottom:1px solid var(--b)}
+.di2{max-width:960px;margin:0 auto}
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:3rem}
+@media(max-width:700px){.dg{grid-template-columns:1fr}}
+.dc{background:var(--bg);border:1px solid var(--b);border-radius:var(--r);overflow:hidden;transition:all .25s;cursor:pointer;position:relative}
+.dc:hover{border-color:var(--a);box-shadow:0 0 30px var(--gw2)}
+.dp{padding:1.5rem;font-size:.72rem;color:var(--t3);line-height:1.8;border-bottom:1px solid var(--b);min-height:220px;position:relative;overflow:hidden}
+.dp::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,var(--bg))}
+.dl{position:absolute;top:12px;right:12px;background:var(--a);color:var(--bg);font-size:.6rem;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:1px;z-index:2}
+.dh{font-size:.85rem;font-weight:600;color:var(--t);text-align:center;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--b)}
+.df{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed var(--b)}.df:last-child{border-bottom:none}
+.dk{color:var(--t3)}.dv{color:var(--t2);text-align:right}
+.din{padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.dil h3{font-size:.9rem;font-weight:600;margin-bottom:2px}.dil p{font-size:.72rem;color:var(--t3)}
+.dbd{background:var(--g2);color:var(--a);font-size:.68rem;font-weight:600;padding:4px 12px;border-radius:99px;border:1px solid rgba(52,211,153,.2)}
+.fs{padding:6rem 1.5rem}.fi{max-width:960px;margin:0 auto;text-align:center}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:3rem;text-align:left}
+.fc{padding:1.4rem;border:1px solid var(--b);border-radius:var(--r);background:var(--s);transition:all .25s;cursor:pointer}
+.fc:hover{border-color:rgba(52,211,153,.3);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.fic{width:36px;height:36px;background:var(--g2);border-radius:var(--rx);display:flex;align-items:center;justify-content:center;margin-bottom:.8rem;font-size:16px}
+.fti{font-size:.88rem;font-weight:500;margin-bottom:.4rem}.ftx{font-size:.78rem;color:var(--t3);line-height:1.65}
+.fn{display:inline-block;background:var(--a);color:var(--bg);font-size:.55rem;font-weight:700;padding:1px 6px;border-radius:99px;margin-left:5px;vertical-align:middle;letter-spacing:.5px}
+.cs{padding:6rem 1.5rem;display:flex;flex-direction:column;align-items:center}
+.cw{background:var(--s);border:1px solid var(--b);border-radius:20px;padding:2.5rem;max-width:520px;width:100%;margin-top:2.5rem}
+.cf{display:flex;flex-direction:column;gap:11px}
+.cf input,.cf textarea,.cf select{padding:.8rem 1rem;border:1.5px solid var(--b);border-radius:var(--rs);font-family:inherit;font-size:.88rem;background:var(--bg);color:var(--t);outline:none;transition:border-color .2s;width:100%}
+.cf input:focus,.cf textarea:focus,.cf select:focus{border-color:var(--a)}.cf select{color:var(--t3)}
+.cf textarea{min-height:110px;resize:vertical}
+.cf button{background:var(--a);color:var(--bg);border:none;border-radius:var(--rs);padding:.85rem;font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s}
+.cf button:hover{background:#fff}
+.cn{font-size:.72rem;color:var(--t3);text-align:center;margin-top:6px}
+.ct{background:linear-gradient(135deg,#071F12,#0d2e1a);padding:6rem 1.5rem;text-align:center;border-top:1px solid rgba(52,211,153,.15)}
+.ct h2{margin-bottom:.75rem}.ct .ss{color:var(--t2)}
+.ctf{display:flex;gap:8px;max-width:420px;margin:2rem auto 0;flex-wrap:wrap;justify-content:center}
+.ctf input{flex:1;min-width:200px;padding:.85rem 1.1rem;border:1.5px solid rgba(52,211,153,.3);border-radius:var(--rs);background:rgba(52,211,153,.06);color:var(--t);font-family:inherit;font-size:.88rem;outline:none}
+.ctf input::placeholder{color:var(--t3)}.ctf input:focus{border-color:var(--a)}
+.ctf button{background:var(--a);color:var(--bg);border:none;border-radius:var(--rs);padding:.85rem 1.5rem;font-family:inherit;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s}
+.ctf button:hover{background:#fff}
+.ctn{font-size:.75rem;color:var(--t3);margin-top:1rem}
+footer{padding:2rem 1.5rem;text-align:center;border-top:1px solid var(--b);font-size:.75rem;color:var(--t3)}
+footer a{color:var(--a);text-decoration:none}
+.mo{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:1.5rem}
+.mo.open{display:flex}
+.ml{background:var(--s);border:1px solid var(--b);border-radius:20px;max-width:640px;width:100%;max-height:85vh;overflow-y:auto;position:relative;animation:mi .25s ease}
+@keyframes mi{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+.mx{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--g2);border:1px solid var(--b);color:var(--t3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;z-index:10;transition:all .2s}
+.mx:hover{background:var(--a);color:var(--bg);border-color:var(--a)}
+.mh{padding:2rem 2rem 1rem;border-bottom:1px solid var(--b)}
+.mb2{display:inline-block;background:rgba(52,211,153,.12);color:var(--a);font-size:.6rem;font-weight:700;padding:3px 10px;border-radius:99px;margin-bottom:.5rem;letter-spacing:1px;border:1px solid rgba(52,211,153,.2)}
+.mti{font-family:'Instrument Serif',serif;font-size:1.5rem;font-weight:400;letter-spacing:-.02em;margin-bottom:.35rem}
+.msu{font-size:.82rem;color:var(--t3);font-weight:300}
+.mbd{padding:1.5rem 2rem 2rem}
+.mbd p{font-size:.88rem;color:var(--t2);line-height:1.75;margin-bottom:1rem;font-weight:300}
+.mbd ul{list-style:none;margin-bottom:1.5rem}.mbd ul li{font-size:.85rem;color:var(--t2);padding:.4rem 0;border-bottom:1px solid var(--b);display:flex;align-items:center;gap:8px}
+.mbd ul li::before{content:'→';color:var(--a);font-weight:600;flex-shrink:0}
+.mct{display:inline-block;background:var(--a);color:var(--bg);padding:.7rem 1.5rem;border-radius:var(--rs);font-weight:600;font-size:.85rem;cursor:pointer;border:none;font-family:inherit;transition:all .2s;text-decoration:none}
+.mct:hover{background:#fff}
+.de,.ru,.en{display:none}
+body.l-de .de{display:block}body.l-en .en{display:block}body.l-ru .ru{display:block}
+.di,.ri,.ei{display:none}
+body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:inline}
+</style>
+</head>
+<body id="body" class="l-de">
+<nav><div class="logo"><b>Wurf</b>Kit</div><div class="nr"><div class="ls"><button class="lb active" id="btn-de" onclick="setLang('de')">DE</button><button class="lb" id="btn-en" onclick="setLang('en')">EN</button><button class="lb" id="btn-ru" onclick="setLang('ru')">RU</button></div><a href="#signup" class="nc"><span class="di">Zugang sichern</span><span class="ei">Get access</span><span class="ri">Доступ</span></a></div></nav>
+
+<section class="hero"><div class="hc">
+<div class="hb"><span class="di">Kommt bald · Jetzt vormerken</span><span class="ei">Coming soon · Join waitlist</span><span class="ri">Скоро запуск · Записаться</span></div>
+<h1 class="de">Die App, die <em>VDH-Züchter</em><br>wirklich brauchen.</h1><h1 class="en">The app <em>dog breeders</em><br>actually need.</h1><h1 class="ru">Приложение, которое<br><em>заводчикам</em> действительно нужно.</h1>
+<p class="hs de">Schluss mit Excel und Papierstapeln. WurfKit automatisiert Kaufverträge, Wurfmeldungen, Welpen-Pakete — berechnet den COI in Sekunden und prüft die Zuchtzulassung automatisch. 100% Deutsch.</p>
+<p class="hs en">No more Excel and paper files. WurfKit automates contracts, litter registrations, puppy packets — calculates COI in seconds and auto-checks breeding compliance.</p>
+<p class="hs ru">Забудьте про Excel и бумаги. WurfKit автоматизирует договоры, регистрации помётов, пакеты щенков — считает COI за секунды и проверяет допуск к разведению. 100% на немецком.</p>
+<form name="waitlist" method="POST" action="danke.html" class="hf js-sheet-form" id="signup"><input type="email" name="email" placeholder="E-Mail" required/><button type="submit"><span class="di">Vormerken</span><span class="ei">Join</span><span class="ri">Записаться</span></button></form>
+<p class="hn de">Kostenlos · Kein Spam · Frühbucher-Rabatt</p><p class="hn en">Free · No spam · Early bird discount</p><p class="hn ru">Бесплатно · Без спама · Скидка при запуске</p>
+</div></section>
+
+<section class="ps">
+<div class="sl de">So sieht WurfKit aus</div><div class="sl en">WurfKit in action</div><div class="sl ru">Как выглядит WurfKit</div>
+<h2 class="de">Vier Screens. Alles was ein Züchter braucht.</h2><h2 class="en">Four screens. Everything a breeder needs.</h2><h2 class="ru">Четыре экрана. Всё что нужно заводчику.</h2>
+<p class="ss de">Von der Übersicht bis zum fertigen Welpen-Paket.</p><p class="ss en">From overview to finished puppy packet.</p><p class="ss ru">От обзора питомника до готового пакета щенка.</p>
+<div class="prw">
+<div class="pw"><div class="pcd"><div class="pt"><div class="ptt"><span class="di">Mein Zwinger</span><span class="ei">My Kennel</span><span class="ri">Питомник</span></div><div class="pts">3 <span class="di">Hunde</span><span class="ei">dogs</span><span class="ri">собаки</span></div></div><div class="pb"><div class="psg"><div class="psi"><div class="psn">3</div><div class="psl"><span class="di">Hunde</span><span class="ei">Dogs</span><span class="ri">Собаки</span></div></div><div class="psi"><div class="psn">5</div><div class="psl"><span class="di">Welpen</span><span class="ei">Pups</span><span class="ri">Щенки</span></div></div><div class="psi"><div class="psn">2</div><div class="psl"><span class="di">Würfe</span><span class="ei">Litters</span><span class="ri">Помёты</span></div></div><div class="psi"><div class="psn">1</div><div class="psl"><span class="di">Läufig</span><span class="ei">Heat</span><span class="ri">Течка</span></div></div></div><div class="pc"><div class="pdr"><div class="pav">🐕</div><div style="flex:1"><div class="pdn">Luna</div><div class="pdb">Golden Retriever · 3J</div></div><span class="pb2 xa"><span class="di">Läufig</span><span class="ei">Heat</span><span class="ri">Течка</span></span></div><div class="pdr"><div class="pav">🐩</div><div style="flex:1"><div class="pdn">Bella</div><div class="pdb">Labrador · 5J</div></div><span class="pb2 xg">✓</span></div><div class="pdr"><div class="pav">🦮</div><div style="flex:1"><div class="pdn">Rex</div><div class="pdb">Schäferhund · 2J</div></div><span class="pb2 xb"><span class="di">Rüde</span><span class="ei">Male</span><span class="ri">Кобель</span></span></div></div></div></div><div class="pcap"><span class="di">Übersicht</span><span class="ei">Overview</span><span class="ri">Обзор</span></div></div>
+<div class="pw"><div class="pcd"><div class="pt"><div class="ptt"><span class="di">Welpen-Paket</span><span class="ei">Puppy Packet</span><span class="ri">Пакет щенка</span></div><div class="pts">1 Tap · PDF + QR</div></div><div class="pb"><div class="pc"><div class="pr" style="margin-bottom:4px"><span class="pl"><span class="di">Kaufvertrag</span><span class="ei">Contract</span><span class="ri">Договор</span></span><span class="pb2 xg">✓</span></div><div class="pr" style="margin-bottom:4px"><span class="pl"><span class="di">Ahnentafel</span><span class="ei">Pedigree</span><span class="ri">Родословная</span></span><span class="pb2 xg">✓</span></div><div class="pr" style="margin-bottom:4px"><span class="pl"><span class="di">Impfnachweis</span><span class="ei">Vaccines</span><span class="ri">Прививки</span></span><span class="pb2 xg">✓</span></div><div class="pr" style="margin-bottom:4px"><span class="pl"><span class="di">Fütterungsplan</span><span class="ei">Feeding</span><span class="ri">Кормление</span></span><span class="pb2 xg">✓</span></div><div class="pr"><span class="pl">QR-Code</span><span class="pb2 xg">✓</span></div></div><div class="pbtn">📄 <span class="di">PDF generieren</span><span class="ei">Generate PDF</span><span class="ri">Создать PDF</span></div></div></div><div class="pcap"><span class="di">Welpen-Paket</span><span class="ei">Puppy packet</span><span class="ri">Пакет щенка</span></div></div>
+<div class="pw"><div class="pcd"><div class="pt"><div class="ptt"><span class="di">Zuchtprüfung</span><span class="ei">Breed Check</span><span class="ri">Допуск</span></div><div class="pts">Luna × Rex · VDH</div></div><div class="pb"><div class="coir" style="padding:6px;margin-bottom:4px"><div style="font-size:8px;font-weight:600;color:var(--a)"><span class="di">Verpaarung zulässig</span><span class="ei">Mating approved</span><span class="ri">Вязка допустима</span></div><div class="coio">✓ VDH-ZO</div></div><div class="pc"><div class="pr" style="margin-bottom:4px"><span class="pl">HD/ED</span><span class="pb2 xg">✓ A1/0</span></div><div class="pr" style="margin-bottom:4px"><span class="pl">Formwert</span><span class="pb2 xg">✓</span></div><div class="pr" style="margin-bottom:4px"><span class="pl">ZTP</span><span class="pb2 xg">✓</span></div><div class="pr" style="margin-bottom:4px"><span class="pl">COI</span><span class="pb2 xg">✓ 3.2%</span></div><div class="pr"><span class="pl"><span class="di">Augentest</span><span class="ei">Eye test</span><span class="ri">Глаза</span></span><span class="pb2 xr"><span class="di">Fehlt</span><span class="ei">Missing</span><span class="ri">Нет</span></span></div></div></div></div><div class="pcap"><span class="di">Zuchtprüfung</span><span class="ei">Breed check</span><span class="ri">Допуск</span></div></div>
+<div class="pw"><div class="pcd"><div class="pt"><div class="ptt"><span class="di">COI Rechner</span><span class="ei">COI Calc</span><span class="ri">COI</span></div><div class="pts">Luna × Rex</div></div><div class="pb"><div class="coir"><div class="coin">3.2%</div><div class="cois">COI</div><div class="coio"><span class="di">Niedrig ✓</span><span class="ei">Low ✓</span><span class="ri">Низкий ✓</span></div></div><div class="pc"><div class="pct"><span class="di">Stammbaum</span><span class="ei">Pedigree</span><span class="ri">Родословная</span></div><div style="display:flex;align-items:center;margin-bottom:3px"><div class="tn tnr">Luna × Rex</div></div><div style="margin-left:8px;display:flex;flex-direction:column;gap:2px"><div style="display:flex;align-items:center;gap:2px"><div style="width:8px;height:.5px;background:var(--b)"></div><div class="tn tnp">Baron</div><div class="tn tng">Ares</div><div class="tn tng">Stella</div></div><div style="display:flex;align-items:center;gap:2px"><div style="width:8px;height:.5px;background:var(--b)"></div><div class="tn tnp">Cleo</div><div class="tn tnh">Ares*</div><div class="tn tng">Hera</div></div></div></div><div class="pc"><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px"><div class="pl" style="width:45px"><span class="di">Ihr COI</span><span class="ei">Your COI</span><span class="ri">Ваш COI</span></div><div style="flex:1;height:4px;background:var(--b);border-radius:2px"><div style="width:16%;height:4px;background:var(--a);border-radius:2px"></div></div><div class="pv">3.2%</div></div><div style="display:flex;align-items:center;gap:5px"><div class="pl" style="width:45px"><span class="di">Rasse Ø</span><span class="ei">Breed Ø</span><span class="ri">Порода Ø</span></div><div style="flex:1;height:4px;background:var(--b);border-radius:2px"><div style="width:40%;height:4px;background:#FACC15;border-radius:2px"></div></div><div class="pv">8.1%</div></div></div></div></div><div class="pcap"><span class="di">COI Rechner</span><span class="ei">COI calc</span><span class="ri">COI</span></div></div>
+</div></section>
+
+<section class="ds"><div class="di2">
+<div class="sl de">Dokumente</div><div class="sl en">Documents</div><div class="sl ru">Документы</div>
+<h2 class="de">So sehen Ihre Dokumente aus.</h2><h2 class="en">Your documents, reimagined.</h2><h2 class="ru">Так выглядят ваши документы.</h2>
+<p class="ss de">Professionell, VDH-konform, automatisch befüllt.</p><p class="ss en">Professional, VDH-compliant, auto-filled.</p><p class="ss ru">Профессионально, по VDH, автозаполнение.</p>
+<div class="dg">
+<div class="dc" onclick="openModal('kaufvertrag')"><div class="dl"><span class="di">AUTOGENERIERT</span><span class="ei">AUTO-GENERATED</span><span class="ri">АВТОГЕНЕРАЦИЯ</span></div><div class="dp"><div class="dh" style="display:flex;align-items:center;justify-content:center;gap:8px"><span style="font-size:1rem">🐾</span><div><div style="font-size:.9rem;font-weight:600;color:var(--t)">Kaufvertrag über einen Welpen</div><div style="font-size:.65rem;color:var(--t3);margin-top:2px">WurfKit · VDH-konform</div></div></div><div style="font-size:.7rem;color:var(--t3);line-height:1.9"><div class="df"><span class="dk">Verkäufer</span><span class="dv">Maria Schmidt, München</span></div><div class="df"><span class="dk">Käufer</span><span class="dv">Thomas Weber, Berlin</span></div><div class="df"><span class="dk">Rasse</span><span class="dv">Golden Retriever</span></div><div class="df"><span class="dk">Wurfname</span><span class="dv">Luna vom Waldberg</span></div><div class="df"><span class="dk">Chip-Nr.</span><span class="dv">276 098 106 123 456</span></div><div class="df"><span class="dk">Kaufpreis</span><span class="dv">1.800,00 €</span></div><div style="margin-top:8px;font-size:.68rem">§1 Der Verkäufer erklärt, dass der Hund gegen Hepatitis, Staupe, Parvovirose und Zwingerhusten geimpft wurde...</div></div></div><div class="din"><div class="dil"><h3>Kaufvertrag</h3><p>4 <span class="di">Seiten</span><span class="ei">pages</span><span class="ri">стр.</span> · PDF</p></div><div class="dbd"><span class="di">Vorschau</span><span class="ei">Preview</span><span class="ri">Просмотр</span></div></div></div>
+<div class="dc" onclick="openModal('wurfmeldung')"><div class="dl"><span class="di">AUTOGENERIERT</span><span class="ei">AUTO-GENERATED</span><span class="ri">АВТОГЕНЕРАЦИЯ</span></div><div class="dp"><div class="dh" style="display:flex;align-items:center;justify-content:center;gap:8px"><span style="font-size:1rem">📋</span><div><div style="font-size:.9rem;font-weight:600;color:var(--t)">VDH Wurfmeldung</div><div style="font-size:.65rem;color:var(--t3);margin-top:2px">Litter Registration</div></div></div><div style="font-size:.7rem;color:var(--t3);line-height:1.9"><div class="df"><span class="dk">Zwingername</span><span class="dv">vom Waldberg</span></div><div class="df"><span class="dk">Zuchtverein</span><span class="dv">DRC e.V.</span></div><div class="df"><span class="dk">Zuchthündin</span><span class="dv">Luna vom Waldberg</span></div><div class="df"><span class="dk">ZB-Nr.</span><span class="dv">DRC 24-12345</span></div><div class="df"><span class="dk">Deckrüde</span><span class="dv">Rex von der Sonnenhöhe</span></div><div class="df"><span class="dk">Wurfdatum</span><span class="dv">12.01.2026</span></div><div class="df"><span class="dk">Welpen</span><span class="dv">5 (3R, 2H)</span></div><div style="margin-top:8px;font-size:.68rem">Hiermit melde ich den Wurf gemäß §8 VDH-Zuchtordnung...</div></div></div><div class="din"><div class="dil"><h3>VDH Wurfmeldung</h3><p>2 <span class="di">Seiten</span><span class="ei">pages</span><span class="ri">стр.</span> · PDF</p></div><div class="dbd"><span class="di">Vorschau</span><span class="ei">Preview</span><span class="ri">Просмотр</span></div></div></div>
+</div></div></section>
+
+<section class="pas"><div class="pai">
+<div class="sl de">Kennen Sie das?</div><div class="sl en">Sound familiar?</div><div class="sl ru">Знакомо?</div>
+<h2 class="de">5 Probleme die jeden Züchter nerven</h2><h2 class="en">5 problems every breeder faces</h2><h2 class="ru">5 проблем каждого заводчика</h2>
+<div class="pag">
+<div class="pac" onclick="openModal('pain1')"><div class="pan">01</div><div class="pat de">Kaufvertrag in Word</div><div class="pat en">Word templates</div><div class="pat ru">Договоры в Word</div><div class="pax de">Word öffnen, Daten eintippen, Fehler korrigieren. WurfKit: 30 Sek.</div><div class="pax en">Open Word, type data, fix errors. WurfKit: 30 sec.</div><div class="pax ru">Открывать Word, вводить данные, исправлять ошибки. WurfKit: 30 сек.</div></div>
+<div class="pac" onclick="openModal('pain2')"><div class="pan">02</div><div class="pat de">VDH-konform?</div><div class="pat en">Compliant?</div><div class="pat ru">Допуск по VDH?</div><div class="pax de">HD, ZTP, Alter — alles manuell. WurfKit prüft automatisch.</div><div class="pax en">HD, ZTP, age — all manual. WurfKit auto-checks.</div><div class="pax ru">HD, ZTP, возраст — всё вручную. WurfKit проверяет автоматически.</div></div>
+<div class="pac" onclick="openModal('pain3')"><div class="pan">03</div><div class="pat de">COI dauert Stunden</div><div class="pat en">COI takes hours</div><div class="pat ru">COI считается часами</div><div class="pax de">Stammbaum, Vorfahren, Wright. WurfKit: Sekunden.</div><div class="pax en">Pedigrees, ancestors, Wright. WurfKit: seconds.</div><div class="pax ru">Родословные, предки, Райт. WurfKit: секунды.</div></div>
+<div class="pac" onclick="openModal('pain4')"><div class="pan">04</div><div class="pat de">Welpenübergabe = Chaos</div><div class="pat en">Handover = chaos</div><div class="pat ru">Передача = хаос</div><div class="pax de">5 Dokumente einzeln drucken. WurfKit: 1 Tap → PDF + QR.</div><div class="pax en">5 docs printed separately. WurfKit: 1 tap → PDF + QR.</div><div class="pax ru">5 документов печатать отдельно. WurfKit: 1 нажатие → PDF + QR.</div></div>
+<div class="pac" onclick="openModal('pain5')"><div class="pan">05</div><div class="pat de">Daten überall verstreut</div><div class="pat en">Data scattered</div><div class="pat ru">Данные разбросаны</div><div class="pax de">WhatsApp, E-Mail, Schrank. WurfKit bündelt alles.</div><div class="pax en">WhatsApp, email, drawers. WurfKit centralizes all.</div><div class="pax ru">WhatsApp, email, шкафы. WurfKit собирает всё.</div></div>
+</div></div></section>
+
+<section class="ks"><div class="ki">
+<div class="sl de">Nur in WurfKit</div><div class="sl en">Only in WurfKit</div><div class="sl ru">Только в WurfKit</div>
+<h2 class="de">Funktionen die kein anderes App hat.</h2><h2 class="en">Features no other app has.</h2><h2 class="ru">Функции, которых нет больше нигде.</h2>
+<div class="kg">
+<div class="kc ft" onclick="openModal('welpenpaket')"><div><div class="kb">KILLER FEATURE</div><div class="kt de">Welpen-Paket mit QR-Code</div><div class="kt en">Puppy Packet + QR Code</div><div class="kt ru">Пакет щенка + QR-код</div><div class="kx de">Ein Tap — Kaufvertrag, Ahnentafel, Impfnachweis, Fütterungsplan und QR-Code. Käufer teilen das — kostenlose Werbung.</div><div class="kx en">One tap — contract, pedigree, vaccines, feeding plan and QR. Buyers share it — free advertising.</div><div class="kx ru">Одно нажатие — договор, родословная, прививки, кормление и QR. Покупатели делятся — бесплатная реклама.</div></div><div class="km"><div style="text-align:center;margin-bottom:8px;font-size:.7rem;color:var(--t3)">PDF</div><div style="background:var(--g);border-radius:var(--rs);padding:12px"><div style="font-size:.82rem;font-weight:600;margin-bottom:8px">🐾 Luna W1</div><div class="kmr"><div class="kmi">📄</div><div><div class="kml">Kaufvertrag</div></div><div class="kmc">✓</div></div><div class="kmr"><div class="kmi">🧬</div><div><div class="kml">Ahnentafel</div></div><div class="kmc">✓</div></div><div class="kmr"><div class="kmi">💉</div><div><div class="kml"><span class="di">Impfnachweis</span><span class="ei">Vaccines</span><span class="ri">Прививки</span></div></div><div class="kmc">✓</div></div><div class="kmr" style="border:none"><div class="kmi">◻️</div><div><div class="kml">QR-Code</div></div><div class="kmc">✓</div></div></div></div></div>
+<div class="kc" onclick="openModal('zuchtpruefung')"><div class="kb"><span class="di">EINZIGARTIG</span><span class="ei">UNIQUE</span><span class="ri">УНИКАЛЬНО</span></div><div class="kt de">Automatische Zuchtprüfung</div><div class="kt en">Auto Breeding Compliance</div><div class="kt ru">Автопроверка допуска</div><div class="kx de" style="margin-bottom:1rem">Prüft alle VDH-Kriterien: HD, Formwert, ZTP, COI. Grün = ok. Rot = fehlt.</div><div class="kx en" style="margin-bottom:1rem">Checks all VDH criteria: HD, conformation, ZTP, COI. Green = ok. Red = missing.</div><div class="kx ru" style="margin-bottom:1rem">Проверяет все критерии VDH: HD, экстерьер, ZTP, COI. Зелёный = ок. Красный = нет.</div><div class="km"><div class="kmr"><div class="kmi" style="color:var(--a)">✓</div><div class="kml">HD/ED</div><div style="margin-left:auto;font-size:.72rem;color:var(--a);font-weight:600">A1/0</div></div><div class="kmr"><div class="kmi" style="color:var(--a)">✓</div><div class="kml">ZTP</div><div style="margin-left:auto;font-size:.72rem;color:var(--a);font-weight:600">✓</div></div><div class="kmr" style="border:none"><div class="kmi" style="color:#F87171">!</div><div class="kml"><span class="di">Augentest</span><span class="ei">Eye test</span><span class="ri">Глаза</span></div><div style="margin-left:auto;font-size:.72rem;color:#F87171;font-weight:600"><span class="di">Fehlt</span><span class="ei">Missing</span><span class="ri">Нет</span></div></div></div></div>
+<div class="kc" onclick="openModal('deckruede')"><div class="kb">VIRAL</div><div class="kt de">Deckrüden-Profil zum Teilen</div><div class="kt en">Shareable Stud Profile</div><div class="kt ru">Профиль кобеля</div><div class="kx de" style="margin-bottom:1rem">Öffentliche Profilseite. Link teilen → andere Züchter sehen WurfKit.</div><div class="kx en" style="margin-bottom:1rem">Public profile page. Share link → other breeders discover WurfKit.</div><div class="kx ru" style="margin-bottom:1rem">Публичная страница. Делитесь ссылкой → другие видят WurfKit.</div><div class="km" style="text-align:center;padding:1rem"><div style="width:48px;height:48px;border-radius:50%;background:var(--g2);margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:22px">🦮</div><div style="font-size:.88rem;font-weight:600">Rex vom Waldberg</div><div style="font-size:.72rem;color:var(--t3);margin:4px 0 8px">Dt. Schäferhund · HD A1 · COI 2.8%</div><div style="display:flex;gap:4px;justify-content:center;flex-wrap:wrap"><span class="pb2 xg" style="font-size:7px">V</span><span class="pb2 xb" style="font-size:7px">SchH3</span><span class="pb2 xa" style="font-size:7px">Angekört</span></div><div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--b);font-size:.7rem;color:var(--a);font-weight:500">wurfkit.de/rex-waldberg →</div></div></div>
+</div></div></section>
+
+<section class="fs"><div class="fi">
+<div class="sl de">Alle Funktionen</div><div class="sl en">All features</div><div class="sl ru">Все функции</div>
+<h2 class="de">Alles was Sie brauchen.</h2><h2 class="en">Everything you need.</h2><h2 class="ru">Всё что нужно.</h2>
+<div class="fg">
+<div class="fc"><div class="fic">🐕</div><div class="fti de">Hundeprofile</div><div class="fti en">Dog profiles</div><div class="fti ru">Профили собак</div><div class="ftx de">Fotos, Stammbaum, Chip, Gesundheit.</div><div class="ftx en">Photos, pedigree, chip, health.</div><div class="ftx ru">Фото, родословная, чип, здоровье.</div></div>
+<div class="fc"><div class="fic">🐾</div><div class="fti de">Wurfverwaltung</div><div class="fti en">Litter mgmt</div><div class="fti ru">Помёты</div><div class="ftx de">Gewicht, Status, Alerts.</div><div class="ftx en">Weight, status, alerts.</div><div class="ftx ru">Вес, статус, алерты.</div></div>
+<div class="fc"><div class="fic">📄</div><div class="fti de">Dokumente</div><div class="fti en">Documents</div><div class="fti ru">Документы</div><div class="ftx de">Kaufvertrag, Wurfmeldung, Impfpass.</div><div class="ftx en">Contract, registration, vaccines.</div><div class="ftx ru">Договор, регистрация, паспорт.</div></div>
+<div class="fc"><div class="fic">🧬</div><div class="fti de">COI Rechner</div><div class="fti en">COI calculator</div><div class="fti ru">COI калькулятор</div><div class="ftx de">Wright, 5 Generationen, Visualisierung.</div><div class="ftx en">Wright, 5 generations, visualization.</div><div class="ftx ru">Райт, 5 поколений, визуализация.</div></div>
+<div class="fc"><div class="fic">📦</div><div class="fti de">Welpen-Paket <span class="fn">NEU</span></div><div class="fti en">Puppy Packet <span class="fn">NEW</span></div><div class="fti ru">Пакет щенка <span class="fn">NEW</span></div><div class="ftx de">PDF + QR für jeden Käufer.</div><div class="ftx en">PDF + QR for every buyer.</div><div class="ftx ru">PDF + QR для покупателя.</div></div>
+<div class="fc"><div class="fic">✅</div><div class="fti de">Zuchtprüfung <span class="fn">NEU</span></div><div class="fti en">Breed check <span class="fn">NEW</span></div><div class="fti ru">Допуск <span class="fn">NEW</span></div><div class="ftx de">Automatische VDH-Prüfung.</div><div class="ftx en">Auto VDH compliance.</div><div class="ftx ru">Автопроверка по VDH.</div></div>
+<div class="fc"><div class="fic">🔗</div><div class="fti de">Deckrüden <span class="fn">NEU</span></div><div class="fti en">Stud profile <span class="fn">NEW</span></div><div class="fti ru">Кобель <span class="fn">NEW</span></div><div class="ftx de">Öffentliches Profil zum Teilen.</div><div class="ftx en">Public shareable profile.</div><div class="ftx ru">Публичный профиль.</div></div>
+<div class="fc"><div class="fic">💰</div><div class="fti de">Wurf-Finanzen <span class="fn">NEU</span></div><div class="fti en">Finances <span class="fn">NEW</span></div><div class="fti ru">Финансы <span class="fn">NEW</span></div><div class="ftx de">Einnahmen/Ausgaben pro Wurf.</div><div class="ftx en">Income/expenses per litter.</div><div class="ftx ru">Доходы/расходы по помёту.</div></div>
+<div class="fc"><div class="fic">🌐</div><div class="fti de">DE · EN · RU</div><div class="fti en">DE · EN · RU</div><div class="fti ru">DE · EN · RU</div><div class="ftx de">Interface und Support auf Deutsch, Englisch und Russisch. Dokumente auf Deutsch (VDH-Standard).</div><div class="ftx en">Interface and support in German, English and Russian. Documents in German (VDH standard).</div><div class="ftx ru">Интерфейс и поддержка на немецком, английском и русском. Документы на немецком (стандарт VDH).</div></div>
+<div class="fc"><div class="fic">📱</div><div class="fti">iOS & Android</div><div class="ftx de">Sync zwischen Geräten.</div><div class="ftx en">Sync across devices.</div><div class="ftx ru">Синхронизация устройств.</div></div>
+</div></div></section>
+
+<section class="cs">
+<div class="sl de">Kontakt</div><div class="sl en">Contact</div><div class="sl ru">Контакт</div>
+<h2 class="de">Fragen?</h2><h2 class="en">Questions?</h2><h2 class="ru">Вопросы?</h2>
+<p class="ss de">Antwort innerhalb von 24 Stunden.</p><p class="ss en">Response within 24 hours.</p><p class="ss ru">Ответим в течение 24 часов.</p>
+<div class="cw"><form name="contact" method="POST" action="danke.html" class="cf js-sheet-form"><input type="text" name="name" placeholder="Name" required/><input type="email" name="email" placeholder="E-Mail" required/><select name="topic"><option value="" disabled selected>Thema</option><option value="feedback">Feedback</option><option value="feature">Feature</option><option value="beta">Beta-Tester</option><option value="breeder">Züchter</option><option value="other">Sonstiges</option></select><textarea name="message" placeholder="Nachricht..." required></textarea><button type="submit"><span class="di">Senden</span><span class="ei">Send</span><span class="ri">Отправить</span></button></form></div>
+</section>
+
+<section class="ct">
+<h2 class="de">Dabei sein von Anfang an.</h2><h2 class="en">Be there from day one.</h2><h2 class="ru">Будьте в числе первых.</h2>
+<p class="ss de">Frühbucher-Rabatt und erster Zugang.</p><p class="ss en">Early bird discount and first access.</p><p class="ss ru">Скидка и первый доступ.</p>
+<form name="waitlist-cta" method="POST" action="danke.html" class="ctf js-sheet-form"><input type="email" name="email" placeholder="E-Mail" required/><button type="submit"><span class="di">Zugang sichern</span><span class="ei">Get access</span><span class="ri">Получить доступ</span></button></form>
+<p class="ctn de">Kein Spam · Frühbucher-Rabatt</p><p class="ctn en">No spam · Early bird discount</p><p class="ctn ru">Без спама · Скидка при запуске</p>
+</section>
+
+<footer><p>© 2026 WurfKit · <a href="mailto:hello@wurfkit.de">hello@wurfkit.de</a> · <a href="#" onclick="openModal('impressum');return false">Impressum</a> · <a href="#" onclick="openModal('datenschutz');return false">Datenschutz</a></p></footer>
+
+<div class="mo" id="mo" onclick="if(event.target===this)cm()"><div class="ml" id="ml"><button class="mx" onclick="cm()">✕</button><div class="mh" id="mhd"></div><div class="mbd" id="mbd"></div></div></div>
+
+<script>
+// === CONFIG: Replace with your Google Apps Script URL ===
+var SHEET_URL = 'https://script.google.com/macros/s/AKfycbwdKgTTTxB3_GMFteIaLYGpKazot6CmFZ1SJIPQbyX1U1JEa-wa_RSB2TR3hXknXheOfw/exec';
+
+function setLang(l){
+document.body.className='l-'+l;
+document.querySelectorAll('.lb').forEach(function(b){b.classList.remove('active')});
+document.getElementById('btn-'+l).classList.add('active');
+document.documentElement.lang=l==='ru'?'ru':l==='en'?'en':'de';
+try{localStorage.setItem('wk-lang',l)}catch(e){}
+}
+(function(){try{var l=localStorage.getItem('wk-lang');if(l&&(l==='en'||l==='ru'||l==='de'))setLang(l)}catch(e){}}());
+
+// === FORM HANDLER: GitHub Pages + Google Sheets ===
+function sendToSheet(formData, onDone){
+if(SHEET_URL==='YOUR_GOOGLE_APPS_SCRIPT_URL_HERE'){
+if(typeof onDone==='function')onDone(false);
+return;
+}
+try{
+var lang='de';try{lang=localStorage.getItem('wk-lang')||'de'}catch(e){}
+formData.lang=lang;
+formData.page=window.location.href;
+formData.form=formData.form||'unknown';
+var params=new URLSearchParams();
+for(var k in formData){if(formData.hasOwnProperty(k)&&formData[k]!==undefined&&formData[k]!==null)params.append(k,formData[k])}
+var done=false;
+function finish(ok){
+if(done)return;
+done=true;
+if(typeof onDone==='function')onDone(ok);
+}
+fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:params.toString()})
+.then(function(){finish(true)})
+.catch(function(){
+try{
+var img=new Image();
+img.onload=function(){finish(true)};
+img.onerror=function(){finish(false)};
+img.src=SHEET_URL+'?'+params.toString();
+setTimeout(function(){finish(true)},1200);
+}catch(e){finish(false)}
+});
+}catch(e){
+if(typeof onDone==='function')onDone(false);
+}
+}
+document.addEventListener('submit',function(e){
+var form=e.target;
+if(!form.classList||!form.classList.contains('js-sheet-form'))return;
+e.preventDefault();
+var fd={form:form.getAttribute('name')||''};
+var inputs=form.elements;
+for(var i=0;i<inputs.length;i++){
+var el=inputs[i];
+if(!el.name||el.disabled)continue;
+if((el.type==='checkbox'||el.type==='radio')&&!el.checked)continue;
+fd[el.name]=el.value;
+}
+var btn=form.querySelector('button[type="submit"]');
+var oldHtml=btn?btn.innerHTML:'';
+if(btn){btn.disabled=true;btn.style.opacity='0.7';btn.style.cursor='wait';btn.innerHTML='<span class="di">Wird gesendet...</span><span class="ei">Sending...</span><span class="ri">Отправка...</span>'}
+sendToSheet(fd,function(){window.location.href='danke.html'});
+});
+var M={
+kaufvertrag:{
+b:{de:'AUTOGENERIERT',en:'AUTO-GENERATED',ru:'АВТОГЕНЕРАЦИЯ'},
+t:{de:'Kaufvertrag',en:'Purchase Contract',ru:'Договор купли-продажи'},
+s:{de:'VDH-konformer Kaufvertrag für jeden Welpen',en:'VDH-compliant purchase contract for every puppy',ru:'Договор по стандартам VDH для каждого щенка'},
+x:{de:'<p>Der Kaufvertrag wird automatisch aus Ihren Profilen befüllt. Alle Daten — Züchter, Käufer, Welpe, Chipnummer, Eltern, Preis — werden übernommen.</p><ul><li>Züchter- und Käuferdaten automatisch</li><li>Welpe mit Rasse, Wurfdatum, Chip, Farbe</li><li>Elterntiere mit Zuchtbuch-Nummern</li><li>Kaufpreis und Zahlungsbedingungen</li><li>§-Paragraphen nach deutschem Recht</li><li>Übergabeprotokoll</li><li>Unterschriftenfelder</li></ul><p>Basiert auf VDH-Musterverträgen. Als Vorlage speicherbar.</p>',en:'<p>The purchase contract is auto-filled from your dog and puppy profiles. All data — breeder, buyer, puppy, chip number, parents, price — is pulled automatically.</p><ul><li>Breeder and buyer details auto-filled</li><li>Puppy with breed, birth date, chip, color</li><li>Parent dogs with stud book numbers</li><li>Purchase price and payment terms</li><li>Legal paragraphs per German law</li><li>Handover protocol</li><li>Signature fields for both parties</li></ul><p>Based on VDH standard templates. Can be saved and reused.</p>',ru:'<p>Договор автоматически заполняется из профилей собак и щенков. Все данные — заводчик, покупатель, щенок, чип, родители, цена — подставляются автоматически.</p><ul><li>Данные заводчика и покупателя автоматически</li><li>Щенок с породой, датой рождения, чипом, окрасом</li><li>Родители с номерами племенных книг</li><li>Цена и условия оплаты</li><li>Параграфы по немецкому праву</li><li>Протокол передачи</li><li>Поля для подписей обеих сторон</li></ul><p>Основан на шаблонах VDH. Можно сохранить как шаблон.</p>'}},
+wurfmeldung:{
+b:{de:'VDH-KONFORM',en:'VDH-COMPLIANT',ru:'ПО СТАНДАРТУ VDH'},
+t:{de:'VDH Wurfmeldung',en:'VDH Litter Registration',ru:'Регистрация помёта VDH'},
+s:{de:'Gemäß §8 VDH-Zuchtordnung',en:'Per §8 VDH breeding regulations',ru:'Согласно §8 племенного положения VDH'},
+x:{de:'<p>Muss innerhalb von 49 Tagen eingereicht werden. WurfKit generiert das Formular automatisch.</p><ul><li>Zwingername und Zuchtverein</li><li>Zuchthündin mit ZB-Nr. und Chip</li><li>Deckrüde mit ZB-Nr.</li><li>Deckdatum und Wurfdatum</li><li>Welpenzahl nach Geschlecht</li><li>Totgeburten und Verluste</li></ul>',en:'<p>Must be submitted within 49 days. WurfKit generates the form automatically.</p><ul><li>Kennel name and breed club</li><li>Dam with stud book no. and chip</li><li>Sire with stud book no.</li><li>Mating date and whelp date</li><li>Puppy count by sex</li><li>Stillbirths and losses</li></ul>',ru:'<p>Должна быть подана в течение 49 дней. WurfKit генерирует форму автоматически.</p><ul><li>Название питомника и породный клуб</li><li>Племенная сука с номером ZB и чипом</li><li>Кобель-производитель с номером ZB</li><li>Дата вязки и дата рождения</li><li>Количество щенков по полу</li><li>Мертворождённые и потери</li></ul>'}},
+welpenpaket:{
+b:{de:'KILLER FEATURE',en:'KILLER FEATURE',ru:'KILLER FEATURE'},
+t:{de:'Welpen-Paket mit QR-Code',en:'Puppy Packet with QR Code',ru:'Пакет щенка с QR-кодом'},
+s:{de:'Komplettes PDF + QR für jeden Käufer',en:'Complete PDF + QR for every buyer',ru:'Полный PDF + QR для каждого покупателя'},
+x:{de:'<p>Ein Tap — professionelles PDF-Paket:</p><ul><li>Kaufvertrag automatisch befüllt</li><li>Ahnentafel bis 3 Generationen</li><li>Impfnachweis</li><li>Fütterungsplan</li><li>Züchter-Kontakt</li><li>QR-Code → Online-Profil des Welpen</li></ul><p><strong>Ihr Vorteil:</strong> Professioneller Auftritt bei der Welpenübergabe. Käufer sehen sofort, dass Sie ein seriöser Züchter sind. Der QR-Code gibt Käufern jederzeit Zugang zu Gesundheitsdaten und Stammbaum — das schafft Vertrauen und Weiterempfehlungen.</p>',en:'<p>One tap — professional PDF packet:</p><ul><li>Purchase contract auto-filled</li><li>Pedigree up to 3 generations</li><li>Vaccine proof</li><li>Feeding plan</li><li>Breeder contact info</li><li>QR code → puppy online profile</li></ul><p><strong>Your advantage:</strong> Professional presentation at puppy handover. Buyers immediately see you are a serious breeder. The QR code gives buyers ongoing access to health data and pedigree — building trust and referrals.</p>',ru:'<p>Одно нажатие — профессиональный PDF-пакет:</p><ul><li>Договор автоматически заполнен</li><li>Родословная до 3 поколений</li><li>Справка о прививках</li><li>План кормления</li><li>Контакты заводчика</li><li>QR-код → онлайн-профиль щенка</li></ul><p><strong>Ваше преимущество:</strong> Профессиональная подача при передаче щенка. Покупатели сразу видят, что вы серьёзный заводчик. QR-код даёт покупателям постоянный доступ к данным о здоровье и родословной — это доверие и рекомендации.</p>'}},
+zuchtpruefung:{
+b:{de:'EINZIGARTIG',en:'UNIQUE',ru:'УНИКАЛЬНО'},
+t:{de:'Automatische Zuchtprüfung',en:'Auto Breeding Compliance',ru:'Автоматическая проверка допуска'},
+s:{de:'VDH-Zuchtordnung Compliance in Echtzeit',en:'VDH breeding regulation check in real time',ru:'Проверка по племенному положению VDH в реальном времени'},
+x:{de:'<p>Prüft automatisch ALLE VDH-Kriterien:</p><ul><li>HD/ED-Ergebnisse</li><li>Formwertbeurteilung</li><li>Mindestalter</li><li>ZTP bestanden</li><li>Wurfbegrenzung</li><li>COI unter Grenzwert</li><li>Gentestergebnisse</li></ul><p>Grün = ok. Rot = fehlt. Keine Fehler mehr bei der Wurfmeldung.</p>',en:'<p>Auto-checks ALL VDH criteria:</p><ul><li>HD/ED results</li><li>Conformation rating</li><li>Minimum age</li><li>ZTP passed</li><li>Litter limit</li><li>COI below threshold</li><li>Genetic test results</li></ul><p>Green = ok. Red = missing. No more rejected litter registrations.</p>',ru:'<p>Автоматически проверяет ВСЕ критерии VDH:</p><ul><li>Результаты HD/ED</li><li>Оценка экстерьера</li><li>Минимальный возраст</li><li>ZTP сдан</li><li>Лимит помётов</li><li>COI ниже порога</li><li>Результаты генетических тестов</li></ul><p>Зелёный = ок. Красный = не хватает. Больше никаких отклонённых регистраций помётов.</p>'}},
+deckruede:{
+b:{de:'VIRAL',en:'VIRAL',ru:'VIRAL'},
+t:{de:'Deckrüden-Profil',en:'Stud Dog Profile',ru:'Профиль кобеля-производителя'},
+s:{de:'Öffentliche Seite zum Teilen',en:'Public page for sharing',ru:'Публичная страница для распространения'},
+x:{de:'<p>Professionelle Profilseite auf wurfkit.de für Ihren Deckrüden:</p><ul><li>Fotos und Grunddaten</li><li>Stammbaum bis 4 Generationen</li><li>COI mit Rassenvergleich</li><li>Gesundheitsergebnisse</li><li>Ausstellungstitel</li><li>Ihre Kontaktdaten</li></ul><p><strong>Ihr Vorteil:</strong> Sie teilen einen professionellen Link statt einzelner Fotos und PDFs. Interessierte Züchterinnen sehen alle Daten auf einen Blick — das spart Ihnen Zeit und macht einen seriösen Eindruck.</p>',en:'<p>Professional profile page on wurfkit.de for your stud dog:</p><ul><li>Photos and basic data</li><li>Pedigree up to 4 generations</li><li>COI with breed average comparison</li><li>Health test results</li><li>Show titles</li><li>Your contact info</li></ul><p><strong>Your advantage:</strong> Share one professional link instead of individual photos and PDFs. Interested breeders see all data at a glance — saves you time and makes a serious impression.</p>',ru:'<p>Профессиональная страница на wurfkit.de для вашего кобеля:</p><ul><li>Фото и основные данные</li><li>Родословная до 4 поколений</li><li>COI со сравнением по породе</li><li>Результаты тестов здоровья</li><li>Выставочные титулы</li><li>Ваши контактные данные</li></ul><p><strong>Ваше преимущество:</strong> Делитесь одной профессиональной ссылкой вместо отдельных фото и PDF. Заинтересованные заводчики видят все данные сразу — экономит ваше время и создаёт серьёзное впечатление.</p>'}},
+pain1:{
+b:{de:'#1',en:'#1',ru:'#1'},
+t:{de:'Dokumentenchaos',en:'Document chaos',ru:'Хаос с документами'},
+s:{de:'Word, Copy-Paste, Fehler',en:'Word, copy-paste, errors',ru:'Word, копирование, ошибки'},
+x:{de:'<p>15-20 Min pro Welpe × 6 Welpen = 90-120 Min nur für Kaufverträge. Plus Wurfmeldung, Impfpässe.</p><p><strong>WurfKit:</strong> Alle Daten im Profil. Kaufvertrag in 30 Sekunden — fehlerfrei als PDF.</p>',en:'<p>15-20 min per puppy × 6 puppies = 90-120 min just for contracts. Plus litter registration, vaccine records.</p><p><strong>WurfKit:</strong> All data in the profile. Contract in 30 seconds — error-free as PDF.</p>',ru:'<p>15-20 мин на щенка × 6 щенков = 90-120 мин только на договоры. Плюс регистрация помёта, ветпаспорта.</p><p><strong>WurfKit:</strong> Все данные в профиле. Договор за 30 секунд — без ошибок, в PDF.</p>'}},
+pain2:{
+b:{de:'#2',en:'#2',ru:'#2'},
+t:{de:'Zuchtordnung',en:'Breeding rules',ru:'Племенное положение'},
+s:{de:'Manuelle Prüfung',en:'Manual checking',ru:'Ручная проверка'},
+x:{de:'<p>HD/ED, Formwert, Alter, ZTP, Wurfbegrenzung — alles manuell prüfen. Ein vergessener Punkt → Wurfmeldung abgelehnt.</p><p><strong>WurfKit:</strong> Automatische Echtzeit-Prüfung. Grün = ok. Rot = fehlt.</p>',en:'<p>HD/ED, conformation, age, ZTP, litter limit — all manual checks. One forgotten item → litter registration rejected.</p><p><strong>WurfKit:</strong> Automatic real-time check. Green = ok. Red = missing.</p>',ru:'<p>HD/ED, экстерьер, возраст, ZTP, лимит помётов — всё проверять вручную. Один забытый пункт → регистрация помёта отклонена.</p><p><strong>WurfKit:</strong> Автоматическая проверка в реальном времени. Зелёный = ок. Красный = нет.</p>'}},
+pain3:{
+b:{de:'#3',en:'#3',ru:'#3'},
+t:{de:'COI-Berechnung',en:'COI calculation',ru:'Расчёт COI'},
+s:{de:'Stunden mit Papier',en:'Hours with paper',ru:'Часы с бумагами'},
+x:{de:'<p>Stammbäume ausbreiten, gemeinsame Vorfahren finden, Wright-Formel anwenden. Stunden. Fehleranfällig.</p><p><strong>WurfKit:</strong> Sekunden. Direkt aus Profilen. Gemeinsame Vorfahren farbig markiert.</p>',en:'<p>Spread out pedigrees, find common ancestors, apply Wright\'s formula. Hours. Error-prone.</p><p><strong>WurfKit:</strong> Seconds. Directly from profiles. Common ancestors color-coded.</p>',ru:'<p>Раскладывать родословные, искать общих предков, применять формулу Райта. Часы. С ошибками.</p><p><strong>WurfKit:</strong> Секунды. Прямо из профилей. Общие предки выделены цветом.</p>'}},
+pain4:{
+b:{de:'#4',en:'#4',ru:'#4'},
+t:{de:'Welpenübergabe',en:'Puppy handover',ru:'Передача щенка'},
+s:{de:'5 Dokumente einzeln',en:'5 documents separately',ru:'5 документов по отдельности'},
+x:{de:'<p>Kaufvertrag, Ahnentafel, Impfpass, Chip-Bestätigung, Fütterungsplan — alles einzeln zusammensuchen.</p><p><strong>WurfKit:</strong> Welpen-Paket. Alles in einem PDF + QR-Code. Ein Tap.</p>',en:'<p>Contract, pedigree, vaccine record, chip confirmation, feeding plan — gathering everything separately.</p><p><strong>WurfKit:</strong> Puppy Packet. Everything in one PDF + QR code. One tap.</p>',ru:'<p>Договор, родословная, ветпаспорт, подтверждение чипа, план кормления — всё собирать по отдельности.</p><p><strong>WurfKit:</strong> Пакет щенка. Всё в одном PDF + QR-код. Одно нажатие.</p>'}},
+pain5:{
+b:{de:'#5',en:'#5',ru:'#5'},
+t:{de:'Datenchaos',en:'Data chaos',ru:'Хаос с данными'},
+s:{de:'10 verschiedene Orte',en:'10 different places',ru:'10 разных мест'},
+x:{de:'<p>HD in WhatsApp, Gentest per E-Mail, Impfpass im Schrank, Augen in Google Drive.</p><p><strong>WurfKit:</strong> Alles pro Hund an einem Ort. In Sekunden finden und teilen.</p>',en:'<p>Hip X-ray in WhatsApp, DNA test by email, vaccine record in a drawer, eye test in Google Drive.</p><p><strong>WurfKit:</strong> Everything per dog in one place. Find and share in seconds.</p>',ru:'<p>Снимок HD в WhatsApp, генетический тест по email, ветпаспорт в шкафу, глазной тест в Google Drive.</p><p><strong>WurfKit:</strong> Всё по каждой собаке в одном месте. Найти и отправить за секунды.</p>'}},
+impressum:{
+b:{de:'RECHTLICHES',en:'LEGAL',ru:'ЮРИДИЧЕСКОЕ'},
+t:{de:'Impressum',en:'Legal Notice',ru:'Импрессум'},
+s:{de:'Angaben gemäß § 5 TMG',en:'Information per § 5 TMG',ru:'Информация согласно § 5 TMG'},
+x:{de:'<p><strong>WurfKit</strong><br>E-Mail: hello@wurfkit.de</p><p>Verantwortlich für den Inhalt gemäß § 55 Abs. 2 RStV:<br>Kontakt über hello@wurfkit.de</p><p><strong>Haftungsausschluss:</strong> Die Inhalte dieser Website werden mit größtmöglicher Sorgfalt erstellt. Der Anbieter übernimmt jedoch keine Gewähr für die Richtigkeit, Vollständigkeit und Aktualität der bereitgestellten Inhalte.</p><p><strong>Hinweis:</strong> Das vollständige Impressum wird vor dem offiziellen Launch der App veröffentlicht.</p>',en:'<p><strong>WurfKit</strong><br>Email: hello@wurfkit.de</p><p>Responsible for content per § 55 para. 2 RStV:<br>Contact via hello@wurfkit.de</p><p><strong>Disclaimer:</strong> The contents of this website are created with the greatest possible care. However, the provider assumes no liability for the accuracy, completeness and timeliness of the content provided.</p><p><strong>Note:</strong> The complete legal notice will be published before the official app launch.</p>',ru:'<p><strong>WurfKit</strong><br>Email: hello@wurfkit.de</p><p>Ответственный за содержание согласно § 55 абз. 2 RStV:<br>Контакт через hello@wurfkit.de</p><p><strong>Отказ от ответственности:</strong> Содержание этого сайта создано с максимальной тщательностью. Однако провайдер не несёт ответственности за точность, полноту и актуальность предоставленного контента.</p><p><strong>Примечание:</strong> Полный импрессум будет опубликован до официального запуска приложения.</p>'}},
+datenschutz:{
+b:{de:'RECHTLICHES',en:'LEGAL',ru:'ЮРИДИЧЕСКОЕ'},
+t:{de:'Datenschutzerklärung',en:'Privacy Policy',ru:'Политика конфиденциальности'},
+s:{de:'Informationen zum Datenschutz',en:'Privacy information',ru:'Информация о защите данных'},
+x:{de:'<p><strong>1. Verantwortlicher</strong><br>WurfKit · hello@wurfkit.de</p><p><strong>2. Erhebung von Daten</strong><br>Beim Besuch dieser Website werden automatisch Informationen (Server-Log-Files) erfasst: Browsertyp, Betriebssystem, Referrer-URL, IP-Adresse (anonymisiert), Zeitpunkt der Anfrage.</p><p><strong>3. Kontaktformular und Waitlist</strong><br>Wenn Sie uns über das Kontaktformular kontaktieren oder sich für die Warteliste anmelden, werden Ihre Angaben (Name, E-Mail) zur Bearbeitung der Anfrage gespeichert. Diese Daten werden nicht an Dritte weitergegeben.</p><p><strong>4. Hosting</strong><br>Diese Website wird über GitHub Pages gehostet. Dabei können technische Daten wie IP-Adresse, Browser-Informationen und Zeitpunkt des Zugriffs verarbeitet werden.</p><p><strong>5. Ihre Rechte</strong><br>Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten. Kontakt: hello@wurfkit.de</p>',en:'<p><strong>1. Controller</strong><br>WurfKit · hello@wurfkit.de</p><p><strong>2. Data collection</strong><br>When visiting this website, information is automatically collected (server log files): browser type, operating system, referrer URL, IP address (anonymized), time of request.</p><p><strong>3. Contact form and waitlist</strong><br>When you contact us via the contact form or sign up for the waitlist, your details (name, email) are stored to process the request. This data is not shared with third parties.</p><p><strong>4. Hosting</strong><br>This website is hosted via GitHub Pages. Technical data such as IP address, browser information and access time may be processed.</p><p><strong>5. Your rights</strong><br>You have the right to access, rectify, delete and restrict the processing of your data. Contact: hello@wurfkit.de</p>',ru:'<p><strong>1. Ответственный</strong><br>WurfKit · hello@wurfkit.de</p><p><strong>2. Сбор данных</strong><br>При посещении сайта автоматически собирается информация (лог-файлы сервера): тип браузера, ОС, URL-реферер, IP-адрес (анонимизированный), время запроса.</p><p><strong>3. Форма контакта и лист ожидания</strong><br>При обращении через форму или регистрации в листе ожидания ваши данные (имя, email) сохраняются для обработки запроса. Данные не передаются третьим лицам.</p><p><strong>4. Хостинг</strong><br>Сайт размещён на GitHub Pages. При этом могут обрабатываться технические данные, например IP-адрес, сведения о браузере и время доступа.</p><p><strong>5. Ваши права</strong><br>Вы имеете право на доступ, исправление, удаление и ограничение обработки ваших данных. Контакт: hello@wurfkit.de</p>'}}
+};
+function gl(){var c=document.body.className;if(c.indexOf('l-en')>=0)return'en';if(c.indexOf('l-ru')>=0)return'ru';return'de'}
+function openModal(id){
+var m=M[id];if(!m)return;var l=gl();
+document.getElementById('mhd').innerHTML='<div class="mb2">'+m.b[l]+'</div><div class="mti">'+m.t[l]+'</div><div class="msu">'+m.s[l]+'</div>';
+document.getElementById('mbd').innerHTML=m.x[l]+'<a href="#signup" class="mct" onclick="cm()"><span class="di">Jetzt vormerken</span><span class="ei">Join waitlist</span><span class="ri">Записаться</span></a>';
+document.getElementById('mo').classList.add('open');
+document.body.style.overflow='hidden';
+}
+function cm(){document.getElementById('mo').classList.remove('open');document.body.style.overflow=''}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')cm()});
+</script>
+</body>
+</html>
