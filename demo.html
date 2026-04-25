@@ -143,7 +143,12 @@ h3{font-size:1rem;font-weight:600;margin-bottom:.5rem}
 
 /* Stats row */
 .st{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1.5rem}
-.sti{background:var(--surf);border:1px solid var(--b);border-radius:var(--r);padding:1rem;box-shadow:var(--sh)}
+.sti{background:var(--surf);border:1px solid var(--b);border-radius:var(--r);padding:1rem;box-shadow:var(--sh);text-align:left}
+.sti-btn{font:inherit;color:inherit;cursor:pointer;width:100%;display:block;text-align:left}
+.sti-btn:hover{border-color:var(--p);transform:translateY(-3px);box-shadow:var(--sh2);background:linear-gradient(135deg,var(--surf),var(--pp))}
+.sti-btn:active{transform:translateY(-1px)}
+.sti-btn::after{content:'→';position:absolute;top:14px;right:14px;color:var(--t3);opacity:0;transition:all .25s;font-size:1rem;font-weight:600}
+.sti-btn:hover::after{opacity:1;color:var(--p);transform:translateX(3px)}
 .stn{font-family:'Playfair Display',serif;font-size:1.85rem;font-weight:500;color:var(--p);line-height:1}
 .stl{font-size:.72rem;color:var(--t3);margin-top:6px;font-weight:500;letter-spacing:.3px;text-transform:uppercase}
 @media(max-width:640px){.st{grid-template-columns:repeat(2,1fr)}}
@@ -313,13 +318,80 @@ body.l-de .de{display:inline}body.l-en .en{display:inline}body.l-ru .ru{display:
 body.l-de .de-block,.de-block{display:none}body.l-de .de-block{display:block}
 body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
 
+/* Mobile-first responsive */
+@media(max-width:768px){
+  .cnt{padding:1.25rem 1rem}
+  .bk .de,.bk .en,.bk .ru{display:none}
+  .bk::before{content:'←'}
+  .bk{padding:.5rem .7rem;font-size:1rem;line-height:1}
+  .ddh{grid-template-columns:1fr;text-align:center;padding:1.25rem}
+  .dxa{width:120px;height:120px;font-size:54px}
+  .kv{grid-template-columns:1fr}
+  .coiform{grid-template-columns:1fr}
+  .pdfprev{padding:1rem;font-size:.78rem;max-height:60vh}
+  .pdfprev .ku{grid-template-columns:1fr 1.4fr;gap:4px 10px;font-size:.75rem}
+  .ml{max-width:96vw}
+  .mh{padding:1.1rem 1.25rem .8rem}
+  .mb{padding:1.1rem 1.25rem 1.4rem}
+  .mt{font-size:1.2rem}
+  /* Stat row 2x2 */
+  .st{grid-template-columns:repeat(2,1fr);gap:.6rem}
+  .stn{font-size:1.55rem}
+  .stl{font-size:.66rem}
+  /* Forms / select truncation */
+  .fld select{font-size:.85rem;padding:.65rem .85rem;max-width:100%;text-overflow:ellipsis;overflow:hidden}
+  /* Pedigree scrollable horizontally */
+  .pedw{padding:1rem;margin:0 -.25rem}
+  /* Dog/litter cards spacing */
+  .dc{padding:.8rem 1rem;gap:.8rem}
+  .dav{width:54px;height:54px}
+  .dnm{font-size:1rem}
+  .dmt{font-size:.75rem}
+  .li{padding:.9rem 1rem;gap:.8rem}
+  .li .dav{width:44px;height:44px}
+  .lim{font-size:1rem}
+  /* COI big number smaller */
+  .coibig{font-size:2.6rem}
+  /* Document grid single col */
+  .dgrid{grid-template-columns:1fr}
+  /* Touch targets */
+  .btn{min-height:44px;padding:.7rem 1.1rem}
+  .btn.primary,.btn.secondary{min-height:46px}
+  .lb{min-height:34px;padding:.4rem .75rem}
+}
+
 @media(max-width:520px){
-  .hd{padding:.7rem 1rem}
-  .lg{font-size:1.2rem}
+  body{font-size:14.5px}
+  .hd{padding:.7rem .85rem;gap:.6rem}
+  .lg{font-size:1.15rem}
+  .lg .sub{font-size:.55rem;padding:1px 6px}
+  .ls{transform:scale(.9)}
+  .bn{padding:.5rem .85rem;font-size:.72rem;line-height:1.4}
+  h1{font-size:1.5rem;line-height:1.15}
+  h2{font-size:1.15rem;margin:1.2rem 0 .4rem}
+  .sub2{font-size:.85rem;margin-bottom:1rem}
+  /* Tab nav fits even small screens */
+  .tb{padding:.55rem .15rem;font-size:.6rem;letter-spacing:.2px}
+  .tb svg{width:20px;height:20px}
+  main{padding-bottom:74px}
+  /* Status badges shorter */
+  .bg{font-size:.6rem;padding:2px 7px;letter-spacing:.2px}
+  /* Reduce some hover effects on mobile (touch) */
+  .card.clk:hover{transform:none}
+  .card.clk:hover .dav{transform:none}
+  /* Sticky header smaller */
+  header{position:sticky;top:0}
+  /* Pedigree font smaller */
+  .ped text{font-size:9px}
+  .ped text.s{font-size:7.5px}
+}
+
+@media(max-width:380px){
+  .lb{padding:.3rem .55rem;font-size:.66rem}
+  .bk{padding:.4rem .6rem}
   .lg .sub{display:none}
-  .cnt{padding:1rem}
-  h1{font-size:1.5rem}
-  h2{font-size:1.2rem}
+  .stn{font-size:1.35rem}
+  .coibig{font-size:2.2rem}
 }
 </style>
 </head>
@@ -357,10 +429,10 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
       </p>
 
       <div class="st">
-        <div class="sti"><div class="stn" id="st-dogs">3</div><div class="stl"><span class="de">Hunde</span><span class="en">Dogs</span><span class="ru">Собаки</span></div></div>
-        <div class="sti"><div class="stn" id="st-litters">1</div><div class="stl"><span class="de">Würfe</span><span class="en">Litters</span><span class="ru">Помёты</span></div></div>
-        <div class="sti"><div class="stn" id="st-pups">5</div><div class="stl"><span class="de">Welpen</span><span class="en">Puppies</span><span class="ru">Щенки</span></div></div>
-        <div class="sti"><div class="stn" id="st-docs">3</div><div class="stl"><span class="de">Dokumente</span><span class="en">Documents</span><span class="ru">Документы</span></div></div>
+        <button class="sti sti-btn" onclick="goTab('overview');document.querySelector('.dl')?.scrollIntoView({behavior:'smooth',block:'start'})" type="button"><div class="stn" id="st-dogs">3</div><div class="stl"><span class="de">Hunde</span><span class="en">Dogs</span><span class="ru">Собаки</span></div></button>
+        <button class="sti sti-btn" onclick="goTab('litters')" type="button"><div class="stn" id="st-litters">1</div><div class="stl"><span class="de">Würfe</span><span class="en">Litters</span><span class="ru">Помёты</span></div></button>
+        <button class="sti sti-btn" onclick="goTab('litters')" type="button"><div class="stn" id="st-pups">5</div><div class="stl"><span class="de">Welpen</span><span class="en">Puppies</span><span class="ru">Щенки</span></div></button>
+        <button class="sti sti-btn" onclick="goTab('docs')" type="button"><div class="stn" id="st-docs">3</div><div class="stl"><span class="de">Dokumente</span><span class="en">Documents</span><span class="ru">Документы</span></div></button>
       </div>
 
       <h2><span class="de">Meine Hunde</span><span class="en">My dogs</span><span class="ru">Мои собаки</span></h2>

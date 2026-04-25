@@ -66,28 +66,38 @@ function restoreFromHash() {
   }
 }
 
+// Cache-busting version for photo URLs (bump when photos change)
+const PHOTO_V = 'v3';
+function photoURL(item) {
+  if (!item || !item.photo || !item.photo.startsWith('demo/')) return null;
+  return item.photo + '?' + PHOTO_V;
+}
+
 // Helper: render avatar with photo + fallback emoji
 function avatar(item, size) {
   const cls = 'dav';
   const fb = item.photoFallback || '🐕';
-  if (item.photo && item.photo.startsWith('demo/')) {
-    return `<div class="${cls}"><img src="${item.photo}" alt="${escapeHtml(item.name || '')}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><div class="dav-fb" style="display:none">${fb}</div></div>`;
+  const url = photoURL(item);
+  if (url) {
+    return `<div class="${cls}"><img src="${url}" alt="${escapeHtml(item.name || '')}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><div class="dav-fb" style="display:none">${fb}</div></div>`;
   }
   return `<div class="${cls}">${fb}</div>`;
 }
 
 function avatarSmall(item) {
   const fb = item.photoFallback || '🐶';
-  if (item.photo && item.photo.startsWith('demo/')) {
-    return `<div class="pliav"><img src="${item.photo}" alt="" onerror="this.style.display='none';this.parentNode.innerHTML='${fb}'"/></div>`;
+  const url = photoURL(item);
+  if (url) {
+    return `<div class="pliav"><img src="${url}" alt="" onerror="this.style.display='none';this.parentNode.innerHTML='${fb}'"/></div>`;
   }
   return `<div class="pliav">${fb}</div>`;
 }
 
 function avatarLarge(item) {
   const fb = item.photoFallback || '🐕';
-  if (item.photo && item.photo.startsWith('demo/')) {
-    return `<div class="dxa"><img src="${item.photo}" alt="${escapeHtml(item.name || '')}" onerror="this.outerHTML='<div class=&quot;dxa&quot;>${fb}</div>'"/></div>`;
+  const url = photoURL(item);
+  if (url) {
+    return `<div class="dxa"><img src="${url}" alt="${escapeHtml(item.name || '')}" onerror="this.outerHTML='<div class=&quot;dxa&quot;>${fb}</div>'"/></div>`;
   }
   return `<div class="dxa">${fb}</div>`;
 }
@@ -261,7 +271,7 @@ function renderLitters() {
   list.innerHTML = LITTERS.map(l => {
     const dam = DOGS.find(d => d.id === l.damId);
     const sireName = l.externalSire ? l.externalSire.name : (DOGS.find(d => d.id === l.sireId) || {}).fullName || '—';
-    const damPhoto = dam.photo && dam.photo.startsWith('demo/') ? `<img src="${dam.photo}" alt="${escapeHtml(dam.name)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>` : '🐾';
+    const damPhoto = dam.photo && dam.photo.startsWith('demo/') ? `<img src="${dam.photo}?${PHOTO_V}" alt="${escapeHtml(dam.name)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>` : '🐾';
     return `
       <div class="card clk li" onclick="openLitterDetail('${l.id}')">
         <div class="dav">${damPhoto}</div>
