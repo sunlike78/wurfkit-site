@@ -541,9 +541,11 @@ async function renderSectionToCanvas(htmlContent, opts) {
   const wrap = document.createElement('div');
   wrap.style.cssText = 'position:fixed;left:-99999px;top:0;width:794px;background:#fff;z-index:-1';
 
+  // Cover page is full A4; other sections size to content (no forced min-height → no empty pages)
+  const minH = opts.cover ? 'min-height:1123px' : '';
   const inner = document.createElement('div');
   inner.className = 'pg';
-  inner.style.cssText = 'width:794px;min-height:1123px;padding:80px 70px 60px;background:linear-gradient(180deg,#fff 0%,#FAFAF7 100%);box-sizing:border-box;color:#1a1a1a;font-family:DM Sans,Arial,sans-serif;position:relative';
+  inner.style.cssText = `width:794px;${minH};padding:80px 70px 60px;background:#fff;box-sizing:border-box;color:#1a1a1a;font-family:DM Sans,Arial,sans-serif;position:relative`;
 
   // Header strip
   const headerBar = '<div style="position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#1B4332 0%,#2D6A4F 30%,#52B788 70%,#74C69D 100%)"></div>';
@@ -596,19 +598,26 @@ async function addCanvasToPDF(doc, canvas, isFirst) {
   const imgWidth = pdfWidth;
   const imgHeight = (canvas.height * pdfWidth) / canvas.width;
 
+  // Section fits on one page — no slicing
   if (imgHeight <= pdfHeight) {
     if (!isFirst) doc.addPage();
     doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
-  } else {
-    // Multi-page: slice the canvas image across pages
-    let positionY = 0;
-    let pageIndex = 0;
-    while (positionY < imgHeight) {
-      if (!isFirst || pageIndex > 0) doc.addPage();
-      doc.addImage(imgData, 'JPEG', 0, -positionY, imgWidth, imgHeight);
-      positionY += pdfHeight;
-      pageIndex++;
-    }
+    return;
+  }
+
+  // Section taller than one page — slice. Last slice clipped to actual remaining content
+  // (prevents extra blank page when content is e.g. 1.05 pages tall)
+  let positionY = 0;
+  let pageIndex = 0;
+  // A small overlap reduces visible cuts in middle of text lines
+  const overlap = 12; // pt
+  while (positionY < imgHeight - 1) {
+    if (!isFirst || pageIndex > 0) doc.addPage();
+    doc.addImage(imgData, 'JPEG', 0, -positionY, imgWidth, imgHeight);
+    positionY += pdfHeight - overlap;
+    pageIndex++;
+    // Prevent infinite loop and trailing empty page
+    if (imgHeight - positionY < 4) break;
   }
 }
 

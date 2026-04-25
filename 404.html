@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nicht gefunden – WurfKit</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%BE%3C/text%3E%3C/svg%3E">
+<script>
+// Pretty-URL routing for /welpe/<id>, /hund/<id>, /wurf/<id>
+(function(){
+  var p = location.pathname;
+  var search = location.search;
+  var welpe = p.match(/^\/welpe\/([a-z0-9_-]+)\/?$/i);
+  if (welpe) { location.replace('/welpe.html?id=' + encodeURIComponent(welpe[1]) + (search ? '&' + search.slice(1) : '')); return; }
+  var hund = p.match(/^\/hund\/([a-z0-9_-]+)\/?$/i);
+  if (hund) { location.replace('/demo.html#/dog/' + encodeURIComponent(hund[1])); return; }
+  var wurf = p.match(/^\/wurf\/([a-z0-9_-]+)\/?$/i);
+  if (wurf) { location.replace('/demo.html#/litter/' + encodeURIComponent(wurf[1])); return; }
+  // Public stud-dog profile (Deckrüden-Profil) e.g. /rex-waldberg
+  var stud = p.match(/^\/(rex-waldberg|apollo-sonnenhof)\/?$/i);
+  if (stud) { location.replace('/demo.html#/dog/rex'); return; }
+})();
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:#FAFAF7;color:#1A1A1A;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center}
+.icon{font-size:96px;margin-bottom:1rem;animation:wag 2s ease-in-out infinite}
+@keyframes wag{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+h1{font-family:'Playfair Display',Georgia,serif;font-size:2.5rem;font-weight:500;color:#1B4332;margin-bottom:.5rem;letter-spacing:-.02em}
+p{color:#4A4A4A;font-size:1rem;line-height:1.6;max-width:480px;margin:0 auto 1.5rem}
+.btn{display:inline-block;padding:.85rem 1.8rem;background:#2D6A4F;color:#fff;border-radius:99px;font-weight:600;text-decoration:none;font-size:.95rem;transition:all .2s}
+.btn:hover{background:#1B4332;transform:translateY(-1px);box-shadow:0 8px 22px rgba(45,106,79,.3)}
+.code{font-family:monospace;font-size:.85rem;color:#8A8A8A;margin-top:1.5rem}
+</style>
+</head>
+<body>
+<div class="icon">🐾</div>
+<h1>Seite nicht gefunden</h1>
+<p>Die angeforderte Seite existiert nicht. Möglicherweise wurde sie verschoben oder Sie haben einen Tippfehler in der URL.</p>
+<a href="/" class="btn">Zur Startseite</a>
+<div class="code">404 · WurfKit</div>
+</body>
+</html>

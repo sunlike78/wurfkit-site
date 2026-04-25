@@ -48,7 +48,8 @@ header{background:var(--surf);border-bottom:1px solid var(--b);position:sticky;t
 .bn b{font-weight:700}
 
 /* Layout */
-main{flex:1;padding-bottom:80px}
+main{flex:1;padding-bottom:96px}
+@media(max-width:520px){main{padding-bottom:88px}}
 .cnt{max-width:1200px;margin:0 auto;padding:1.5rem 1.25rem}
 
 /* Tab nav */
@@ -274,9 +275,12 @@ h3{font-size:1rem;font-weight:600;margin-bottom:.5rem}
 .cmpv{width:60px;text-align:right;font-weight:600;color:var(--t)}
 
 /* Pedigree SVG */
-.pedw{margin-top:1.5rem;background:var(--surf);border:1px solid var(--b);border-radius:var(--r);padding:1.25rem;overflow-x:auto}
+.pedw{margin-top:1.5rem;background:var(--surf);border:1px solid var(--b);border-radius:var(--r);padding:1.25rem;overflow-x:auto;-webkit-overflow-scrolling:touch;position:relative}
+.pedw::after{content:'';position:absolute;top:0;right:0;bottom:0;width:24px;background:linear-gradient(90deg,transparent,var(--surf));pointer-events:none;border-radius:0 var(--r) var(--r) 0}
 .pedt{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:500;margin-bottom:1rem;letter-spacing:-.01em}
-svg.ped{display:block;min-width:600px}
+.pedt::after{content:'⇄';float:right;color:var(--t3);font-size:.85rem;font-weight:400;opacity:.7}
+@media(min-width:768px){.pedt::after{display:none}}
+svg.ped{display:block;min-width:920px}
 .ped rect{fill:var(--surf2);stroke:var(--b);stroke-width:1}
 .ped rect.dam{fill:#FCE7F3;stroke:#F9A8D4}
 .ped rect.sire{fill:#DBEAFE;stroke:#93C5FD}
