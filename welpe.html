@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Welpe – WurfKit</title>
 <meta name="description" content="Digitales Welpen-Profil bei WurfKit – Stammbaum, Impfübersicht, Züchterkontakt.">
 <meta name="robots" content="noindex,follow">
@@ -114,7 +116,7 @@ function render(){
   var st=STATUS_LBL[p.status]||STATUS_LBL.available;
   main.innerHTML=
     '<div class="hero">'+
-      '<div class="photo"><img src="'+p.img+'?v3" alt="'+p.full+'"/><div class="vdh">VDH</div></div>'+
+      '<div class="photo"><img src="'+p.img+'?v3" alt="'+p.full+'" fetchpriority="high" decoding="async"/><div class="vdh">VDH</div></div>'+
       '<h1>'+p.name+'</h1>'+
       '<div class="sub">'+p.full+'</div>'+
       '<div class="meta">'+p.breed+' · '+p.sex+' · '+p.color+'</div>'+
