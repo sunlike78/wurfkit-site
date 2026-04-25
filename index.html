@@ -3,8 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WurfKit – Die App für Hundezüchter</title>
+<title>WurfKit – Welpen-Unterlagen in Minuten statt Stunden | App für VDH-Züchter</title>
+<meta name="description" content="WurfKit ist die mobile App für VDH-Hundezüchter: Kaufvertrag, Wurfmeldung und Welpen-Paket automatisch generieren. COI berechnen, Zuchtzulassung prüfen. Auf Deutsch.">
+<meta name="keywords" content="Hundezucht App, VDH Züchter, Kaufvertrag Hund, Wurfmeldung, Welpen-Paket, Ahnentafel, COI Berechnung, Zuchtordnung">
+<meta name="author" content="WurfKit">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://wurfkit.de/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%BE%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="ru_RU">
+<meta property="og:url" content="https://wurfkit.de/">
+<meta property="og:title" content="WurfKit – Welpen-Unterlagen in Minuten statt Stunden">
+<meta property="og:description" content="Die App für VDH-Züchter: Kaufvertrag, Wurfmeldung, Welpen-Paket automatisch. Auf Deutsch.">
+<meta property="og:site_name" content="WurfKit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WurfKit – App für VDH-Züchter">
+<meta name="twitter:description" content="Welpen-Unterlagen in Minuten statt Stunden. Auf Deutsch, mobile-first, für VDH-Züchter.">
+<meta name="theme-color" content="#09090B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"WurfKit","operatingSystem":"iOS, Android","applicationCategory":"BusinessApplication","description":"Mobile App für VDH-Hundezüchter zur Verwaltung von Hunden, Würfen und automatischer Generierung von Kaufvertrag, Wurfmeldung und Welpen-Paket.","url":"https://wurfkit.de/","inLanguage":["de","en","ru"],"offers":{"@type":"Offer","priceCurrency":"EUR","price":"0","description":"Kostenlose Vormerkung auf der Warteliste"},"author":{"@type":"Organization","name":"WurfKit","email":"hello@wurfkit.de","url":"https://wurfkit.de/"}}
+</script>
 <style>
 :root{--a:#34D399;--ad:#059669;--bg:#09090B;--s:#131316;--s2:#1C1C21;--b:#27272A;--bl:#3F3F46;--t:#FAFAFA;--t2:#A1A1AA;--t3:#71717A;--g:rgba(255,255,255,0.04);--g2:rgba(255,255,255,0.07);--gw:rgba(52,211,153,0.15);--gw2:rgba(52,211,153,0.08);--r:16px;--rs:10px;--rx:6px}
 *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
@@ -155,7 +178,7 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 </style>
 </head>
 <body id="body" class="l-de">
-<nav><div class="logo"><b>Wurf</b>Kit</div><div class="nr"><div class="ls"><button class="lb active" id="btn-de" onclick="setLang('de')">DE</button><button class="lb" id="btn-en" onclick="setLang('en')">EN</button><button class="lb" id="btn-ru" onclick="setLang('ru')">RU</button></div><a href="#signup" class="nc"><span class="di">Zugang sichern</span><span class="ei">Get access</span><span class="ri">Доступ</span></a></div></nav>
+<nav role="navigation" aria-label="Hauptnavigation"><div class="logo"><b>Wurf</b>Kit</div><div class="nr"><a href="demo.html" style="color:var(--a);font-size:.78rem;font-weight:600;padding:.4rem .9rem;border:1px solid rgba(52,211,153,.3);border-radius:99px;text-decoration:none;transition:all .2s;background:rgba(52,211,153,.06)" onmouseover="this.style.background='rgba(52,211,153,0.14)'" onmouseout="this.style.background='rgba(52,211,153,0.06)'">▶&nbsp;<span class="di">Live-Demo</span><span class="ei">Live Demo</span><span class="ri">Демо</span></a><div class="ls" role="group" aria-label="Sprache wählen"><button class="lb active" id="btn-de" onclick="setLang('de')" aria-pressed="true" aria-label="Deutsch">DE</button><button class="lb" id="btn-en" onclick="setLang('en')" aria-pressed="false" aria-label="English">EN</button><button class="lb" id="btn-ru" onclick="setLang('ru')" aria-pressed="false" aria-label="Русский">RU</button></div><a href="#signup" class="nc"><span class="di">Zugang sichern</span><span class="ei">Get access</span><span class="ri">Получить доступ</span></a></div></nav>
 
 <section class="hero"><div class="hc">
 <div class="hb"><span class="di">Kommt bald · Jetzt vormerken</span><span class="ei">Coming soon · Join waitlist</span><span class="ri">Скоро запуск · Записаться</span></div>
@@ -163,8 +186,12 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 <p class="hs de">Schluss mit Excel und Papierstapeln. WurfKit automatisiert Kaufverträge, Wurfmeldungen, Welpen-Pakete — berechnet den COI in Sekunden und prüft die Zuchtzulassung automatisch. 100% Deutsch.</p>
 <p class="hs en">No more Excel and paper files. WurfKit automates contracts, litter registrations, puppy packets — calculates COI in seconds and auto-checks breeding compliance.</p>
 <p class="hs ru">Забудьте про Excel и бумаги. WurfKit автоматизирует договоры, регистрации помётов, пакеты щенков — считает COI за секунды и проверяет допуск к разведению. 100% на немецком.</p>
-<form name="waitlist" class="hf" id="signup"><input type="hidden" name="form-name" value="waitlist"/><input type="email" name="email" placeholder="E-Mail" required/><button type="submit"><span class="di">Vormerken</span><span class="ei">Join</span><span class="ri">Записаться</span></button></form>
+<form name="waitlist" class="hf" id="signup"><input type="hidden" name="form-name" value="waitlist"/><input type="email" name="email" placeholder="E-Mail" required aria-label="E-Mail-Adresse für Warteliste"/><button type="submit"><span class="di">Vormerken</span><span class="ei">Join</span><span class="ri">Записаться</span></button></form>
 <p class="hn de">Kostenlos · Kein Spam · Frühbucher-Rabatt</p><p class="hn en">Free · No spam · Early bird discount</p><p class="hn ru">Бесплатно · Без спама · Скидка при запуске</p>
+<div style="margin-top:2.2rem;display:flex;align-items:center;justify-content:center;gap:10px;font-size:.83rem;color:var(--t2)">
+<span class="di">Schon vor dem Launch testen:</span><span class="ei">Try before launch:</span><span class="ri">Попробовать до запуска:</span>
+<a href="demo.html" style="color:var(--a);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(52,211,153,.4);padding-bottom:1px">▶&nbsp;<span class="di">Live-Demo öffnen</span><span class="ei">Open live demo</span><span class="ri">Открыть демо</span></a>
+</div>
 </div></section>
 
 <section class="ps">
@@ -227,19 +254,19 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 <div class="sl de">Kontakt</div><div class="sl en">Contact</div><div class="sl ru">Контакт</div>
 <h2 class="de">Fragen?</h2><h2 class="en">Questions?</h2><h2 class="ru">Вопросы?</h2>
 <p class="ss de">Antwort innerhalb von 24 Stunden.</p><p class="ss en">Response within 24 hours.</p><p class="ss ru">Ответим в течение 24 часов.</p>
-<div class="cw"><form name="contact" class="cf"><input type="hidden" name="form-name" value="contact"/><input type="text" name="name" placeholder="Name" required/><input type="email" name="email" placeholder="E-Mail" required/><select name="topic"><option value="" disabled selected>Thema</option><option value="feedback">Feedback</option><option value="feature">Feature</option><option value="beta">Beta-Tester</option><option value="breeder">Züchter</option><option value="other">Sonstiges</option></select><textarea name="message" placeholder="Nachricht..." required></textarea><button type="submit"><span class="di">Senden</span><span class="ei">Send</span><span class="ri">Отправить</span></button></form></div>
+<div class="cw"><form name="contact" class="cf"><input type="hidden" name="form-name" value="contact"/><input type="text" name="name" placeholder="Name" required aria-label="Ihr Name"/><input type="email" name="email" placeholder="E-Mail" required aria-label="Ihre E-Mail-Adresse"/><select name="topic" aria-label="Thema der Anfrage"><option value="" disabled selected>Thema</option><option value="feedback">Feedback</option><option value="feature">Feature</option><option value="beta">Beta-Tester</option><option value="breeder">Züchter</option><option value="other">Sonstiges</option></select><textarea name="message" placeholder="Nachricht..." required aria-label="Ihre Nachricht" maxlength="1500"></textarea><button type="submit"><span class="di">Senden</span><span class="ei">Send</span><span class="ri">Отправить</span></button></form></div>
 </section>
 
 <section class="ct">
 <h2 class="de">Dabei sein von Anfang an.</h2><h2 class="en">Be there from day one.</h2><h2 class="ru">Будьте в числе первых.</h2>
 <p class="ss de">Frühbucher-Rabatt und erster Zugang.</p><p class="ss en">Early bird discount and first access.</p><p class="ss ru">Скидка и первый доступ.</p>
-<form name="waitlist-cta" class="ctf"><input type="hidden" name="form-name" value="waitlist-cta"/><input type="email" name="email" placeholder="E-Mail" required/><button type="submit"><span class="di">Zugang sichern</span><span class="ei">Get access</span><span class="ri">Получить доступ</span></button></form>
+<form name="waitlist-cta" class="ctf"><input type="hidden" name="form-name" value="waitlist-cta"/><input type="email" name="email" placeholder="E-Mail" required aria-label="E-Mail-Adresse für Warteliste"/><button type="submit"><span class="di">Zugang sichern</span><span class="ei">Get access</span><span class="ri">Получить доступ</span></button></form>
 <p class="ctn de">Kein Spam · Frühbucher-Rabatt</p><p class="ctn en">No spam · Early bird discount</p><p class="ctn ru">Без спама · Скидка при запуске</p>
 </section>
 
 <footer><p>© 2026 WurfKit · <a href="mailto:hello@wurfkit.de">hello@wurfkit.de</a> · <a href="#" onclick="openModal('impressum');return false">Impressum</a> · <a href="#" onclick="openModal('datenschutz');return false">Datenschutz</a></p></footer>
 
-<div class="mo" id="mo" onclick="if(event.target===this)cm()"><div class="ml" id="ml"><button class="mx" onclick="cm()">✕</button><div class="mh" id="mhd"></div><div class="mbd" id="mbd"></div></div></div>
+<div class="mo" id="mo" onclick="if(event.target===this)cm()" role="dialog" aria-modal="true" aria-labelledby="mhd" aria-hidden="true"><div class="ml" id="ml"><button class="mx" onclick="cm()" aria-label="Schließen">✕</button><div class="mh" id="mhd"></div><div class="mbd" id="mbd"></div></div></div>
 
 <script>
 // === CONFIG: Replace with your Google Apps Script URL ===
@@ -247,12 +274,18 @@ var SHEET_URL = 'https://script.google.com/macros/s/AKfycbyP0hHaZk4Qo95kHdc7-cr6
 
 function setLang(l){
 document.body.className='l-'+l;
-document.querySelectorAll('.lb').forEach(function(b){b.classList.remove('active')});
-document.getElementById('btn-'+l).classList.add('active');
+document.querySelectorAll('.lb').forEach(function(b){b.classList.remove('active');b.setAttribute('aria-pressed','false')});
+var btn=document.getElementById('btn-'+l);
+if(btn){btn.classList.add('active');btn.setAttribute('aria-pressed','true')}
 document.documentElement.lang=l==='ru'?'ru':l==='en'?'en':'de';
 try{localStorage.setItem('wk-lang',l)}catch(e){}
 }
-(function(){try{var l=localStorage.getItem('wk-lang');if(l&&(l==='en'||l==='ru'||l==='de'))setLang(l)}catch(e){}}());
+(function(){
+var l=null;
+try{l=localStorage.getItem('wk-lang')}catch(e){}
+if(!l||(l!=='en'&&l!=='ru'&&l!=='de'))l='de';
+setLang(l);
+}());
 
 // === FORM HANDLER: sends directly to Google Sheets ===
 function sendToSheet(formData){
@@ -260,16 +293,18 @@ if(SHEET_URL==='YOUR_GOOGLE_APPS_SCRIPT_URL_HERE'){
 window.location.href='danke.html';
 return;
 }
+var redirected=false;
+function go(){if(!redirected){redirected=true;window.location.href='danke.html'}}
 try{
 var lang='de';try{lang=localStorage.getItem('wk-lang')||'de'}catch(e){}
 formData['lang']=lang;
 var params=[];for(var k in formData){if(Object.prototype.hasOwnProperty.call(formData,k))params.push(encodeURIComponent(k)+'='+encodeURIComponent(formData[k]))}
 var img=new Image();
-img.onload=function(){window.location.href='danke.html'};
-img.onerror=function(){window.location.href='danke.html'};
+img.onload=go;
+img.onerror=go;
 img.src=SHEET_URL+'?'+params.join('&');
-setTimeout(function(){window.location.href='danke.html'},800);
-}catch(e){window.location.href='danke.html'}
+setTimeout(go,1500);
+}catch(e){go()}
 }
 document.addEventListener('submit',function(e){
 var form=e.target;
@@ -322,7 +357,7 @@ pain3:{
 b:{de:'#3',en:'#3',ru:'#3'},
 t:{de:'COI-Berechnung',en:'COI calculation',ru:'Расчёт COI'},
 s:{de:'Stunden mit Papier',en:'Hours with paper',ru:'Часы с бумагами'},
-x:{de:'<p>Stammbäume ausbreiten, gemeinsame Vorfahren finden, Wright-Formel anwenden. Stunden. Fehleranfällig.</p><p><strong>WurfKit:</strong> Sekunden. Direkt aus Profilen. Gemeinsame Vorfahren farbig markiert.</p>',en:'<p>Spread out pedigrees, find common ancestors, apply Wright\'s formula. Hours. Error-prone.</p><p><strong>WurfKit:</strong> Seconds. Directly from profiles. Common ancestors color-coded.</p>',ru:'<p>Раскладывать родословные, искать общих предков, применять формулу Райта. Часы. С ошибками.</p><p><strong>WurfKit:</strong> Секунды. Прямо из профилей. Общие предки выделены цветом.</p>'}},
+x:{de:'<p>Stammbäume ausbreiten, gemeinsame Vorfahren finden, Wright-Formel anwenden. Stunden. Fehleranfällig.</p><p><strong>WurfKit:</strong> Sekunden. Direkt aus Profilen. Gemeinsame Vorfahren farbig markiert.</p>',en:'<p>Spread out pedigrees, find common ancestors, apply Wright\'s formula. Hours. Error-prone.</p><p><strong>WurfKit:</strong> Seconds. Directly from profiles. Common ancestors color-coded.</p>',ru:'<p>Разворачивать родословные, искать общих предков, применять формулу Райта. Часы. С ошибками.</p><p><strong>WurfKit:</strong> Секунды. Прямо из профилей. Общие предки выделены цветом.</p>'}},
 pain4:{
 b:{de:'#4',en:'#4',ru:'#4'},
 t:{de:'Welpenübergabe',en:'Puppy handover',ru:'Передача щенка'},
@@ -337,22 +372,25 @@ impressum:{
 b:{de:'RECHTLICHES',en:'LEGAL',ru:'ЮРИДИЧЕСКОЕ'},
 t:{de:'Impressum',en:'Legal Notice',ru:'Импрессум'},
 s:{de:'Angaben gemäß § 5 TMG',en:'Information per § 5 TMG',ru:'Информация согласно § 5 TMG'},
-x:{de:'<p><strong>WurfKit</strong><br>E-Mail: hello@wurfkit.de</p><p>Verantwortlich für den Inhalt gemäß § 55 Abs. 2 RStV:<br>Kontakt über hello@wurfkit.de</p><p><strong>Haftungsausschluss:</strong> Die Inhalte dieser Website werden mit größtmöglicher Sorgfalt erstellt. Der Anbieter übernimmt jedoch keine Gewähr für die Richtigkeit, Vollständigkeit und Aktualität der bereitgestellten Inhalte.</p><p><strong>Hinweis:</strong> Das vollständige Impressum wird vor dem offiziellen Launch der App veröffentlicht.</p>',en:'<p><strong>WurfKit</strong><br>Email: hello@wurfkit.de</p><p>Responsible for content per § 55 para. 2 RStV:<br>Contact via hello@wurfkit.de</p><p><strong>Disclaimer:</strong> The contents of this website are created with the greatest possible care. However, the provider assumes no liability for the accuracy, completeness and timeliness of the content provided.</p><p><strong>Note:</strong> The complete legal notice will be published before the official app launch.</p>',ru:'<p><strong>WurfKit</strong><br>Email: hello@wurfkit.de</p><p>Ответственный за содержание согласно § 55 абз. 2 RStV:<br>Контакт через hello@wurfkit.de</p><p><strong>Отказ от ответственности:</strong> Содержание этого сайта создано с максимальной тщательностью. Однако провайдер не несёт ответственности за точность, полноту и актуальность предоставленного контента.</p><p><strong>Примечание:</strong> Полный импрессум будет опубликован до официального запуска приложения.</p>'}},
+x:{de:'<p><strong>Angaben gemäß § 5 TMG:</strong></p><p>Vladimir Evseev<br>Talstraße 3<br>42551 Velbert<br>Deutschland</p><p><strong>Kontakt:</strong><br>Telefon: +49 151 24042734<br>E-Mail: hello@wurfkit.de</p><p><strong>Verantwortlich für den Inhalt gemäß § 18 Abs. 2 MStV:</strong><br>Vladimir Evseev (Anschrift wie oben)</p><p><strong>Haftungsausschluss:</strong> Die Inhalte werden mit größtmöglicher Sorgfalt erstellt. Eine Gewähr für Richtigkeit, Vollständigkeit und Aktualität wird nicht übernommen.</p><p><strong>Haftung für Links:</strong> Externe Links werden zum Zeitpunkt der Verlinkung auf rechtswidrige Inhalte überprüft. Auf die Inhalte verlinkter Seiten haben wir keinen Einfluss.</p><p><strong>Urheberrecht:</strong> Inhalte und Werke unterliegen dem deutschen Urheberrecht. Vervielfältigung, Bearbeitung und Verbreitung bedürfen der schriftlichen Zustimmung.</p><p><strong>EU-Streitschlichtung:</strong> Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung bereit: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener" style="color:var(--a)">ec.europa.eu/consumers/odr</a>. Wir sind nicht verpflichtet und nicht bereit, an einem Streitbeilegungsverfahren teilzunehmen.</p>',en:'<p><strong>Information per § 5 TMG (German Telemedia Act):</strong></p><p>Vladimir Evseev<br>Talstraße 3<br>42551 Velbert<br>Germany</p><p><strong>Contact:</strong><br>Phone: +49 151 24042734<br>Email: hello@wurfkit.de</p><p><strong>Responsible for content per § 18 (2) MStV:</strong><br>Vladimir Evseev (address as above)</p><p><strong>Disclaimer:</strong> Content is provided with utmost care. No liability for accuracy, completeness or timeliness is assumed.</p><p><strong>Liability for links:</strong> External links were checked for illegal content at the time of linking. We have no influence on linked content.</p><p><strong>Copyright:</strong> Content and works are subject to German copyright law. Reproduction, editing and distribution require written consent.</p><p><strong>EU dispute resolution:</strong> The European Commission provides a platform for online dispute resolution: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener" style="color:var(--a)">ec.europa.eu/consumers/odr</a>. We are neither obliged nor willing to participate in a dispute resolution procedure.</p>',ru:'<p><strong>Сведения согласно § 5 TMG (Закон о телемедиа Германии):</strong></p><p>Vladimir Evseev<br>Talstraße 3<br>42551 Velbert<br>Deutschland</p><p><strong>Контакт:</strong><br>Телефон: +49 151 24042734<br>Email: hello@wurfkit.de</p><p><strong>Ответственный за содержание согласно § 18 (2) MStV:</strong><br>Vladimir Evseev (адрес выше)</p><p><strong>Отказ от ответственности:</strong> Контент создаётся с максимальной тщательностью. Гарантия точности, полноты и актуальности не предоставляется.</p><p><strong>Ответственность за ссылки:</strong> Внешние ссылки проверены на момент размещения. На содержание связанных страниц мы не имеем влияния.</p><p><strong>Авторское право:</strong> Контент защищён немецким авторским правом. Копирование, редактирование и распространение требуют письменного согласия.</p><p><strong>Разрешение споров (EU):</strong> Европейская комиссия предоставляет платформу: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener" style="color:var(--a)">ec.europa.eu/consumers/odr</a>. Мы не обязаны и не готовы участвовать в процедурах разрешения споров.</p>'}},
 datenschutz:{
 b:{de:'RECHTLICHES',en:'LEGAL',ru:'ЮРИДИЧЕСКОЕ'},
 t:{de:'Datenschutzerklärung',en:'Privacy Policy',ru:'Политика конфиденциальности'},
 s:{de:'Informationen zum Datenschutz',en:'Privacy information',ru:'Информация о защите данных'},
-x:{de:'<p><strong>1. Verantwortlicher</strong><br>WurfKit · hello@wurfkit.de</p><p><strong>2. Erhebung von Daten</strong><br>Beim Besuch dieser Website werden automatisch Informationen (Server-Log-Files) erfasst: Browsertyp, Betriebssystem, Referrer-URL, IP-Adresse (anonymisiert), Zeitpunkt der Anfrage.</p><p><strong>3. Kontaktformular und Waitlist</strong><br>Wenn Sie uns über das Kontaktformular kontaktieren oder sich für die Warteliste anmelden, werden Ihre Angaben (Name, E-Mail) zur Bearbeitung der Anfrage gespeichert. Diese Daten werden nicht an Dritte weitergegeben.</p><p><strong>4. Hosting und Formverarbeitung</strong><br>Diese Website wird über GitHub Pages gehostet. Für Formularanfragen wird Google Apps Script mit Google Sheets verwendet. Dabei können technisch notwendige Daten verarbeitet werden.</p><p><strong>5. Ihre Rechte</strong><br>Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten. Kontakt: hello@wurfkit.de</p>',en:'<p><strong>1. Controller</strong><br>WurfKit · hello@wurfkit.de</p><p><strong>2. Data collection</strong><br>When visiting this website, information is automatically collected (server log files): browser type, operating system, referrer URL, IP address (anonymized), time of request.</p><p><strong>3. Contact form and waitlist</strong><br>When you contact us via the contact form or sign up for the waitlist, your details (name, email) are stored to process the request. This data is not shared with third parties.</p><p><strong>4. Hosting and form processing</strong><br>This website is hosted via GitHub Pages. Form submissions are processed with Google Apps Script and Google Sheets. Technically necessary data may be processed for this purpose.</p><p><strong>5. Your rights</strong><br>You have the right to access, rectify, delete and restrict the processing of your data. Contact: hello@wurfkit.de</p>',ru:'<p><strong>1. Ответственный</strong><br>WurfKit · hello@wurfkit.de</p><p><strong>2. Сбор данных</strong><br>При посещении сайта автоматически собирается информация (лог-файлы сервера): тип браузера, ОС, URL-реферер, IP-адрес (анонимизированный), время запроса.</p><p><strong>3. Форма контакта и лист ожидания</strong><br>При обращении через форму или регистрации в листе ожидания ваши данные (имя, email) сохраняются для обработки запроса. Данные не передаются третьим лицам.</p><p><strong>4. Хостинг и обработка форм</strong><br>Сайт размещён на GitHub Pages. Отправка форм обрабатывается через Google Apps Script и Google Sheets. Для этого могут обрабатываться технически необходимые данные.</p><p><strong>5. Ваши права</strong><br>Вы имеете право на доступ, исправление, удаление и ограничение обработки ваших данных. Контакт: hello@wurfkit.de</p>'}}
+x:{de:'<p><strong>1. Verantwortlicher</strong><br>Vladimir Evseev · Talstraße 3, 42551 Velbert · hello@wurfkit.de</p><p><strong>2. Erhebung beim Besuch</strong><br>Diese Website wird über GitHub Pages (GitHub, Inc., USA) gehostet. Beim Aufruf werden technisch notwendige Daten (IP-Adresse, Browsertyp, Betriebssystem, Referrer, Zeitpunkt) durch GitHub verarbeitet. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am sicheren Betrieb).</p><p><strong>3. Kontaktformular und Warteliste</strong><br>Bei Eingabe Ihrer Daten (Name, E-Mail, Nachricht) werden diese ausschließlich zur Bearbeitung Ihrer Anfrage bzw. zur Aufnahme in die Warteliste verarbeitet. Rechtsgrundlage: Art. 6 Abs. 1 lit. a (Einwilligung) bzw. lit. b DSGVO (vorvertragliche Maßnahmen). Ihre Daten werden bis zum Widerruf bzw. bis zum Wegfall des Zwecks gespeichert.</p><p><strong>4. Auftragsverarbeitung – Google (USA)</strong><br>Formulareingaben werden über Google Apps Script (Google LLC, USA) an Google Sheets übermittelt. Es liegt eine Datenübermittlung in ein Drittland (USA) vor. Rechtsgrundlage: Art. 49 Abs. 1 lit. a DSGVO (ausdrückliche Einwilligung durch das Absenden des Formulars), ergänzt durch EU-Standardvertragsklauseln zwischen Google und dem Verantwortlichen, soweit anwendbar.</p><p><strong>5. Lokale Speicherung</strong><br>Die gewählte Sprache wird in Ihrem Browser (localStorage) gespeichert. Es werden keine Cookies zu Marketing- oder Tracking-Zwecken gesetzt.</p><p><strong>6. Ihre Rechte</strong><br>Sie haben das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21 DSGVO) sowie Beschwerderecht bei einer Aufsichtsbehörde. Kontakt: hello@wurfkit.de</p>',en:'<p><strong>1. Controller</strong><br>Vladimir Evseev · Talstraße 3, 42551 Velbert, Germany · hello@wurfkit.de</p><p><strong>2. Data on visit</strong><br>This site is hosted on GitHub Pages (GitHub, Inc., USA). On access, GitHub processes technically necessary data (IP, browser, OS, referrer, timestamp). Legal basis: Art. 6(1)(f) GDPR (legitimate interest in secure operation).</p><p><strong>3. Contact form and waitlist</strong><br>When you submit your data (name, email, message) it is used solely to process your request or list you on the waitlist. Legal basis: Art. 6(1)(a) (consent) or (b) GDPR (pre-contractual). Stored until revoked or purpose lapses.</p><p><strong>4. Processing by Google (USA)</strong><br>Form submissions are forwarded via Google Apps Script (Google LLC, USA) to Google Sheets. This is a transfer to a third country (USA). Legal basis: Art. 49(1)(a) GDPR (explicit consent by form submission), supplemented by EU Standard Contractual Clauses where applicable.</p><p><strong>5. Local storage</strong><br>Your chosen language is stored in your browser (localStorage). No marketing or tracking cookies are set.</p><p><strong>6. Your rights</strong><br>You have the right to access (Art. 15), rectification (Art. 16), erasure (Art. 17), restriction (Art. 18), portability (Art. 20), objection (Art. 21 GDPR), and to lodge a complaint with a supervisory authority. Contact: hello@wurfkit.de</p>',ru:'<p><strong>1. Ответственный</strong><br>Vladimir Evseev · Talstraße 3, 42551 Velbert, Deutschland · hello@wurfkit.de</p><p><strong>2. Данные при посещении</strong><br>Сайт размещён на GitHub Pages (GitHub, Inc., США). При посещении GitHub обрабатывает технические данные (IP, браузер, ОС, реферер, время). Правовое основание: ст. 6(1)(f) GDPR (законный интерес в безопасной эксплуатации).</p><p><strong>3. Форма контакта и список ожидания</strong><br>Отправленные вами данные (имя, email, сообщение) используются исключительно для обработки запроса или включения в список ожидания. Правовое основание: ст. 6(1)(a) (согласие) или (b) GDPR (преддоговорные меры). Хранятся до отзыва согласия или прекращения цели обработки.</p><p><strong>4. Обработка Google (США)</strong><br>Отправка форм идёт через Google Apps Script (Google LLC, США) в Google Sheets. Это передача в третью страну (США). Правовое основание: ст. 49(1)(a) GDPR (явное согласие при отправке формы), плюс стандартные договорные оговорки ЕС где применимо.</p><p><strong>5. Локальное хранение</strong><br>Выбранный язык сохраняется в браузере (localStorage). Маркетинговые и трекинговые cookies не устанавливаются.</p><p><strong>6. Ваши права</strong><br>Вы имеете право на доступ (ст. 15), исправление (ст. 16), удаление (ст. 17), ограничение (ст. 18), переносимость (ст. 20), возражение (ст. 21 GDPR) и подачу жалобы в надзорный орган. Контакт: hello@wurfkit.de</p>'}}
 };
 function gl(){var c=document.body.className;if(c.indexOf('l-en')>=0)return'en';if(c.indexOf('l-ru')>=0)return'ru';return'de'}
 function openModal(id){
 var m=M[id];if(!m)return;var l=gl();
 document.getElementById('mhd').innerHTML='<div class="mb2">'+m.b[l]+'</div><div class="mti">'+m.t[l]+'</div><div class="msu">'+m.s[l]+'</div>';
 document.getElementById('mbd').innerHTML=m.x[l]+'<a href="#signup" class="mct" onclick="cm()"><span class="di">Jetzt vormerken</span><span class="ei">Join waitlist</span><span class="ri">Записаться</span></a>';
-document.getElementById('mo').classList.add('open');
+var mo=document.getElementById('mo');
+mo.classList.add('open');
+mo.setAttribute('aria-hidden','false');
 document.body.style.overflow='hidden';
+var x=document.querySelector('#mo .mx');if(x)x.focus();
 }
-function cm(){document.getElementById('mo').classList.remove('open');document.body.style.overflow=''}
+function cm(){var mo=document.getElementById('mo');mo.classList.remove('open');mo.setAttribute('aria-hidden','true');document.body.style.overflow=''}
 document.addEventListener('keydown',function(e){if(e.key==='Escape')cm()});
 </script>
 </body>

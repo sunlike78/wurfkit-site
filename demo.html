@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>WurfKit Demo – Interaktive Vorschau</title>
+<meta name="description" content="Interaktive Demo der WurfKit-App: Hundeprofile, Würfe, automatische Kaufvertrag- und Wurfmeldung-Generierung, COI-Rechner, alles in 30 Sekunden.">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://wurfkit.de/demo.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%BE%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#2D6A4F;--pl:#52B788;--pp:#D8F3DC;--pd:#1B4332;
+  --bg:#FAFAF7;--surf:#FFFFFF;--surf2:#F5F5F0;
+  --t:#1A1A1A;--t2:#4A4A4A;--t3:#8A8A8A;
+  --b:#E8E8E0;--bl:#D4D4C8;
+  --err:#DC2626;--warn:#F59E0B;--ok:#16A34A;--info:#3B82F6;
+  --r:14px;--rs:10px;--rx:6px;
+  --sh:0 1px 3px rgba(0,0,0,.04),0 1px 2px rgba(0,0,0,.02);
+  --sh2:0 4px 12px rgba(0,0,0,.06),0 2px 4px rgba(0,0,0,.03);
+  --sh3:0 12px 32px rgba(0,0,0,.10),0 4px 8px rgba(0,0,0,.04);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;font-size:15px}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font-family:inherit;font-size:inherit}
+a{color:var(--p);text-decoration:none}
+
+/* Header */
+header{background:var(--surf);border-bottom:1px solid var(--b);position:sticky;top:0;z-index:50;box-shadow:var(--sh)}
+.hd{max-width:1200px;margin:0 auto;padding:.85rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.lg{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:500;color:var(--t);letter-spacing:-.02em}
+.lg b{color:var(--p);font-weight:600}
+.lg .sub{display:inline-block;background:var(--pp);color:var(--pd);font-size:.6rem;font-weight:600;padding:2px 8px;border-radius:99px;margin-left:6px;letter-spacing:1px;vertical-align:middle;font-family:'DM Sans',sans-serif}
+.hr{display:flex;align-items:center;gap:10px}
+.ls{display:flex;background:var(--surf2);border:1px solid var(--b);border-radius:99px;overflow:hidden}
+.lb{padding:.3rem .7rem;font-size:.7rem;font-weight:600;color:var(--t3);transition:all .15s;letter-spacing:.5px}
+.lb.active{background:var(--p);color:#fff}
+.bk{font-size:.78rem;color:var(--t3);padding:.4rem .8rem;border-radius:99px;border:1px solid var(--b);transition:all .15s}
+.bk:hover{border-color:var(--p);color:var(--p)}
+
+/* Banner */
+.bn{background:linear-gradient(135deg,var(--pp),#EBF7EE);border-bottom:1px solid var(--b);padding:.6rem 1.25rem;text-align:center;font-size:.78rem;color:var(--pd);font-weight:500}
+.bn b{font-weight:700}
+
+/* Layout */
+main{flex:1;padding-bottom:80px}
+.cnt{max-width:1200px;margin:0 auto;padding:1.5rem 1.25rem}
+
+/* Tab nav */
+nav.tabs{position:fixed;bottom:0;left:0;right:0;background:var(--surf);border-top:1px solid var(--b);box-shadow:0 -2px 12px rgba(0,0,0,.04);z-index:40}
+.tbi{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.tb{padding:.6rem .25rem;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--t3);transition:color .15s;font-size:.65rem;font-weight:600;letter-spacing:.3px}
+.tb.active{color:var(--p)}
+.tb svg{width:22px;height:22px;stroke-width:1.8}
+
+/* Sections */
+section.tabview{display:none}
+section.tabview.active{display:block;animation:fi .25s ease}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+h1{font-family:'Playfair Display',serif;font-size:1.85rem;font-weight:500;letter-spacing:-.02em;margin-bottom:.35rem;color:var(--t)}
+h2{font-family:'Playfair Display',serif;font-size:1.45rem;font-weight:500;letter-spacing:-.01em;margin:1.5rem 0 .5rem}
+h3{font-size:1rem;font-weight:600;margin-bottom:.5rem}
+.sub2{color:var(--t2);font-size:.92rem;margin-bottom:1.5rem}
+
+/* Stats row */
+.st{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1.5rem}
+.sti{background:var(--surf);border:1px solid var(--b);border-radius:var(--r);padding:1rem;box-shadow:var(--sh)}
+.stn{font-family:'Playfair Display',serif;font-size:1.85rem;font-weight:500;color:var(--p);line-height:1}
+.stl{font-size:.72rem;color:var(--t3);margin-top:6px;font-weight:500;letter-spacing:.3px;text-transform:uppercase}
+@media(max-width:640px){.st{grid-template-columns:repeat(2,1fr)}}
+
+/* Cards */
+.card{background:var(--surf);border:1px solid var(--b);border-radius:var(--r);overflow:hidden;transition:all .2s;box-shadow:var(--sh)}
+.card:hover{border-color:var(--bl);box-shadow:var(--sh2);transform:translateY(-1px)}
+.card.clk{cursor:pointer}
+
+.dl{display:flex;flex-direction:column;gap:.65rem}
+.dc{display:flex;align-items:center;gap:1rem;padding:1rem 1.1rem}
+.dav{width:56px;height:56px;border-radius:50%;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;border:1px solid var(--b)}
+.di{flex:1;min-width:0}
+.dnm{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:500;color:var(--t);margin-bottom:1px;letter-spacing:-.01em}
+.dmt{font-size:.78rem;color:var(--t3);font-weight:500}
+.dmt span{margin-right:.4rem}
+.bd{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.bg{padding:3px 9px;border-radius:99px;font-size:.65rem;font-weight:600;letter-spacing:.3px}
+.bg.ok{background:#DCFCE7;color:#15803D}
+.bg.warn{background:#FEF3C7;color:#A16207}
+.bg.info{background:#DBEAFE;color:#1D4ED8}
+.bg.err{background:#FEE2E2;color:#B91C1C}
+.bg.muted{background:var(--surf2);color:var(--t3)}
+
+/* Litter list */
+.li{padding:1.1rem;display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:center}
+.li .dav{width:48px;height:48px;font-size:24px}
+.lim{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:500;letter-spacing:-.01em}
+.lis{font-size:.78rem;color:var(--t3);margin-top:2px}
+
+/* Detail view */
+.bk2{display:inline-flex;align-items:center;gap:6px;color:var(--t2);font-size:.85rem;font-weight:500;margin-bottom:1rem;padding:.4rem .8rem;border-radius:99px;border:1px solid var(--b);background:var(--surf);transition:all .15s}
+.bk2:hover{border-color:var(--p);color:var(--p)}
+
+.ddh{background:var(--surf);border:1px solid var(--b);border-radius:var(--r);padding:1.5rem;margin-bottom:1.25rem;box-shadow:var(--sh);display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:center}
+@media(max-width:520px){.ddh{grid-template-columns:1fr;text-align:center}}
+.dxa{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--pp),var(--pl));display:flex;align-items:center;justify-content:center;font-size:60px;flex-shrink:0;justify-self:center;border:3px solid var(--surf);box-shadow:var(--sh2)}
+.dxn{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:500;letter-spacing:-.02em;line-height:1.1;margin-bottom:4px}
+.dxs{font-size:.92rem;color:var(--t2);font-weight:500;margin-bottom:.75rem}
+.dxbg{display:flex;flex-wrap:wrap;gap:6px}
+
+.sec{background:var(--surf);border:1px solid var(--b);border-radius:var(--r);padding:1.25rem;margin-bottom:1rem;box-shadow:var(--sh)}
+.sech{font-size:.7rem;font-weight:700;color:var(--t3);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.85rem;display:flex;align-items:center;gap:6px}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:.65rem 1.5rem}
+@media(max-width:520px){.kv{grid-template-columns:1fr}}
+.kvr{display:flex;justify-content:space-between;gap:.75rem;padding:.4rem 0;border-bottom:1px dashed var(--b);font-size:.88rem}
+.kvr:last-child{border-bottom:none}
+.kvk{color:var(--t3);font-weight:500}
+.kvv{color:var(--t);font-weight:500;text-align:right}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:.7rem 1.2rem;border-radius:var(--rs);font-size:.88rem;font-weight:600;transition:all .15s;border:1px solid transparent;text-decoration:none}
+.btn.primary{background:var(--p);color:#fff}
+.btn.primary:hover{background:var(--pd)}
+.btn.secondary{background:var(--surf);border-color:var(--b);color:var(--t)}
+.btn.secondary:hover{border-color:var(--p);color:var(--p)}
+.btn.ghost{color:var(--p);background:transparent;padding:.5rem .8rem}
+.btn.ghost:hover{background:var(--pp)}
+.btn-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+
+/* Checklist (Zuchtprüfung) */
+.chk{display:flex;flex-direction:column;gap:.4rem}
+.chkr{display:flex;align-items:center;gap:.8rem;padding:.6rem .8rem;background:var(--surf2);border-radius:var(--rs);font-size:.88rem}
+.chki{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700;font-size:.85rem}
+.chki.ok{background:var(--ok);color:#fff}
+.chki.err{background:var(--err);color:#fff}
+.chki.warn{background:var(--warn);color:#fff}
+.chkl{flex:1;font-weight:500}
+.chks{font-size:.78rem;color:var(--t3);font-weight:500}
+
+/* Status totals (Zuchtfähig) */
+.zst{padding:1rem 1.25rem;border-radius:var(--rs);margin-top:1rem;font-weight:600;text-align:center;font-size:1rem}
+.zst.ok{background:linear-gradient(135deg,#DCFCE7,#BBF7D0);color:#14532D;border:1px solid #86EFAC}
+.zst.err{background:linear-gradient(135deg,#FEE2E2,#FECACA);color:#7F1D1D;border:1px solid #FCA5A5}
+
+/* Litter detail / puppy list */
+.pl{display:flex;flex-direction:column;gap:.55rem}
+.pli{display:flex;align-items:center;gap:.85rem;padding:.8rem 1rem;background:var(--surf);border:1px solid var(--b);border-radius:var(--rs);transition:all .15s;cursor:pointer}
+.pli:hover{border-color:var(--p);background:var(--pp)}
+.pliav{width:36px;height:36px;border-radius:50%;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border:1px solid var(--b)}
+.plii{flex:1}
+.plin{font-weight:600;font-size:.9rem}
+.plis{font-size:.75rem;color:var(--t3);margin-top:1px}
+
+/* Documents tab */
+.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+.dcd{padding:1.25rem;display:flex;flex-direction:column;gap:.5rem;cursor:pointer;transition:all .2s}
+.dcd:hover{border-color:var(--p);transform:translateY(-2px);box-shadow:var(--sh2)}
+.dch{display:flex;align-items:center;gap:.7rem}
+.dci{width:40px;height:40px;border-radius:var(--rs);background:var(--pp);color:var(--p);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.dct{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:500;letter-spacing:-.01em}
+.dcs{font-size:.78rem;color:var(--t3);margin-top:1px}
+.dcd p{font-size:.85rem;color:var(--t2);line-height:1.55;margin-top:.25rem}
+
+/* COI Rechner */
+.coir{background:var(--surf);border:1px solid var(--b);border-radius:var(--r);padding:1.5rem;box-shadow:var(--sh)}
+.coiform{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+@media(max-width:520px){.coiform{grid-template-columns:1fr}}
+.fld{display:flex;flex-direction:column;gap:6px}
+.fld label{font-size:.78rem;color:var(--t3);font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+.fld select,.fld input{padding:.7rem .9rem;border:1.5px solid var(--b);border-radius:var(--rs);background:var(--surf);font-size:.92rem;color:var(--t);outline:none;transition:border-color .15s}
+.fld select:focus,.fld input:focus{border-color:var(--p)}
+
+.coires{padding:1.5rem;background:linear-gradient(135deg,var(--pp),#EBF7EE);border-radius:var(--r);text-align:center;margin-bottom:1.25rem;border:1px solid #BBF7D0}
+.coibig{font-family:'Playfair Display',serif;font-size:3.2rem;font-weight:500;color:var(--p);line-height:1;letter-spacing:-.03em}
+.coilbl{font-size:.7rem;color:var(--t3);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin:6px 0 8px}
+.coist{display:inline-block;padding:5px 14px;border-radius:99px;font-size:.78rem;font-weight:600}
+.coist.ok{background:var(--p);color:#fff}
+.coist.warn{background:var(--warn);color:#fff}
+.coist.err{background:var(--err);color:#fff}
+
+.cmpr{display:flex;gap:1rem;align-items:center;padding:.75rem 0;font-size:.85rem}
+.cmpl{width:90px;color:var(--t3);font-weight:500}
+.cmpb{flex:1;height:8px;background:var(--surf2);border-radius:99px;overflow:hidden;border:1px solid var(--b)}
+.cmpf{height:100%;border-radius:99px;transition:width .8s ease}
+.cmpv{width:60px;text-align:right;font-weight:600;color:var(--t)}
+
+/* Pedigree SVG */
+.pedw{margin-top:1.5rem;background:var(--surf);border:1px solid var(--b);border-radius:var(--r);padding:1.25rem;overflow-x:auto}
+.pedt{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:500;margin-bottom:1rem;letter-spacing:-.01em}
+svg.ped{display:block;min-width:600px}
+.ped rect{fill:var(--surf2);stroke:var(--b);stroke-width:1}
+.ped rect.dam{fill:#FCE7F3;stroke:#F9A8D4}
+.ped rect.sire{fill:#DBEAFE;stroke:#93C5FD}
+.ped rect.common{fill:#FEF3C7;stroke:#FCD34D;stroke-width:2}
+.ped text{font-family:'DM Sans',sans-serif;font-size:11px;fill:var(--t)}
+.ped text.t{font-weight:600;font-size:11px}
+.ped text.s{fill:var(--t3);font-size:9px}
+.ped path{stroke:var(--bl);stroke-width:1;fill:none}
+
+/* Modal */
+.mo{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
+.mo.open{display:flex}
+.ml{background:var(--surf);border-radius:var(--r);max-width:720px;width:100%;position:relative;box-shadow:var(--sh3);animation:mi .25s ease;margin:auto 0}
+@keyframes mi{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+.mx{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:var(--surf2);color:var(--t2);display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .15s;z-index:10;border:1px solid var(--b)}
+.mx:hover{background:var(--err);color:#fff;border-color:var(--err)}
+.mh{padding:1.5rem 1.75rem 1rem;border-bottom:1px solid var(--b)}
+.mt{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:500;letter-spacing:-.01em}
+.mss{color:var(--t3);font-size:.85rem;margin-top:2px}
+.mb{padding:1.5rem 1.75rem 1.75rem}
+
+/* PDF preview */
+.pdfprev{background:var(--surf2);border:1px solid var(--b);border-radius:var(--rs);padding:2rem;font-family:'Playfair Display',serif;font-size:.85rem;line-height:1.7;color:var(--t);margin-bottom:1rem;max-height:480px;overflow-y:auto;font-feature-settings:"liga" on}
+.pdfprev h4{font-size:1.2rem;text-align:center;margin-bottom:1rem;letter-spacing:.5px}
+.pdfprev .par{font-weight:600;margin-top:1rem;letter-spacing:.3px}
+.pdfprev .ku{display:grid;grid-template-columns:auto 1fr;gap:.4rem 1.5rem;margin:.75rem 0;font-family:'DM Sans',sans-serif;font-size:.82rem}
+.pdfprev .ku b{color:var(--t3);font-weight:500}
+
+/* Weight chart */
+.chrt{margin-top:1rem;background:var(--surf);border:1px solid var(--b);border-radius:var(--rs);padding:1rem;height:240px;position:relative}
+
+/* Disclaimer block */
+.disc{background:#FEF3C7;border:1px solid #FDE68A;color:#78350F;border-radius:var(--rs);padding:.75rem 1rem;font-size:.78rem;line-height:1.55;margin-top:1rem;display:flex;gap:.6rem;align-items:flex-start}
+.disc::before{content:'⚠️';font-size:1rem;line-height:1.2;flex-shrink:0}
+
+/* Lang visibility */
+.de,.en,.ru{display:none}
+body.l-de .de{display:inline}body.l-en .en{display:inline}body.l-ru .ru{display:inline}
+body.l-de .de-block,.de-block{display:none}body.l-de .de-block{display:block}
+body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
+
+@media(max-width:520px){
+  .hd{padding:.7rem 1rem}
+  .lg{font-size:1.2rem}
+  .lg .sub{display:none}
+  .cnt{padding:1rem}
+  h1{font-size:1.5rem}
+  h2{font-size:1.2rem}
+}
+</style>
+</head>
+<body class="l-de" id="body">
+
+<header>
+<div class="hd">
+  <a href="index.html" class="lg" aria-label="WurfKit Home"><b>Wurf</b>Kit<span class="sub"><span class="de">Demo</span><span class="en">Demo</span><span class="ru">Демо</span></span></a>
+  <div class="hr">
+    <div class="ls" role="group" aria-label="Sprache">
+      <button class="lb active" id="btn-de" onclick="setLang('de')" aria-pressed="true">DE</button>
+      <button class="lb" id="btn-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      <button class="lb" id="btn-ru" onclick="setLang('ru')" aria-pressed="false">RU</button>
+    </div>
+    <a href="index.html" class="bk" aria-label="Zurück zur Hauptseite">←&nbsp;<span class="de">Hauptseite</span><span class="en">Home</span><span class="ru">На сайт</span></a>
+  </div>
+</div>
+</header>
+
+<div class="bn">
+  <span class="de"><b>Demo-Modus.</b> Alle Daten sind erfunden. Maria Schmidt &laquo;vom Waldberg&raquo; existiert nicht. Probiere alle Funktionen aus.</span>
+  <span class="en"><b>Demo mode.</b> All data is fictional. Maria Schmidt &laquo;vom Waldberg&raquo; does not exist. Try all features.</span>
+  <span class="ru"><b>Демо-режим.</b> Все данные вымышленные. Питомник Maria Schmidt &laquo;vom Waldberg&raquo; не существует. Попробуйте все функции.</span>
+</div>
+
+<main>
+  <!-- Tab 1: Übersicht -->
+  <section class="tabview active" id="tab-overview" data-tab="overview">
+    <div class="cnt">
+      <h1><span class="de">Übersicht</span><span class="en">Overview</span><span class="ru">Обзор</span></h1>
+      <p class="sub2">
+        <span class="de">Maria Schmidt · Zwinger «vom Waldberg» · München · VDH-Mitglied 12345</span>
+        <span class="en">Maria Schmidt · Kennel «vom Waldberg» · Munich · VDH member 12345</span>
+        <span class="ru">Maria Schmidt · Питомник «vom Waldberg» · München · VDH 12345</span>
+      </p>
+
+      <div class="st">
+        <div class="sti"><div class="stn" id="st-dogs">3</div><div class="stl"><span class="de">Hunde</span><span class="en">Dogs</span><span class="ru">Собаки</span></div></div>
+        <div class="sti"><div class="stn" id="st-litters">1</div><div class="stl"><span class="de">Würfe</span><span class="en">Litters</span><span class="ru">Помёты</span></div></div>
+        <div class="sti"><div class="stn" id="st-pups">5</div><div class="stl"><span class="de">Welpen</span><span class="en">Puppies</span><span class="ru">Щенки</span></div></div>
+        <div class="sti"><div class="stn" id="st-docs">3</div><div class="stl"><span class="de">Dokumente</span><span class="en">Documents</span><span class="ru">Документы</span></div></div>
+      </div>
+
+      <h2><span class="de">Meine Hunde</span><span class="en">My dogs</span><span class="ru">Мои собаки</span></h2>
+      <div class="dl" id="dog-list"></div>
+    </div>
+  </section>
+
+  <!-- Tab 1b: Dog detail -->
+  <section class="tabview" id="tab-dog" data-tab="dog">
+    <div class="cnt">
+      <button class="bk2" onclick="goTab('overview')">←&nbsp;<span class="de">Zurück</span><span class="en">Back</span><span class="ru">Назад</span></button>
+      <div id="dog-detail"></div>
+    </div>
+  </section>
+
+  <!-- Tab 2: Wurfverwaltung -->
+  <section class="tabview" id="tab-litters" data-tab="litters">
+    <div class="cnt">
+      <h1><span class="de">Wurfverwaltung</span><span class="en">Litter management</span><span class="ru">Помёты</span></h1>
+      <p class="sub2"><span class="de">Aktive Würfe und alle Welpen.</span><span class="en">Active litters and all puppies.</span><span class="ru">Активные помёты и все щенки.</span></p>
+      <div class="dl" id="litter-list"></div>
+    </div>
+  </section>
+
+  <!-- Tab 2b: Litter detail -->
+  <section class="tabview" id="tab-litter" data-tab="litter">
+    <div class="cnt">
+      <button class="bk2" onclick="goTab('litters')">←&nbsp;<span class="de">Zurück</span><span class="en">Back</span><span class="ru">Назад</span></button>
+      <div id="litter-detail"></div>
+    </div>
+  </section>
+
+  <!-- Tab 3: Dokumente -->
+  <section class="tabview" id="tab-docs" data-tab="docs">
+    <div class="cnt">
+      <h1><span class="de">Dokumente</span><span class="en">Documents</span><span class="ru">Документы</span></h1>
+      <p class="sub2"><span class="de">Automatisch generierte PDFs aus Profilen. Klick → echtes PDF herunterladen.</span><span class="en">Auto-generated PDFs from profiles. Click → download real PDF.</span><span class="ru">Авто-PDF из профилей. Клик → скачать настоящий PDF.</span></p>
+      <div class="dgrid" id="doc-list"></div>
+      <div class="disc">
+        <div>
+          <span class="de"><b>Hinweis:</b> Generierte Dokumente sind <i>Vorlagen</i> für die Demo. In der echten App wird der Kaufvertrag durch einen Fachanwalt geprüft. Keine Rechtsberatung.</span>
+          <span class="en"><b>Note:</b> Generated documents are <i>templates</i> for the demo. In the real app, the contract is reviewed by a German lawyer. Not legal advice.</span>
+          <span class="ru"><b>Примечание:</b> Сгенерированные документы — <i>шаблоны</i> для демо. В реальном приложении договор проверяется немецким юристом. Это не юридическая консультация.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tab 4: COI -->
+  <section class="tabview" id="tab-coi" data-tab="coi">
+    <div class="cnt">
+      <h1><span class="de">COI Rechner</span><span class="en">COI Calculator</span><span class="ru">COI Калькулятор</span></h1>
+      <p class="sub2"><span class="de">Inzuchtkoeffizient nach Wright. Gemeinsame Vorfahren werden farbig markiert.</span><span class="en">Wright inbreeding coefficient. Common ancestors highlighted.</span><span class="ru">Коэффициент инбридинга по Райту. Общие предки выделены цветом.</span></p>
+
+      <div class="coir">
+        <div class="coiform">
+          <div class="fld">
+            <label><span class="de">Deckrüde</span><span class="en">Sire</span><span class="ru">Кобель</span></label>
+            <select id="coi-sire" onchange="calcCOI()"></select>
+          </div>
+          <div class="fld">
+            <label><span class="de">Zuchthündin</span><span class="en">Dam</span><span class="ru">Сука</span></label>
+            <select id="coi-dam" onchange="calcCOI()"></select>
+          </div>
+        </div>
+
+        <div class="coires">
+          <div class="coibig" id="coi-value">3.2%</div>
+          <div class="coilbl">COI · <span class="de">Wright Formel</span><span class="en">Wright formula</span><span class="ru">формула Райта</span></div>
+          <div class="coist ok" id="coi-status"><span class="de">Niedrig — Verpaarung empfohlen</span><span class="en">Low — mating recommended</span><span class="ru">Низкий — вязка рекомендована</span></div>
+        </div>
+
+        <div>
+          <div class="cmpr"><div class="cmpl"><span class="de">Dieser COI</span><span class="en">This COI</span><span class="ru">Этот COI</span></div><div class="cmpb"><div class="cmpf" id="bar-this" style="background:var(--p);width:16%"></div></div><div class="cmpv" id="bar-this-v">3.2%</div></div>
+          <div class="cmpr"><div class="cmpl"><span class="de">Rasse Ø</span><span class="en">Breed Ø</span><span class="ru">Порода Ø</span></div><div class="cmpb"><div class="cmpf" style="background:var(--warn);width:36%"></div></div><div class="cmpv" id="bar-avg-v">7.1%</div></div>
+        </div>
+      </div>
+
+      <div class="pedw">
+        <div class="pedt"><span class="de">Stammbaum (3 Generationen)</span><span class="en">Pedigree (3 generations)</span><span class="ru">Родословная (3 поколения)</span></div>
+        <div id="ped-svg"></div>
+        <div style="display:flex;gap:1rem;font-size:.78rem;color:var(--t3);margin-top:.75rem;flex-wrap:wrap">
+          <span style="display:inline-flex;align-items:center;gap:6px"><span style="display:inline-block;width:14px;height:14px;background:#DBEAFE;border:1px solid #93C5FD;border-radius:3px"></span><span class="de">Vorfahren Rüde</span><span class="en">Sire ancestors</span><span class="ru">Предки кобеля</span></span>
+          <span style="display:inline-flex;align-items:center;gap:6px"><span style="display:inline-block;width:14px;height:14px;background:#FCE7F3;border:1px solid #F9A8D4;border-radius:3px"></span><span class="de">Vorfahren Hündin</span><span class="en">Dam ancestors</span><span class="ru">Предки суки</span></span>
+          <span style="display:inline-flex;align-items:center;gap:6px"><span style="display:inline-block;width:14px;height:14px;background:#FEF3C7;border:2px solid #FCD34D;border-radius:3px"></span><span class="de">Gemeinsamer Vorfahre</span><span class="en">Common ancestor</span><span class="ru">Общий предок</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="tabs" role="navigation" aria-label="Hauptnavigation">
+<div class="tbi">
+<button class="tb active" data-go="overview" onclick="goTab('overview')">
+<svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+<span><span class="de">Übersicht</span><span class="en">Overview</span><span class="ru">Обзор</span></span>
+</button>
+<button class="tb" data-go="litters" onclick="goTab('litters')">
+<svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+<span><span class="de">Würfe</span><span class="en">Litters</span><span class="ru">Помёты</span></span>
+</button>
+<button class="tb" data-go="docs" onclick="goTab('docs')">
+<svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+<span><span class="de">Dokumente</span><span class="en">Docs</span><span class="ru">Документы</span></span>
+</button>
+<button class="tb" data-go="coi" onclick="goTab('coi')">
+<svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+<span><span class="de">COI</span><span class="en">COI</span><span class="ru">COI</span></span>
+</button>
+</div>
+</nav>
+
+<!-- PDF preview modal -->
+<div class="mo" id="pdf-modal" role="dialog" aria-modal="true" aria-labelledby="pdf-mt" aria-hidden="true" onclick="if(event.target===this)closePDF()">
+  <div class="ml">
+    <button class="mx" onclick="closePDF()" aria-label="Close">✕</button>
+    <div class="mh"><div class="mt" id="pdf-mt">Vorschau</div><div class="mss" id="pdf-mss"></div></div>
+    <div class="mb">
+      <div class="pdfprev" id="pdf-prev"></div>
+      <div class="btn-row">
+        <button class="btn primary" id="pdf-dl" onclick="downloadPDF()">📄&nbsp;<span class="de">PDF herunterladen</span><span class="en">Download PDF</span><span class="ru">Скачать PDF</span></button>
+        <button class="btn secondary" onclick="closePDF()"><span class="de">Schließen</span><span class="en">Close</span><span class="ru">Закрыть</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Puppy detail modal -->
+<div class="mo" id="puppy-modal" role="dialog" aria-modal="true" aria-hidden="true" onclick="if(event.target===this)closePuppy()">
+  <div class="ml">
+    <button class="mx" onclick="closePuppy()" aria-label="Close">✕</button>
+    <div id="puppy-detail"></div>
+  </div>
+</div>
+
+<!-- Libraries: jsPDF for PDF generation, Chart.js for weight chart, qrcode for QR -->
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+
+<script src="demo/data.js"></script>
+<script src="demo/i18n.js"></script>
+<script src="demo/pedigree.js"></script>
+<script src="demo/coi.js"></script>
+<script src="demo/pdf-templates.js"></script>
+<script src="demo/app.js"></script>
+
+</body>
+</html>
