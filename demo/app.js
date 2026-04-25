@@ -422,10 +422,12 @@ function openPuppy(id) {
   m.classList.add('open');
   m.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
+  setTimeout(() => { const x = m.querySelector('.mx'); if (x) x.focus(); trapFocus(m); }, 50);
 }
 
 function closePuppy() {
   const m = document.getElementById('puppy-modal');
+  releaseTrap(m);
   m.classList.remove('open');
   m.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
@@ -504,11 +506,12 @@ function openPDFPreview(type, id) {
   m.classList.add('open');
   m.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
-  setTimeout(() => { const x = m.querySelector('.mx'); if (x) x.focus(); }, 50);
+  setTimeout(() => { const x = m.querySelector('.mx'); if (x) x.focus(); trapFocus(m); }, 50);
 }
 
 function closePDF() {
   const m = document.getElementById('pdf-modal');
+  releaseTrap(m);
   m.classList.remove('open');
   m.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
@@ -614,13 +617,35 @@ window.addEventListener('popstate', function(e) {
   renderAll();
 });
 
-// Close modals on Escape
+// Close modals on Escape — but NOT when user is typing in a field
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    closePDF();
-    closePuppy();
-  }
+  if (e.key !== 'Escape') return;
+  const ae = document.activeElement;
+  if (ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)) return;
+  closePDF();
+  closePuppy();
 });
+
+// Focus trap helper for modals
+function trapFocus(modalEl) {
+  if (!modalEl) return;
+  const focusable = modalEl.querySelectorAll('a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
+  if (!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  modalEl._trapHandler = function(e) {
+    if (e.key !== 'Tab') return;
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  };
+  modalEl.addEventListener('keydown', modalEl._trapHandler);
+}
+function releaseTrap(modalEl) {
+  if (modalEl && modalEl._trapHandler) {
+    modalEl.removeEventListener('keydown', modalEl._trapHandler);
+    delete modalEl._trapHandler;
+  }
+}
 
 // Wrap downloadPDF to fire confetti on success
 const _origDownload = window.downloadPDF;
