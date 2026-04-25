@@ -490,12 +490,7 @@ function openPDFPreview(type, id) {
   document.getElementById('pdf-mt').textContent = titles[type][STATE.lang] || titles[type].de;
   document.getElementById('pdf-mss').textContent = STATE.lang === 'de' ? 'Vorschau · Klick «PDF herunterladen» für echtes PDF' : STATE.lang === 'en' ? 'Preview · Click «Download PDF» for actual PDF' : 'Превью · Нажмите «Скачать PDF» для реального PDF';
 
-  let html = '';
-  if (type === 'kaufvertrag') html = buildKaufvertragHTML(PUPPIES.find(p => p.id === id));
-  else if (type === 'wurfmeldung') html = buildWurfmeldungHTML(LITTERS.find(l => l.id === id));
-  else if (type === 'welpenpaket') html = buildWelpenpaketHTML(PUPPIES.find(p => p.id === id));
-
-  document.getElementById('pdf-prev').innerHTML = html;
+  document.getElementById('pdf-prev').innerHTML = buildPreviewHTML(type, id);
   m.classList.add('open');
   m.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
