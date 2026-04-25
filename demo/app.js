@@ -3,6 +3,26 @@
 
 let weightChart = null;
 
+// On-demand loader for heavy CDN libs (PDF + Chart) — keeps initial page light
+const _scriptCache = {};
+function loadScript(src) {
+  if (_scriptCache[src]) return _scriptCache[src];
+  return _scriptCache[src] = new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.async = true;
+    s.onload = resolve;
+    s.onerror = () => { delete _scriptCache[src]; reject(new Error('Failed to load ' + src)); };
+    document.head.appendChild(s);
+  });
+}
+const PDFLibs = () => Promise.all([
+  loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js'),
+  loadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js'),
+  loadScript('https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js'),
+]);
+const ChartLib = () => loadScript('https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js');
+
 function setActiveTabUI(tab) {
   STATE.currentTab = tab;
   document.querySelectorAll('section.tabview').forEach(s => s.classList.remove('active'));
@@ -79,7 +99,7 @@ function avatar(item, size) {
   const fb = item.photoFallback || '🐕';
   const url = photoURL(item);
   if (url) {
-    return `<div class="${cls}"><img src="${url}" alt="${escapeHtml(item.name || '')}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><div class="dav-fb" style="display:none">${fb}</div></div>`;
+    return `<div class="${cls}"><img src="${url}" alt="${escapeHtml(item.name || '')}" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><div class="dav-fb" style="display:none">${fb}</div></div>`;
   }
   return `<div class="${cls}">${fb}</div>`;
 }
@@ -88,7 +108,7 @@ function avatarSmall(item) {
   const fb = item.photoFallback || '🐶';
   const url = photoURL(item);
   if (url) {
-    return `<div class="pliav"><img src="${url}" alt="" onerror="this.style.display='none';this.parentNode.innerHTML='${fb}'"/></div>`;
+    return `<div class="pliav"><img src="${url}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none';this.parentNode.innerHTML='${fb}'"/></div>`;
   }
   return `<div class="pliav">${fb}</div>`;
 }
@@ -97,7 +117,7 @@ function avatarLarge(item) {
   const fb = item.photoFallback || '🐕';
   const url = photoURL(item);
   if (url) {
-    return `<div class="dxa"><img src="${url}" alt="${escapeHtml(item.name || '')}" onerror="this.outerHTML='<div class=&quot;dxa&quot;>${fb}</div>'"/></div>`;
+    return `<div class="dxa"><img src="${url}" alt="${escapeHtml(item.name || '')}" loading="lazy" decoding="async" onerror="this.outerHTML='<div class=&quot;dxa&quot;>${fb}</div>'"/></div>`;
   }
   return `<div class="dxa">${fb}</div>`;
 }
@@ -271,7 +291,7 @@ function renderLitters() {
   list.innerHTML = LITTERS.map(l => {
     const dam = DOGS.find(d => d.id === l.damId);
     const sireName = l.externalSire ? l.externalSire.name : (DOGS.find(d => d.id === l.sireId) || {}).fullName || '—';
-    const damPhoto = dam.photo && dam.photo.startsWith('demo/') ? `<img src="${dam.photo}?${PHOTO_V}" alt="${escapeHtml(dam.name)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>` : '🐾';
+    const damPhoto = dam.photo && dam.photo.startsWith('demo/') ? `<img src="${dam.photo}?${PHOTO_V}" alt="${escapeHtml(dam.name)}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>` : '🐾';
     return `
       <div class="card clk li" onclick="openLitterDetail('${l.id}')">
         <div class="dav">${damPhoto}</div>
@@ -349,9 +369,11 @@ function renderLitterDetail() {
   setTimeout(() => initWeightChart(puppies), 0);
 }
 
-function initWeightChart(puppies) {
+async function initWeightChart(puppies) {
   const ctx = document.getElementById('weight-chart');
-  if (!ctx || typeof Chart === 'undefined') return;
+  if (!ctx) return;
+  try { await ChartLib(); } catch (e) { console.warn('Chart.js load failed:', e); return; }
+  if (typeof Chart === 'undefined') return;
   if (weightChart) weightChart.destroy();
   const colors = ['#2D6A4F', '#52B788', '#74C69D', '#95D5B2', '#B7E4C7'];
   weightChart = new Chart(ctx, {
@@ -491,7 +513,7 @@ function docAction(i) {
 }
 
 // ===== PDF preview =====
-function openPDFPreview(type, id) {
+async function openPDFPreview(type, id) {
   STATE.currentPDF = { type, id };
   const m = document.getElementById('pdf-modal');
   const titles = {
@@ -502,11 +524,15 @@ function openPDFPreview(type, id) {
   document.getElementById('pdf-mt').textContent = titles[type][STATE.lang] || titles[type].de;
   document.getElementById('pdf-mss').textContent = STATE.lang === 'de' ? 'Vorschau · Klick «PDF herunterladen» für echtes PDF' : STATE.lang === 'en' ? 'Preview · Click «Download PDF» for actual PDF' : 'Превью · Нажмите «Скачать PDF» для реального PDF';
 
-  document.getElementById('pdf-prev').innerHTML = buildPreviewHTML(type, id);
+  const loadingTxt = STATE.lang === 'de' ? 'Lade Vorschau…' : STATE.lang === 'en' ? 'Loading preview…' : 'Загрузка превью…';
+  document.getElementById('pdf-prev').innerHTML = '<div style="padding:80px 40px;text-align:center;color:#888;font-size:14px">' + loadingTxt + '</div>';
   m.classList.add('open');
   m.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
   setTimeout(() => { const x = m.querySelector('.mx'); if (x) x.focus(); trapFocus(m); }, 50);
+
+  try { await PDFLibs(); } catch (e) { console.warn('PDF libs load failed:', e); }
+  document.getElementById('pdf-prev').innerHTML = buildPreviewHTML(type, id);
 }
 
 function closePDF() {
@@ -647,10 +673,11 @@ function releaseTrap(modalEl) {
   }
 }
 
-// Wrap downloadPDF to fire confetti on success
+// Wrap downloadPDF to ensure PDF libs are loaded + fire confetti on success
 const _origDownload = window.downloadPDF;
 window.downloadPDF = async function() {
   if (typeof _origDownload === 'function') {
+    await PDFLibs();
     await _origDownload();
     confetti();
   }
