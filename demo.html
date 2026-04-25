@@ -61,7 +61,80 @@ nav.tabs{position:fixed;bottom:0;left:0;right:0;background:var(--surf);border-to
 /* Sections */
 section.tabview{display:none}
 section.tabview.active{display:block;animation:fi .25s ease}
-@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* Stagger animation for lists */
+.dl > .card,.dl > .li,.pl > .pli{animation:slideUp .4s cubic-bezier(.34,1.56,.64,1) backwards}
+.dl > .card:nth-child(1),.dl > .li:nth-child(1),.pl > .pli:nth-child(1){animation-delay:.05s}
+.dl > .card:nth-child(2),.dl > .li:nth-child(2),.pl > .pli:nth-child(2){animation-delay:.1s}
+.dl > .card:nth-child(3),.dl > .li:nth-child(3),.pl > .pli:nth-child(3){animation-delay:.15s}
+.dl > .card:nth-child(4),.dl > .li:nth-child(4),.pl > .pli:nth-child(4){animation-delay:.2s}
+.dl > .card:nth-child(5),.dl > .li:nth-child(5),.pl > .pli:nth-child(5){animation-delay:.25s}
+@keyframes slideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* Stat counter pulse */
+.sti{position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s}
+.sti::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(82,183,141,.06),transparent);opacity:0;transition:opacity .3s}
+.sti:hover{transform:translateY(-3px);box-shadow:var(--sh2)}
+.sti:hover::before{opacity:1}
+.stn{transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.sti:hover .stn{transform:scale(1.1)}
+
+/* Card hover glow */
+.card{position:relative}
+.card.clk::after{content:'';position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 0 0 rgba(82,183,141,.4);transition:box-shadow .3s;pointer-events:none}
+.card.clk:hover::after{box-shadow:0 0 0 4px rgba(82,183,141,.12)}
+
+/* Status badge pulse */
+.bg.warn,.bg.info{animation:statusPulse 2.5s ease-in-out infinite}
+@keyframes statusPulse{0%,100%{box-shadow:0 0 0 0 currentColor}50%{box-shadow:0 0 0 4px transparent}}
+
+/* Smooth scroll progress */
+html{scroll-behavior:smooth}
+
+/* COI bar glow */
+.cmpf{position:relative;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3);transition:width .9s cubic-bezier(.34,1.56,.64,1) .15s}
+.cmpf::after{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.4),transparent);border-radius:99px 99px 0 0}
+.coibig{display:inline-block;animation:coiPop .55s cubic-bezier(.34,1.56,.64,1)}
+@keyframes coiPop{0%{transform:scale(.7);opacity:0}50%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+
+/* Floating action area for demo banner */
+.bn{animation:bannerSlide .5s ease}
+@keyframes bannerSlide{from{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:none}}
+
+/* Tab nav active indicator */
+nav.tabs .tb{position:relative}
+nav.tabs .tb::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%) scaleX(0);width:32px;height:3px;background:var(--p);border-radius:0 0 4px 4px;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+nav.tabs .tb.active::before{transform:translateX(-50%) scaleX(1)}
+
+/* Modal entrance */
+.mo.open{animation:moBg .25s ease}
+@keyframes moBg{from{background:rgba(0,0,0,0);backdrop-filter:blur(0)}to{background:rgba(0,0,0,.45);backdrop-filter:blur(4px)}}
+
+/* Button micro-interactions */
+.btn{position:relative;overflow:hidden}
+.btn::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(255,255,255,.4);border-radius:50%;transform:translate(-50%,-50%);transition:width .5s,height .5s}
+.btn:active::before{width:300px;height:300px}
+.btn.primary{box-shadow:0 4px 12px rgba(45,106,79,.25)}
+.btn.primary:hover{box-shadow:0 8px 22px rgba(45,106,79,.35);transform:translateY(-1px)}
+
+/* Logo subtle rotation on hover */
+.lg{transition:transform .3s}
+.lg:hover{transform:scale(1.02)}
+
+/* Lang switcher transition */
+.lb{transition:all .25s}
+.lb.active{transform:scale(1.05)}
+
+/* Pedigree cell entrance */
+.ped rect,.ped path,.ped text{animation:fadeIn .5s ease backwards}
+.ped rect{animation-delay:.1s}
+.ped path{animation-delay:.2s}
+.ped text{animation-delay:.3s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Confetti for PDF download */
+.confetti{position:fixed;top:50%;left:50%;width:8px;height:8px;border-radius:50%;pointer-events:none;z-index:1000}
 
 h1{font-family:'Playfair Display',serif;font-size:1.85rem;font-weight:500;letter-spacing:-.02em;margin-bottom:.35rem;color:var(--t)}
 h2{font-family:'Playfair Display',serif;font-size:1.45rem;font-weight:500;letter-spacing:-.01em;margin:1.5rem 0 .5rem}
@@ -82,7 +155,10 @@ h3{font-size:1rem;font-weight:600;margin-bottom:.5rem}
 
 .dl{display:flex;flex-direction:column;gap:.65rem}
 .dc{display:flex;align-items:center;gap:1rem;padding:1rem 1.1rem}
-.dav{width:56px;height:56px;border-radius:50%;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;border:1px solid var(--b)}
+.dav{width:60px;height:60px;border-radius:50%;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;border:2px solid var(--surf);box-shadow:0 4px 12px rgba(0,0,0,.08);overflow:hidden;position:relative;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+.dav img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+.card.clk:hover .dav{transform:scale(1.08) rotate(-2deg);box-shadow:0 8px 20px rgba(45,106,79,.18)}
+.dav-fb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:30px;background:var(--surf2)}
 .di{flex:1;min-width:0}
 .dnm{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:500;color:var(--t);margin-bottom:1px;letter-spacing:-.01em}
 .dmt{font-size:.78rem;color:var(--t3);font-weight:500}
@@ -107,7 +183,9 @@ h3{font-size:1rem;font-weight:600;margin-bottom:.5rem}
 
 .ddh{background:var(--surf);border:1px solid var(--b);border-radius:var(--r);padding:1.5rem;margin-bottom:1.25rem;box-shadow:var(--sh);display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:center}
 @media(max-width:520px){.ddh{grid-template-columns:1fr;text-align:center}}
-.dxa{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--pp),var(--pl));display:flex;align-items:center;justify-content:center;font-size:60px;flex-shrink:0;justify-self:center;border:3px solid var(--surf);box-shadow:var(--sh2)}
+.dxa{width:140px;height:140px;border-radius:50%;background:linear-gradient(135deg,var(--pp),var(--pl));display:flex;align-items:center;justify-content:center;font-size:64px;flex-shrink:0;justify-self:center;border:4px solid var(--surf);box-shadow:0 14px 40px rgba(45,106,79,.22),0 4px 12px rgba(0,0,0,.08);overflow:hidden;position:relative;animation:dxaIn .65s cubic-bezier(.34,1.56,.64,1)}
+.dxa img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+@keyframes dxaIn{0%{transform:scale(.6) rotate(-12deg);opacity:0}60%{transform:scale(1.05) rotate(2deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
 .dxn{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:500;letter-spacing:-.02em;line-height:1.1;margin-bottom:4px}
 .dxs{font-size:.92rem;color:var(--t2);font-weight:500;margin-bottom:.75rem}
 .dxbg{display:flex;flex-wrap:wrap;gap:6px}
@@ -150,7 +228,9 @@ h3{font-size:1rem;font-weight:600;margin-bottom:.5rem}
 .pl{display:flex;flex-direction:column;gap:.55rem}
 .pli{display:flex;align-items:center;gap:.85rem;padding:.8rem 1rem;background:var(--surf);border:1px solid var(--b);border-radius:var(--rs);transition:all .15s;cursor:pointer}
 .pli:hover{border-color:var(--p);background:var(--pp)}
-.pliav{width:36px;height:36px;border-radius:50%;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border:1px solid var(--b)}
+.pliav{width:40px;height:40px;border-radius:50%;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border:2px solid var(--surf);overflow:hidden;position:relative;box-shadow:0 2px 6px rgba(0,0,0,.06);transition:transform .25s}
+.pliav img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+.pli:hover .pliav{transform:scale(1.1)}
 .plii{flex:1}
 .plin{font-weight:600;font-size:.9rem}
 .plis{font-size:.75rem;color:var(--t3);margin-top:1px}
@@ -416,7 +496,8 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
   </div>
 </div>
 
-<!-- Libraries: jsPDF for PDF generation, Chart.js for weight chart, qrcode for QR -->
+<!-- Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>

@@ -1,9 +1,9 @@
 // WurfKit Demo App — main controller
-// Tab navigation, rendering, interactions
+// Tab navigation, rendering, interactions, browser history
 
 let weightChart = null;
 
-function goTab(tab, opts) {
+function setActiveTabUI(tab) {
   STATE.currentTab = tab;
   document.querySelectorAll('section.tabview').forEach(s => s.classList.remove('active'));
   const target = document.getElementById('tab-' + tab);
@@ -12,8 +12,28 @@ function goTab(tab, opts) {
     const matches = b.dataset.go === tab || (tab === 'dog' && b.dataset.go === 'overview') || (tab === 'litter' && b.dataset.go === 'litters');
     b.classList.toggle('active', matches);
   });
+}
+
+function buildHashURL() {
+  let url = '#/' + STATE.currentTab;
+  if (STATE.currentTab === 'dog' && STATE.currentDog) url += '/' + STATE.currentDog;
+  if (STATE.currentTab === 'litter' && STATE.currentLitter) url += '/' + STATE.currentLitter;
+  return url;
+}
+
+function goTab(tab, opts) {
+  opts = opts || {};
+  setActiveTabUI(tab);
+  if (!opts.fromPopState) {
+    const url = buildHashURL();
+    if (location.hash !== url.slice(1)) {
+      try { history.pushState({ tab, dog: STATE.currentDog, litter: STATE.currentLitter }, '', url); } catch(e){}
+    }
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
   renderAll();
+  // Re-run stat counter animation when overview shows
+  if (tab === 'overview') animateStats();
 }
 
 function openDogDetail(id) {
@@ -24,6 +44,98 @@ function openDogDetail(id) {
 function openLitterDetail(id) {
   STATE.currentLitter = id;
   goTab('litter');
+}
+
+// Parse URL hash and restore state
+function restoreFromHash() {
+  const hash = (location.hash || '').slice(1).replace(/^\//, '');
+  if (!hash) { setActiveTabUI('overview'); return; }
+  const parts = hash.split('/');
+  const tab = parts[0];
+  const id = parts[1];
+  if (['overview','litters','docs','coi'].includes(tab)) {
+    setActiveTabUI(tab);
+  } else if (tab === 'dog' && id && DOGS.find(d => d.id === id)) {
+    STATE.currentDog = id;
+    setActiveTabUI('dog');
+  } else if (tab === 'litter' && id && LITTERS.find(l => l.id === id)) {
+    STATE.currentLitter = id;
+    setActiveTabUI('litter');
+  } else {
+    setActiveTabUI('overview');
+  }
+}
+
+// Helper: render avatar with photo + fallback emoji
+function avatar(item, size) {
+  const cls = 'dav';
+  const fb = item.photoFallback || '🐕';
+  if (item.photo && item.photo.startsWith('demo/')) {
+    return `<div class="${cls}"><img src="${item.photo}" alt="${escapeHtml(item.name || '')}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><div class="dav-fb" style="display:none">${fb}</div></div>`;
+  }
+  return `<div class="${cls}">${fb}</div>`;
+}
+
+function avatarSmall(item) {
+  const fb = item.photoFallback || '🐶';
+  if (item.photo && item.photo.startsWith('demo/')) {
+    return `<div class="pliav"><img src="${item.photo}" alt="" onerror="this.style.display='none';this.parentNode.innerHTML='${fb}'"/></div>`;
+  }
+  return `<div class="pliav">${fb}</div>`;
+}
+
+function avatarLarge(item) {
+  const fb = item.photoFallback || '🐕';
+  if (item.photo && item.photo.startsWith('demo/')) {
+    return `<div class="dxa"><img src="${item.photo}" alt="${escapeHtml(item.name || '')}" onerror="this.outerHTML='<div class=&quot;dxa&quot;>${fb}</div>'"/></div>`;
+  }
+  return `<div class="dxa">${fb}</div>`;
+}
+
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// Animate stat counter from 0 to value
+function animateStats() {
+  document.querySelectorAll('.stn').forEach(el => {
+    const target = parseInt(el.dataset.target || el.textContent, 10);
+    if (isNaN(target)) return;
+    el.dataset.target = target;
+    let current = 0;
+    const start = performance.now();
+    const dur = 800;
+    function step(now) {
+      const p = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(eased * target);
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+// Confetti effect
+function confetti() {
+  const colors = ['#2D6A4F', '#52B788', '#74C69D', '#FCD34D', '#F59E0B'];
+  for (let i = 0; i < 30; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.background = colors[i % colors.length];
+    c.style.left = (50 + (Math.random() - 0.5) * 20) + '%';
+    c.style.top = '50%';
+    document.body.appendChild(c);
+    const angle = (Math.random() * Math.PI * 2);
+    const vel = 200 + Math.random() * 200;
+    const dx = Math.cos(angle) * vel;
+    const dy = Math.sin(angle) * vel - 200;
+    c.animate([
+      { transform: 'translate(0,0) scale(1)', opacity: 1 },
+      { transform: `translate(${dx}px,${dy + 400}px) scale(.5) rotate(${Math.random()*720}deg)`, opacity: 0 }
+    ], { duration: 1400 + Math.random() * 500, easing: 'cubic-bezier(.2,.6,.4,1)' }).onfinish = () => c.remove();
+  }
 }
 
 function statusBadge(p) {
@@ -45,7 +157,7 @@ function renderOverview() {
     const badge = `<span class="bg ${d.statusBadge.type}">${d.statusBadge[STATE.lang] || d.statusBadge.de}</span>`;
     return `
       <div class="card clk dc" onclick="openDogDetail('${d.id}')">
-        <div class="dav">${d.photo}</div>
+        ${avatar(d)}
         <div class="di">
           <div class="dnm">${d.fullName}</div>
           <div class="dmt"><span>${d.breed}</span> · <span>${formatAge(d.birth)}</span> · <span>${t('sex.' + d.sex)}</span></div>
@@ -103,7 +215,7 @@ function renderDogDetail() {
 
   c.innerHTML = `
     <div class="ddh">
-      <div class="dxa">${dog.photo}</div>
+      ${avatarLarge(dog)}
       <div>
         <div class="dxn">${dog.fullName}</div>
         <div class="dxs">${dog.breed} · ${t('sex.' + dog.sex)} · ${formatAge(dog.birth)}</div>
@@ -149,9 +261,10 @@ function renderLitters() {
   list.innerHTML = LITTERS.map(l => {
     const dam = DOGS.find(d => d.id === l.damId);
     const sireName = l.externalSire ? l.externalSire.name : (DOGS.find(d => d.id === l.sireId) || {}).fullName || '—';
+    const damPhoto = dam.photo && dam.photo.startsWith('demo/') ? `<img src="${dam.photo}" alt="${escapeHtml(dam.name)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>` : '🐾';
     return `
       <div class="card clk li" onclick="openLitterDetail('${l.id}')">
-        <div class="dav">🐾</div>
+        <div class="dav">${damPhoto}</div>
         <div>
           <div class="lim">${l.name}</div>
           <div class="lis">${dam.fullName} × ${sireName}</div>
@@ -200,7 +313,7 @@ function renderLitterDetail() {
       <div class="pl">
         ${puppies.map(p => `
           <div class="pli" onclick="openPuppy('${p.id}')">
-            <div class="pliav">${p.photo}</div>
+            ${avatarSmall(p)}
             <div class="plii">
               <div class="plin">${p.name} <span style="color:var(--t3);font-weight:400">— ${p.fullName}</span></div>
               <div class="plis">${t('sex.' + p.sex)} · ${p.color} · ${(p.weights[p.weights.length-1].g/1000).toFixed(1)} kg</div>
@@ -478,6 +591,21 @@ function renderAll() {
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', function() {
   setLang(STATE.lang);
+  restoreFromHash();
+  renderAll();
+  setTimeout(animateStats, 100);
+});
+
+// Browser back/forward support
+window.addEventListener('popstate', function(e) {
+  const s = e.state;
+  if (s) {
+    STATE.currentDog = s.dog;
+    STATE.currentLitter = s.litter;
+    setActiveTabUI(s.tab);
+  } else {
+    restoreFromHash();
+  }
   renderAll();
 });
 
@@ -488,3 +616,12 @@ document.addEventListener('keydown', function(e) {
     closePuppy();
   }
 });
+
+// Wrap downloadPDF to fire confetti on success
+const _origDownload = window.downloadPDF;
+window.downloadPDF = async function() {
+  if (typeof _origDownload === 'function') {
+    await _origDownload();
+    confetti();
+  }
+};

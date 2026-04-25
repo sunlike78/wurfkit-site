@@ -80,7 +80,8 @@ const DOGS = [
       ggs3: 'luna_ggs3', ggd3: 'luna_ggd3',
       ggs4: 'luna_ggs4', ggd4: 'luna_ggd4'
     },
-    photo: '🐕',
+    photo: 'demo/img/luna.jpg',
+    photoFallback: '🐕',
     statusBadge: { type: 'warn', de: 'Läufig', en: 'Heat', ru: 'Течка' },
     notes: 'Sanfter Charakter, sehr kinderfreundlich. Wurfplanung mit Apollo vom Sonnenhof Q1/2026.'
   },
@@ -101,7 +102,8 @@ const DOGS = [
     ztpDate: '2023-04-22',
     eyes: { result: 'frei', date: '2024-03-12' },
     pedigree: null,
-    photo: '🐩',
+    photo: 'demo/img/bella.jpg',
+    photoFallback: '🐩',
     statusBadge: { type: 'ok', de: 'Zuchtfähig', en: 'Breeding-eligible', ru: 'Допущена' },
     notes: 'Erfahrene Zuchthündin, 2 Würfe. Aktuell pausiert.'
   },
@@ -123,7 +125,8 @@ const DOGS = [
     eyes: { result: 'frei', date: '2024-09-02' },
     workTitles: ['IGP3', 'BH'],
     pedigree: null,
-    photo: '🦮',
+    photo: 'demo/img/rex.jpg',
+    photoFallback: '🦮',
     statusBadge: { type: 'info', de: 'Deckrüde', en: 'Stud', ru: 'Кобель-производитель' },
     notes: 'Aktiver Deckrüde. Öffentliches Profil: wurfkit.de/rex-waldberg'
   }
@@ -197,7 +200,8 @@ const PUPPIES = [
     },
     salePrice: 1800,
     saleDate: '2026-03-10',
-    photo: '🐶'
+    photo: 'demo/img/aaron.jpg',
+    photoFallback: '🐶'
   },
   {
     id: 'ben',
@@ -223,7 +227,8 @@ const PUPPIES = [
     },
     salePrice: 1800,
     saleDate: null,
-    photo: '🐶'
+    photo: 'demo/img/ben.jpg',
+    photoFallback: '🐶'
   },
   {
     id: 'caro',
@@ -243,7 +248,8 @@ const PUPPIES = [
     buyer: null,
     salePrice: 1800,
     saleDate: null,
-    photo: '🐶'
+    photo: 'demo/img/caro.jpg',
+    photoFallback: '🐶'
   },
   {
     id: 'diego',
@@ -269,7 +275,8 @@ const PUPPIES = [
     },
     salePrice: 1800,
     saleDate: '2026-03-12',
-    photo: '🐶'
+    photo: 'demo/img/diego.jpg',
+    photoFallback: '🐶'
   },
   {
     id: 'elsa',
@@ -289,7 +296,8 @@ const PUPPIES = [
     buyer: null,
     salePrice: null,
     saleDate: null,
-    photo: '🐶'
+    photo: 'demo/img/elsa.jpg',
+    photoFallback: '🐶'
   }
 ];
 
