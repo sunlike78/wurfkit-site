@@ -34,13 +34,15 @@
 <meta name="theme-color" content="#09090B">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"></noscript>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"WurfKit","operatingSystem":"Web Browser","applicationCategory":"BusinessApplication","browserRequirements":"Requires JavaScript. Requires HTML5.","description":"Online-Plattform für VDH-Hundezüchter zur Verwaltung von Hunden, Würfen und automatischer Generierung von Kaufvertrag, Wurfmeldung und Welpen-Paket. Direkt im Browser, ohne Installation.","url":"https://wurfkit.de/","inLanguage":["de","en","ru"],"offers":{"@type":"Offer","priceCurrency":"EUR","price":"0","description":"Kostenlose Vormerkung auf der Warteliste"},"author":{"@type":"Organization","name":"WurfKit","email":"hello@wurfkit.de","url":"https://wurfkit.de/"}}
 </script>
 <style>
 /* === DESIGN TOKENS === */
-:root{--a:#34D399;--ad:#059669;--bg:#09090B;--s:#131316;--s2:#1C1C21;--b:#27272A;--bl:#3F3F46;--t:#FAFAFA;--t2:#A1A1AA;--t3:#71717A;--g:rgba(255,255,255,0.04);--g2:rgba(255,255,255,0.07);--gw:rgba(52,211,153,0.15);--gw2:rgba(52,211,153,0.08);--r:16px;--rs:10px;--rx:6px}
+:root{--a:#34D399;--ad:#059669;--bg:#09090B;--s:#131316;--s2:#1C1C21;--b:#27272A;--bl:#3F3F46;--t:#FAFAFA;--t2:#B4B4BB;--t3:#8E8E96;--g:rgba(255,255,255,0.04);--g2:rgba(255,255,255,0.07);--gw:rgba(52,211,153,0.15);--gw2:rgba(52,211,153,0.08);--r:16px;--rs:10px;--rx:6px}
 /* === BASE === */
 *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
 html,body{overflow-x:hidden;max-width:100vw}
@@ -274,7 +276,8 @@ section,.hero,.ps,.pas,.ks,.ds,.fs,.cs,.ct{overflow-x:hidden;max-width:100vw}
 .ctn{font-size:.75rem;color:var(--t3);margin-top:1rem}
 /* === COMPONENT: FOOTER === */
 footer{padding:2rem 1.5rem;text-align:center;border-top:1px solid var(--b);font-size:.75rem;color:var(--t3)}
-footer a{color:var(--a);text-decoration:none}
+footer a{color:var(--a);text-decoration:underline;text-decoration-color:rgba(52,211,153,.4);text-underline-offset:2px}
+footer a:hover{text-decoration-color:var(--a)}
 /* === COMPONENT: MODAL === */
 .mo{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.7);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:1.5rem}
 .mo.open{display:flex}
@@ -302,6 +305,7 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 <body id="body" class="l-de">
 <nav role="navigation" aria-label="Hauptnavigation"><div class="logo"><b>Wurf</b>Kit</div><div class="nr"><a href="demo.html" style="color:var(--a);font-size:.78rem;font-weight:600;padding:.4rem .9rem;border:1px solid rgba(52,211,153,.3);border-radius:99px;text-decoration:none;transition:all .2s;background:rgba(52,211,153,.06)" onmouseover="this.style.background='rgba(52,211,153,0.14)'" onmouseout="this.style.background='rgba(52,211,153,0.06)'">▶&nbsp;<span class="di">Live-Demo</span><span class="ei">Live Demo</span><span class="ri">Демо</span></a><div class="ls" role="group" aria-label="Sprache wählen"><button class="lb active" id="btn-de" onclick="setLang('de')" aria-pressed="true" aria-label="Deutsch">DE</button><button class="lb" id="btn-en" onclick="setLang('en')" aria-pressed="false" aria-label="English">EN</button><button class="lb" id="btn-ru" onclick="setLang('ru')" aria-pressed="false" aria-label="Русский">RU</button></div><a href="#signup" class="nc"><span class="di">Zugang sichern</span><span class="ei">Get access</span><span class="ri">Получить доступ</span></a></div></nav>
 
+<main id="main">
 <section class="hero"><div class="hc">
 <div class="hb"><span class="di">Live-Demo verfügbar · Jetzt ausprobieren</span><span class="ei">Live demo available · Try it now</span><span class="ri">Демо доступно · Попробуйте сейчас</span></div>
 <h1 class="de">Welpen-Unterlagen<br>in <em>Minuten</em>, nicht Stunden.</h1><h1 class="en">Puppy paperwork<br>in <em>minutes</em>, not hours.</h1><h1 class="ru">Документы щенка<br>за <em>минуты</em>, а не часы.</h1>
@@ -407,6 +411,7 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 <p class="ctn de">Kein Spam · Frühbucher-Rabatt</p><p class="ctn en">No spam · Early bird discount</p><p class="ctn ru">Без спама · Скидка при запуске</p>
 </section>
 
+</main>
 <footer><p>© 2026 WurfKit · <a href="mailto:hello@wurfkit.de">hello@wurfkit.de</a> · <a href="#" onclick="openModal('impressum');return false">Impressum</a> · <a href="#" onclick="openModal('datenschutz');return false">Datenschutz</a></p></footer>
 
 <div class="mo" id="mo" onclick="if(event.target===this)cm()" role="dialog" aria-modal="true" aria-labelledby="mhd" aria-hidden="true"><div class="ml" id="ml"><button class="mx" onclick="cm()" aria-label="Schließen">✕</button><div class="mh" id="mhd"></div><div class="mbd" id="mbd"></div></div></div>

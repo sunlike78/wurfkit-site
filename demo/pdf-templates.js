@@ -65,9 +65,13 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-// === Kaufvertrag HTML page (1-3 pages depending on length) ===
-function buildKaufvertragHTML(puppy, opts) {
-  opts = opts || {};
+// Visual separator between pages inside the preview modal (NOT used for actual PDF).
+// PDF generation uses the array boundaries directly — see renderPageToCanvas + downloadPDF.
+const PAGE_BREAK_HTML = '<div style="margin:18px -70px;padding:6px 70px;background:#F5F5F0;border-top:1px dashed #D4D4C8;border-bottom:1px dashed #D4D4C8;font-size:9px;color:#A1A1AA;letter-spacing:1.5px;text-transform:uppercase;text-align:center">— Seitenumbruch —</div>';
+
+// === Kaufvertrag — manual 3-page layout (§1 / §2-§5 / §6-§10+Hinweis+Sig) ===
+// Returns an array of HTML strings, one per A4 page. Each fits in one canvas without slicing.
+function buildKaufvertragPages(puppy) {
   const litter = LITTERS.find(l => l.id === puppy.litterId);
   const dam = DOGS.find(d => d.id === litter.damId);
   const sire = litter.externalSire;
@@ -76,7 +80,8 @@ function buildKaufvertragHTML(puppy, opts) {
   const priceWords = numberToGermanWords(Math.floor(price));
   const saleDate = puppy.saleDate || '2026-03-15';
 
-  return `
+  // === Page 1: Title + §1 (Verkäufer / Käufer / Welpe) ===
+  const page1 = `
     <h1>WELPEN-KAUFVERTRAG</h1>
     <div class="sub">Verbraucher zu Verbraucher · Stand: 25.04.2026 · Vorlage v1.0</div>
 
@@ -111,7 +116,10 @@ function buildKaufvertragHTML(puppy, opts) {
       <b>Vater</b><span>${escapeHtml(sire.name)} (${escapeHtml(sire.zbNr)})</span>
       <b>Mutter</b><span>${escapeHtml(dam.fullName)} (${escapeHtml(dam.zbNr)})</span>
     </div>
+  `;
 
+  // === Page 2: §2-§5 (Beschaffenheit, Kaufpreis, Übergabe, Gesundheit) ===
+  const page2 = `
     <div class="par">§ 2 Beschaffenheit / Verkaufsart</div>
     <p>Der Hund wird als <b>Liebhaber- und Familienhund</b> verkauft. Er stammt aus eigener Zucht des Verkäufers und wurde nach den Bestimmungen der Zuchtordnung des ${escapeHtml(BREEDER.zuchtverein)} aufgezogen. Die Eintragungen in der Ahnentafel und im EU-Heimtierausweis entsprechen der Wahrheit. Mit der Wurfabnahme durch den Zuchtwart wurden alle erforderlichen Identitäts- und Gesundheitsprüfungen durchgeführt.</p>
 
@@ -131,8 +139,11 @@ function buildKaufvertragHTML(puppy, opts) {
     <p>Der Hund ist nach aktuellem Kenntnisstand des Verkäufers gesund und in einwandfreiem Zustand. Bis zum heutigen Tag wurden folgende Maßnahmen durchgeführt: Grundimmunisierung gemäß StIKo Vet 2025 (SHP + Leptospirose mit 8 Wochen, SHP + Lepto + Tollwut mit 12 Wochen), zweimalige Entwurmung, tierärztliche Allgemeinuntersuchung mit Mikrochip-Implantation. Sämtliche Daten sind im EU-Heimtierausweis dokumentiert.</p>
     <p><b>Bekannte Mängel/Erkrankungen:</b> <span class="check"></span>keine bekannt.</p>
     <p>Der Käufer bestätigt, den Hund ausführlich besichtigt zu haben. Der Hund war zum Zeitpunkt der Übergabe gesund und wies keine Krankheits- oder Mangelerscheinungen auf.</p>
-    <p>Hinweis nach § 90a BGB: Tiere sind keine Sachen. Es handelt sich beim verkauften Hund um ein Lebewesen, das in der Wachstumsphase Veränderungen unterworfen ist. Der Verkäufer kann keine Gewähr für künftige Größe, Gebäude, Charakter, innere Organe, Sinnesorgane oder noch nicht erkannte Erbkrankheiten übernehmen.</p>
+    <p style="font-size:11px;color:#71717A"><i>Hinweis nach § 90a BGB: Tiere sind keine Sachen. Es handelt sich beim verkauften Hund um ein Lebewesen, das in der Wachstumsphase Veränderungen unterworfen ist. Der Verkäufer kann keine Gewähr für künftige Größe, Gebäude, Charakter, innere Organe, Sinnesorgane oder noch nicht erkannte Erbkrankheiten übernehmen.</i></p>
+  `;
 
+  // === Page 3: §6-§10 + Hinweis + Sig ===
+  const page3 = `
     <div class="par">§ 6 Sachmängelhaftung (Verbraucher zu Verbraucher)</div>
     <p>Da beide Vertragsparteien Verbraucher im Sinne des § 13 BGB sind, vereinbaren sie hiermit individuell ausgehandelt den <b>Ausschluss jeglicher Sachmängelhaftung</b>, soweit nicht unter § 5 eine bestimmte Beschaffenheit vereinbart wurde oder dem Verkäufer Mängel bekannt waren und nicht offengelegt wurden (Arglist nach § 444 BGB).</p>
 
@@ -143,14 +154,14 @@ function buildKaufvertragHTML(puppy, opts) {
     <p>Der Hund wird als Liebhaberhund verkauft. Eine zuchtmäßige Verwendung ist ohne ausdrückliche schriftliche Zustimmung des Verkäufers nicht gestattet. Sollte der Käufer den Hund zur Zucht einsetzen wollen, ist eine Zucht ausschließlich im Rahmen eines FCI/VDH-anerkannten Vereins unter Beachtung der dortigen Vorschriften zulässig.</p>
 
     <div class="par">§ 9 Vorkaufsrecht des Verkäufers</div>
-    <p>Sollte der Käufer den Hund aus zwingenden Gründen abgeben müssen, räumt er dem Verkäufer ein Vorkaufsrecht ein (§§ 463 ff. BGB). Der Käufer informiert den Verkäufer mindestens 4 Wochen vor einer geplanten Weitergabe schriftlich. Der Verkäufer hat 2 Wochen Zeit zur Ausübung des Vorkaufsrechts; der Rückkaufpreis beträgt höchstens den ursprünglichen Kaufpreis.</p>
+    <p>Sollte der Käufer den Hund aus zwingenden Gründen abgeben müssen, räumt er dem Verkäufer ein Vorkaufsrecht ein (§§ 463 ff. BGB). Der Käufer informiert den Verkäufer mindestens 4 Wochen vor einer geplanten Weitergabe schriftlich. Der Verkäufer hat 2 Wochen Zeit zur Ausübung des Vorkaufsrechts.</p>
 
     <div class="par">§ 10 Schlussbestimmungen</div>
     <p>Mündliche Nebenabreden bestehen nicht. Änderungen oder Ergänzungen dieses Vertrages bedürfen der Schriftform. Sollten einzelne Bestimmungen unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt (Salvatorische Klausel). Jede Vertragspartei erhält eine Ausfertigung dieses Vertrages.</p>
 
-    <div class="disc"><b>Hinweis:</b> Diese Vorlage basiert auf dem Muster des Verbands für Kleine Münsterländer e.V. (Verbraucher-zu-Verbraucher) und auf der VDH-Zucht-Ordnung (Stand 09/2024). Sie ist als Hilfsmittel gedacht und ersetzt keine individuelle Rechtsberatung. Vor finaler Verwendung wird Prüfung durch einen Fachanwalt für Vertrags-/Tierrecht empfohlen.</div>
+    <div class="disc"><b>Hinweis:</b> Diese Vorlage basiert auf dem Muster des Verbands für Kleine Münsterländer e.V. (Verbraucher-zu-Verbraucher) und auf der VDH-Zucht-Ordnung (Stand 09/2024). Sie ist als Hilfsmittel gedacht und ersetzt keine individuelle Rechtsberatung. Vor finaler Verwendung wird Prüfung durch einen Rechtsanwalt mit Schwerpunkt Vertrags-/Tierrecht empfohlen.</div>
 
-    <p style="margin-top:18px"><b>Ort, Datum:</b> ${escapeHtml(BREEDER.city)}, ${formatDateDE(saleDate)}</p>
+    <p style="margin-top:16px"><b>Ort, Datum:</b> ${escapeHtml(BREEDER.city)}, ${formatDateDE(saleDate)}</p>
 
     <div class="sig">
       <div class="l">Verkäufer<br><i style="color:#71717A">${escapeHtml(BREEDER.fullName)}</i></div>
@@ -158,10 +169,17 @@ function buildKaufvertragHTML(puppy, opts) {
       <div class="l">Käufer<br><i style="color:#71717A">${escapeHtml(buyer.name)}</i></div>
     </div>
   `;
+
+  return [page1, page2, page3];
 }
 
-// === Wurfmeldung HTML ===
-function buildWurfmeldungHTML(litter) {
+// Backwards-compat shim: returns concatenated HTML with visual page separators (for preview only).
+function buildKaufvertragHTML(puppy) {
+  return buildKaufvertragPages(puppy).join(PAGE_BREAK_HTML);
+}
+
+// === Wurfmeldung — manual 2-page layout (Daten / Welpen-Liste+Anlagen+Sig) ===
+function buildWurfmeldungPages(litter) {
   const dam = DOGS.find(d => d.id === litter.damId);
   const sire = litter.externalSire;
   const puppies = PUPPIES.filter(p => p.litterId === litter.id);
@@ -169,7 +187,8 @@ function buildWurfmeldungHTML(litter) {
   const females = puppies.filter(p => p.sex === 'female');
   const sorted = males.concat(females);
 
-  return `
+  // === Page 1: Title + Züchter + Zuchthündin + Deckrüde + Deck-/Wurfdaten ===
+  const page1 = `
     <h1>WURFMELDUNG / DECKMELDUNG</h1>
     <div class="sub">Datenblatt zur Vorlage beim ${escapeHtml(BREEDER.zuchtverein)}</div>
 
@@ -178,18 +197,14 @@ function buildWurfmeldungHTML(litter) {
       <b>Name</b><span>${escapeHtml(BREEDER.fullName)}</span>
       <b>Zwingername</b><span>${escapeHtml(BREEDER.kennelName)}</span>
       <b>Anschrift</b><span>${escapeHtml(BREEDER.street)}, ${escapeHtml(BREEDER.postalCode)} ${escapeHtml(BREEDER.city)}</span>
-      <b>Telefon</b><span>${escapeHtml(BREEDER.phone)}</span>
-      <b>E-Mail</b><span>${escapeHtml(BREEDER.email)}</span>
-      <b>Verein</b><span>${escapeHtml(BREEDER.zuchtverein)}</span>
-      <b>Mitglieds-Nr.</b><span>${escapeHtml(BREEDER.vdhMember)}</span>
+      <b>Telefon / E-Mail</b><span>${escapeHtml(BREEDER.phone)} / ${escapeHtml(BREEDER.email)}</span>
+      <b>Verein / Mitgl.-Nr.</b><span>${escapeHtml(BREEDER.zuchtverein)} / ${escapeHtml(BREEDER.vdhMember)}</span>
     </div>
 
     <div class="par">Zuchthündin (Mutter)</div>
     <div class="ku">
-      <b>Rufname</b><span>${escapeHtml(dam.name)}</span>
-      <b>Zuchtbuchname</b><span>${escapeHtml(dam.fullName)}</span>
-      <b>ZB-Nr.</b><span>${escapeHtml(dam.zbNr)}</span>
-      <b>Mikrochip</b><span style="font-family:monospace">${escapeHtml(dam.microchip)}</span>
+      <b>Rufname / Zuchtbuchname</b><span>${escapeHtml(dam.name)} · ${escapeHtml(dam.fullName)}</span>
+      <b>ZB-Nr. / Mikrochip</b><span>${escapeHtml(dam.zbNr)} · <span style="font-family:monospace">${escapeHtml(dam.microchip)}</span></span>
       <b>Wurftag (eigener)</b><span>${formatDateDE(dam.birth)}</span>
       <b>Rasse / Farbe</b><span>${escapeHtml(dam.breed)} / ${escapeHtml(dam.color)}</span>
       <b>HD / ED</b><span>${escapeHtml(dam.hd)} / ${escapeHtml(dam.ed)}</span>
@@ -198,10 +213,8 @@ function buildWurfmeldungHTML(litter) {
 
     <div class="par">Deckrüde (Vater)</div>
     <div class="ku">
-      <b>Rufname</b><span>${escapeHtml(sire.name.split(' ')[0])}</span>
-      <b>Zuchtbuchname</b><span>${escapeHtml(sire.name)}</span>
-      <b>ZB-Nr.</b><span>${escapeHtml(sire.zbNr)}</span>
-      <b>Mikrochip</b><span style="font-family:monospace">${escapeHtml(sire.microchip)}</span>
+      <b>Rufname / Zuchtbuchname</b><span>${escapeHtml(sire.name.split(' ')[0])} · ${escapeHtml(sire.name)}</span>
+      <b>ZB-Nr. / Mikrochip</b><span>${escapeHtml(sire.zbNr)} · <span style="font-family:monospace">${escapeHtml(sire.microchip)}</span></span>
       <b>Wurftag (eigener)</b><span>${formatDateDE(sire.birth)}</span>
       <b>Rasse / Farbe</b><span>${escapeHtml(litter.breed)} / ${escapeHtml(sire.color)}</span>
       <b>HD / ED</b><span>${escapeHtml(sire.hd)} / ${escapeHtml(sire.ed)}</span>
@@ -210,28 +223,27 @@ function buildWurfmeldungHTML(litter) {
 
     <div class="par">Deck- und Wurfdaten</div>
     <div class="ku">
-      <b>Deckdatum</b><span>${formatDateDE(litter.deckDate)}</span>
-      <b>Ort der Deckung</b><span>${escapeHtml(litter.deckOrt)}</span>
-      <b>Wurftag</b><span>${formatDateDE(litter.birthDate)}</span>
-      <b>Wurfstärke gesamt</b><span>${litter.wurfStaerke.total}</span>
-      <b>davon lebend</b><span>${litter.wurfStaerke.alive}</span>
-      <b>davon totgeboren</b><span>${litter.wurfStaerke.stillborn}</span>
+      <b>Deckdatum / Ort</b><span>${formatDateDE(litter.deckDate)} · ${escapeHtml(litter.deckOrt)}</span>
+      <b>Wurftag / Wurfbuchstabe</b><span>${formatDateDE(litter.birthDate)} · «${escapeHtml(litter.litterLetter)}»</span>
+      <b>Wurfstärke</b><span>${litter.wurfStaerke.total} gesamt · ${litter.wurfStaerke.alive} lebend · ${litter.wurfStaerke.stillborn} totgeboren</span>
       <b>Rüden / Hündinnen</b><span>${litter.wurfStaerke.male} R / ${litter.wurfStaerke.female} H</span>
-      <b>Wurfbuchstabe</b><span>${escapeHtml(litter.litterLetter)}</span>
       <b>Geburtsverlauf</b><span>natürlich</span>
     </div>
+  `;
 
+  // === Page 2: Welpen-Liste + Anlagen + Hinweis + Sig ===
+  const page2 = `
     <div class="par">Welpen-Liste</div>
     <table>
       <thead>
         <tr>
           <th style="width:30px">Lfd.</th>
           <th>Rufname</th>
-          <th style="width:40px">Geschl.</th>
+          <th style="width:50px">Geschl.</th>
           <th>Farbe</th>
           <th>Mikrochip-Nr.</th>
-          <th style="width:60px;text-align:right">Geb.gew.</th>
-          <th>Verbleib</th>
+          <th style="width:65px;text-align:right">Geb.gew.</th>
+          <th style="width:70px">Verbleib</th>
         </tr>
       </thead>
       <tbody>
@@ -249,7 +261,7 @@ function buildWurfmeldungHTML(litter) {
       </tbody>
     </table>
 
-    <div class="par">Anlagen</div>
+    <div class="par" style="margin-top:18px">Anlagen</div>
     <ul style="list-style:none;padding-left:0">
       <li><span class="check"></span>Original-Deckschein / Deckbescheinigung</li>
       <li><span class="check"></span>Ahnentafel-Kopie der Zuchthündin</li>
@@ -268,6 +280,13 @@ function buildWurfmeldungHTML(litter) {
       <div class="l">Unterschrift Zuchtwart<br><i style="color:#71717A">(nach Wurfabnahme)</i></div>
     </div>
   `;
+
+  return [page1, page2];
+}
+
+// Backwards-compat shim for preview
+function buildWurfmeldungHTML(litter) {
+  return buildWurfmeldungPages(litter).join(PAGE_BREAK_HTML);
 }
 
 // === Welpen-Paket cover page ===
@@ -534,26 +553,38 @@ function addDaysISO(iso, days) {
   return d.toISOString().split('T')[0];
 }
 
-// ===== HTML → PDF rendering =====
+// Single-page wrappers — uniform `Pages()` API so downloadPDF can iterate consistently.
+function buildWelpenpaketCoverPages(puppy) { return [buildWelpenpaketCoverHTML(puppy)]; }
+function buildAhnentafelPages(puppy) { return [buildAhnentafelHTML(puppy)]; }
+function buildImpfuebersichtPages(puppy) { return [buildImpfuebersichtHTML(puppy)]; }
+function buildFuetterungsplanPages(puppy) { return [buildFuetterungsplanHTML(puppy)]; }
 
-async function renderSectionToCanvas(htmlContent, opts) {
+// ===== HTML → PDF rendering =====
+// New model (2026-05-28): every builder returns an ARRAY of page-HTML strings.
+// Each page is rendered as a separate fixed-size 794x1123 canvas → exactly one PDF page.
+// No more pixel-height slicing → no more cut/duplicated rows. Page-breaks are manual,
+// chosen at logical boundaries inside each builder.
+
+const A4_WIDTH = 794;   // px at scale=1 (≈ 210mm at 96dpi)
+const A4_HEIGHT = 1123; // px at scale=1 (≈ 297mm at 96dpi)
+
+async function renderPageToCanvas(htmlContent, opts) {
   opts = opts || {};
   const wrap = document.createElement('div');
-  wrap.style.cssText = 'position:fixed;left:-99999px;top:0;width:794px;background:#fff;z-index:-1';
+  wrap.style.cssText = `position:fixed;left:-99999px;top:0;width:${A4_WIDTH}px;background:#fff;z-index:-1`;
 
-  // Cover page is full A4; other sections size to content (no forced min-height → no empty pages)
-  const minH = opts.cover ? 'min-height:1123px' : '';
+  // Every PDF page is a FIXED A4 box; overflow:hidden guarantees nothing leaks across pages.
+  // Cover and content pages share the same envelope — only header/watermark/footer differ.
   const inner = document.createElement('div');
   inner.className = 'pg';
-  inner.style.cssText = `width:794px;${minH};padding:80px 70px 60px;background:#fff;box-sizing:border-box;color:#1a1a1a;font-family:DM Sans,Arial,sans-serif;position:relative`;
+  inner.style.cssText = `width:${A4_WIDTH}px;height:${A4_HEIGHT}px;padding:80px 70px 60px;background:#fff;box-sizing:border-box;color:#1a1a1a;font-family:DM Sans,Arial,sans-serif;position:relative;overflow:hidden`;
 
-  // Header strip
   const headerBar = '<div style="position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#1B4332 0%,#2D6A4F 30%,#52B788 70%,#74C69D 100%)"></div>';
   const docMeta = opts.docMeta || '';
-  const pageHeader = opts.cover ? '' : `<div class="pg-head"><div class="lg"><b>Wurf</b>Kit</div><div class="meta">${docMeta}<br/>${formatDateDE(new Date().toISOString().split('T')[0])}</div></div>`;
-  // Watermark for non-cover pages
+  const pageNumLabel = (opts.pageIdx != null && opts.pageTotal != null && opts.pageTotal > 1)
+    ? ` · Seite ${opts.pageIdx + 1}/${opts.pageTotal}` : '';
+  const pageHeader = opts.cover ? '' : `<div class="pg-head"><div class="lg"><b>Wurf</b>Kit</div><div class="meta">${docMeta}${pageNumLabel}<br/>${formatDateDE(new Date().toISOString().split('T')[0])}</div></div>`;
   const wm = opts.cover || opts.noWatermark ? '' : `<div class="wm">WurfKit</div>`;
-  // Footer
   const footer = opts.cover ? '' : `<div class="footer"><span class="lg-mini">WurfKit · ${escapeHtml(BREEDER.kennelName)}</span><span>Generiert am ${formatDateDE(new Date().toISOString().split('T')[0])}</span></div>`;
 
   inner.innerHTML = headerBar + pageHeader + wm + htmlContent + footer;
@@ -565,8 +596,12 @@ async function renderSectionToCanvas(htmlContent, opts) {
   wrap.appendChild(inner);
   document.body.appendChild(wrap);
 
-  // Wait for fonts and images to load
-  await document.fonts.ready;
+  // document.fonts.ready can hang in headless if a font face never finishes loading —
+  // race it against a hard 2-second cap so we don't block rendering forever.
+  await Promise.race([
+    document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve(),
+    new Promise(r => setTimeout(r, 2000))
+  ]);
   const imgs = inner.querySelectorAll('img');
   await Promise.all(Array.from(imgs).map(img => new Promise(resolve => {
     if (img.complete) return resolve();
@@ -574,50 +609,43 @@ async function renderSectionToCanvas(htmlContent, opts) {
     img.onerror = resolve;
     setTimeout(resolve, 3000);
   })));
-
   await new Promise(r => setTimeout(r, 150));
 
-  const canvas = await html2canvas(inner, {
-    scale: 2,
-    useCORS: true,
-    allowTaint: true,
-    backgroundColor: '#ffffff',
-    logging: false,
-    width: 794,
-    height: inner.scrollHeight
-  });
+  // Hard timeout in case html2canvas hangs on font or layout edge-cases
+  // (seen in headless puppeteer with complex CSS gradients + position:fixed wrappers).
+  const canvas = await Promise.race([
+    html2canvas(inner, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      logging: false,
+      width: A4_WIDTH,
+      height: A4_HEIGHT
+    }),
+    new Promise((_, rej) => setTimeout(() => rej(new Error('html2canvas timed out after 30s')), 30000))
+  ]);
 
   document.body.removeChild(wrap);
   return canvas;
 }
 
-async function addCanvasToPDF(doc, canvas, isFirst) {
+// Adds a fixed-size A4 canvas as exactly one PDF page — no slicing logic needed.
+function addCanvasAsPage(doc, canvas, isFirst) {
   const imgData = canvas.toDataURL('image/jpeg', 0.92);
   const pdfWidth = doc.internal.pageSize.getWidth();
   const pdfHeight = doc.internal.pageSize.getHeight();
-  const imgWidth = pdfWidth;
-  const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+  if (!isFirst) doc.addPage();
+  doc.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+}
 
-  // Section fits on one page — no slicing
-  if (imgHeight <= pdfHeight) {
-    if (!isFirst) doc.addPage();
-    doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
-    return;
-  }
-
-  // Section taller than one page — slice. Last slice clipped to actual remaining content
-  // (prevents extra blank page when content is e.g. 1.05 pages tall)
-  let positionY = 0;
-  let pageIndex = 0;
-  // A small overlap reduces visible cuts in middle of text lines
-  const overlap = 12; // pt
-  while (positionY < imgHeight - 1) {
-    if (!isFirst || pageIndex > 0) doc.addPage();
-    doc.addImage(imgData, 'JPEG', 0, -positionY, imgWidth, imgHeight);
-    positionY += pdfHeight - overlap;
-    pageIndex++;
-    // Prevent infinite loop and trailing empty page
-    if (imgHeight - positionY < 4) break;
+// Renders all pages of one document section sequentially.
+async function renderSectionPages(pagesHTML, baseOpts, doc, isFirstSection, progressFn) {
+  const total = pagesHTML.length;
+  for (let i = 0; i < total; i++) {
+    if (progressFn) progressFn(i, total);
+    const canvas = await renderPageToCanvas(pagesHTML[i], Object.assign({}, baseOpts, { pageIdx: i, pageTotal: total }));
+    addCanvasAsPage(doc, canvas, isFirstSection && i === 0);
   }
 }
 
@@ -626,7 +654,8 @@ async function downloadPDF() {
   const { type, id } = STATE.currentPDF;
   const btn = document.getElementById('pdf-dl');
   const origText = btn ? btn.innerHTML : '';
-  if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Generiere PDF...'; }
+  const setBtnText = (txt) => { if (btn) btn.innerHTML = txt; };
+  if (btn) { btn.disabled = true; setBtnText('⏳ Generiere PDF...'); }
 
   try {
     const { jsPDF } = window.jspdf;
@@ -634,28 +663,44 @@ async function downloadPDF() {
 
     if (type === 'kaufvertrag') {
       const puppy = PUPPIES.find(p => p.id === id);
-      const canvas = await renderSectionToCanvas(buildKaufvertragHTML(puppy), { docMeta: 'Kaufvertrag · ' + escapeHtml(puppy.fullName) });
-      await addCanvasToPDF(doc, canvas, true);
+      const pages = buildKaufvertragPages(puppy);
+      await renderSectionPages(
+        pages,
+        { docMeta: 'Kaufvertrag · ' + escapeHtml(puppy.fullName) },
+        doc, true,
+        (i, total) => setBtnText(`⏳ Seite ${i + 1}/${total}...`)
+      );
       doc.save(`Kaufvertrag_${puppy.name}_vom_Waldberg.pdf`);
     } else if (type === 'wurfmeldung') {
       const litter = LITTERS.find(l => l.id === id);
-      const canvas = await renderSectionToCanvas(buildWurfmeldungHTML(litter), { docMeta: 'Wurfmeldung · Wurf «' + litter.litterLetter + '»' });
-      await addCanvasToPDF(doc, canvas, true);
+      const pages = buildWurfmeldungPages(litter);
+      await renderSectionPages(
+        pages,
+        { docMeta: 'Wurfmeldung · Wurf «' + litter.litterLetter + '»' },
+        doc, true,
+        (i, total) => setBtnText(`⏳ Seite ${i + 1}/${total}...`)
+      );
       doc.save(`Wurfmeldung_Wurf-${litter.litterLetter}_vom_Waldberg.pdf`);
     } else if (type === 'welpenpaket') {
       const puppy = PUPPIES.find(p => p.id === id);
       const docMetaBase = 'Welpen-Paket · ' + escapeHtml(puppy.fullName);
+      // Each entry: { pages: string[], opts: object } → flattened by renderSectionPages
       const sections = [
-        { name: 'cover', html: buildWelpenpaketCoverHTML(puppy), opts: { cover: true } },
-        { name: 'kaufvertrag', html: buildKaufvertragHTML(puppy), opts: { docMeta: docMetaBase + ' · Kaufvertrag' } },
-        { name: 'ahnentafel', html: buildAhnentafelHTML(puppy), opts: { docMeta: docMetaBase + ' · Stammbaum' } },
-        { name: 'impfuebersicht', html: buildImpfuebersichtHTML(puppy), opts: { docMeta: docMetaBase + ' · Impfübersicht' } },
-        { name: 'fuetterungsplan', html: buildFuetterungsplanHTML(puppy), opts: { docMeta: docMetaBase + ' · Fütterungsplan' } }
+        { pages: buildWelpenpaketCoverPages(puppy), opts: { cover: true } },
+        { pages: buildKaufvertragPages(puppy), opts: { docMeta: docMetaBase + ' · Kaufvertrag' } },
+        { pages: buildAhnentafelPages(puppy), opts: { docMeta: docMetaBase + ' · Stammbaum' } },
+        { pages: buildImpfuebersichtPages(puppy), opts: { docMeta: docMetaBase + ' · Impfübersicht' } },
+        { pages: buildFuetterungsplanPages(puppy), opts: { docMeta: docMetaBase + ' · Fütterungsplan' } }
       ];
-      for (let i = 0; i < sections.length; i++) {
-        if (btn) btn.innerHTML = `⏳ Seite ${i + 1}/${sections.length}...`;
-        const canvas = await renderSectionToCanvas(sections[i].html, sections[i].opts);
-        await addCanvasToPDF(doc, canvas, i === 0);
+      const totalPages = sections.reduce((sum, s) => sum + s.pages.length, 0);
+      let pageCounter = 0;
+      for (let s = 0; s < sections.length; s++) {
+        await renderSectionPages(
+          sections[s].pages,
+          sections[s].opts,
+          doc, s === 0,
+          () => { pageCounter++; setBtnText(`⏳ Seite ${pageCounter}/${totalPages}...`); }
+        );
       }
       doc.save(`Welpen-Paket_${puppy.name}_vom_Waldberg.pdf`);
     }
@@ -667,24 +712,24 @@ async function downloadPDF() {
   }
 }
 
-// Preview (HTML in modal) — re-uses the same builders, lighter styling
+// Preview (HTML in modal) — joins all pages of the doc using PAGE_BREAK_HTML.
+// Visual separator only; the actual PDF uses array boundaries directly.
 function buildPreviewHTML(type, id) {
   const styles = `<style>${pdfPageStyles()}</style>`;
-  let inner = '';
-  if (type === 'kaufvertrag') inner = buildKaufvertragHTML(PUPPIES.find(p => p.id === id));
-  else if (type === 'wurfmeldung') inner = buildWurfmeldungHTML(LITTERS.find(l => l.id === id));
-  else if (type === 'welpenpaket') {
+  let pages = [];
+  if (type === 'kaufvertrag') {
+    pages = buildKaufvertragPages(PUPPIES.find(p => p.id === id));
+  } else if (type === 'wurfmeldung') {
+    pages = buildWurfmeldungPages(LITTERS.find(l => l.id === id));
+  } else if (type === 'welpenpaket') {
     const p = PUPPIES.find(x => x.id === id);
-    inner = buildWelpenpaketCoverHTML(p) +
-      '<hr style="margin:20px 0;border:0;border-top:2px solid #2D6A4F"/>' +
-      '<div style="font-size:11px;color:#71717A;margin:12px 0;font-style:italic">Folgende Seiten werden im PDF mitgeliefert:</div>' +
-      buildKaufvertragHTML(p) +
-      '<hr style="margin:20px 0;border:0;border-top:2px solid #2D6A4F"/>' +
-      buildAhnentafelHTML(p) +
-      '<hr style="margin:20px 0;border:0;border-top:2px solid #2D6A4F"/>' +
-      buildImpfuebersichtHTML(p) +
-      '<hr style="margin:20px 0;border:0;border-top:2px solid #2D6A4F"/>' +
-      buildFuetterungsplanHTML(p);
+    pages = []
+      .concat(buildWelpenpaketCoverPages(p))
+      .concat(buildKaufvertragPages(p))
+      .concat(buildAhnentafelPages(p))
+      .concat(buildImpfuebersichtPages(p))
+      .concat(buildFuetterungsplanPages(p));
   }
+  const inner = pages.join(PAGE_BREAK_HTML);
   return styles + '<div style="background:#fff;color:#1a1a1a">' + inner + '</div>';
 }
