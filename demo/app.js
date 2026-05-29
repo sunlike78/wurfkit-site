@@ -99,7 +99,8 @@ function avatar(item, size) {
   const fb = item.photoFallback || '🐕';
   const url = photoURL(item);
   if (url) {
-    return `<div class="${cls}"><img src="${url}" alt="${escapeHtml(item.name || '')}" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><div class="dav-fb" style="display:none">${fb}</div></div>`;
+    const lbCall = `openLightbox('${url}','${escapeHtml(item.name || '')}',event)`;
+    return `<div class="${cls}"><img src="${url}" alt="${escapeHtml(item.name || '')}" loading="lazy" decoding="async" onclick="${lbCall}" style="cursor:zoom-in" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><div class="dav-fb" style="display:none">${fb}</div></div>`;
   }
   return `<div class="${cls}">${fb}</div>`;
 }
@@ -108,7 +109,8 @@ function avatarSmall(item) {
   const fb = item.photoFallback || '🐶';
   const url = photoURL(item);
   if (url) {
-    return `<div class="pliav"><img src="${url}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none';this.parentNode.innerHTML='${fb}'"/></div>`;
+    const lbCall = `openLightbox('${url}','${escapeHtml(item.name || '')}',event)`;
+    return `<div class="pliav"><img src="${url}" alt="" loading="lazy" decoding="async" onclick="${lbCall}" style="cursor:zoom-in" onerror="this.style.display='none';this.parentNode.innerHTML='${fb}'"/></div>`;
   }
   return `<div class="pliav">${fb}</div>`;
 }
@@ -117,10 +119,112 @@ function avatarLarge(item) {
   const fb = item.photoFallback || '🐕';
   const url = photoURL(item);
   if (url) {
-    return `<div class="dxa"><img src="${url}" alt="${escapeHtml(item.name || '')}" loading="lazy" decoding="async" onerror="this.outerHTML='<div class=&quot;dxa&quot;>${fb}</div>'"/></div>`;
+    const lbCall = `openLightbox('${url}','${escapeHtml(item.name || '')}',event)`;
+    return `<div class="dxa"><img src="${url}" alt="${escapeHtml(item.name || '')}" loading="lazy" decoding="async" onclick="${lbCall}" style="cursor:zoom-in" onerror="this.outerHTML='<div class=&quot;dxa&quot;>${fb}</div>'"/></div>`;
   }
   return `<div class="dxa">${fb}</div>`;
 }
+
+// === Info hints — small (i) icons next to specific labels (COI, ZTP, HD/ED,
+// Welpen-Paket QR, Privacy mode). Click toggles a small popover. Wording is
+// educational, not salesy, per GPT UX review.
+const HINTS = {
+  coi: {
+    label: { de: 'COI (Inzuchtkoeffizient)', en: 'COI (inbreeding coefficient)', ru: 'COI (коэф. инбридинга)' },
+    text: { de: 'Der Inzuchtkoeffizient zeigt, wie eng zwei Linien verwandt sind. WurfKit macht den Wert sichtbar, damit Verpaarungen nachvollziehbar dokumentiert werden können.',
+            en: 'The inbreeding coefficient shows how closely two lines are related. WurfKit makes this value visible so matings can be documented transparently.',
+            ru: 'Коэффициент инбридинга показывает насколько близкородственны две линии. WurfKit делает значение видимым, чтобы вязки документировались прозрачно.' }
+  },
+  ztp: {
+    label: { de: 'ZTP (Zuchtzulassung)', en: 'ZTP (breeding eligibility)', ru: 'ZTP (допуск к разведению)' },
+    text: { de: 'Die Zuchtzulassung zeigt, ob ein Hund nach den Regeln des Vereins zur Zucht eingesetzt werden darf. Hier sehen Sie den Status direkt im Hundeprofil.',
+            en: 'Breeding eligibility shows whether a dog may be used for breeding according to the club rules. You see the status here directly in the dog profile.',
+            ru: 'Допуск к разведению показывает можно ли использовать собаку в племенной работе по правилам клуба. Статус виден прямо в профиле.' }
+  },
+  hded: {
+    label: { de: 'HD/ED', en: 'HD/ED', ru: 'HD/ED' },
+    text: { de: 'Gesundheitsauswertungen wie HD (Hüftdysplasie) und ED (Ellbogendysplasie) gehören zu den wichtigsten Nachweisen in vielen Rassen. WurfKit sammelt die Werte dort, wo auch Stammbaum, Würfe und Dokumente liegen.',
+            en: 'Health evaluations like HD (hip dysplasia) and ED (elbow dysplasia) are among the most important records in many breeds. WurfKit keeps these values together with pedigree, litters and documents.',
+            ru: 'Оценки здоровья — HD (дисплазия таза) и ED (дисплазия локтей) — одни из важнейших записей во многих породах. WurfKit хранит их вместе с родословной, помётами и документами.' }
+  },
+  paket: {
+    label: { de: 'Welpen-Paket + QR-Code', en: 'Welpen-Paket + QR code', ru: 'Welpen-Paket + QR-код' },
+    text: { de: 'Das Welpen-Paket bündelt die wichtigsten Informationen für neue Besitzer (Vertrag, Stammbaum, Impfungen, Fütterung). Der QR-Code kann auf eine freigegebene Welpenseite verweisen.',
+            en: 'The Welpen-Paket bundles the most important information for new owners (contract, pedigree, vaccinations, feeding). The QR code can point to a shared puppy page.',
+            ru: 'Welpen-Paket собирает ключевую информацию для новых владельцев (договор, родословная, прививки, кормление). QR ведёт на расшаренную страницу щенка.' }
+  },
+  privacy: {
+    label: { de: 'Sichtbarkeit (Privat / Link / Öffentlich)', en: 'Visibility (Private / Link / Public)', ru: 'Видимость (Приват / Ссылка / Публично)' },
+    text: { de: 'Sie entscheiden pro Inhalt, ob er privat bleibt, nur per Link sichtbar ist oder öffentlich geteilt werden kann. Keine Inhalte werden ohne Ihre Freigabe öffentlich.',
+            en: 'You decide per item whether it stays private, is link-only, or may be publicly shared. Nothing becomes public without your approval.',
+            ru: 'Для каждого элемента вы сами выбираете: остаётся приватным, доступен только по ссылке или может быть публичным. Ничего не становится публичным без вашего согласия.' }
+  }
+};
+function openHint(key, ev) {
+  if (ev) { ev.stopPropagation(); }
+  const h = HINTS[key]; if (!h) return;
+  // Reuse settings-modal? No — make own light dialog from existing ancestor-modal
+  // To keep things simple: use a transient floating popover attached to body
+  closeHint(); // make sure only one open at a time
+  const L = STATE.lang;
+  const pop = document.createElement('div');
+  pop.className = 'hint-pop';
+  pop.id = 'hint-pop';
+  pop.setAttribute('role', 'dialog');
+  pop.innerHTML =
+    `<button class="hint-x" aria-label="Schließen" onclick="closeHint()">✕</button>
+     <div class="hint-h">${h.label[L] || h.label.de}</div>
+     <div class="hint-t">${h.text[L] || h.text.de}</div>`;
+  document.body.appendChild(pop);
+  // Position near the icon if event provided
+  if (ev && ev.currentTarget) {
+    const r = ev.currentTarget.getBoundingClientRect();
+    const top = Math.min(window.innerHeight - 220, r.bottom + 8);
+    const left = Math.max(12, Math.min(window.innerWidth - 330, r.left - 140));
+    pop.style.top = top + 'px';
+    pop.style.left = left + 'px';
+  }
+  setTimeout(() => {
+    document.addEventListener('click', _hintOutsideClick, { capture: true });
+  }, 10);
+}
+function _hintOutsideClick(e) {
+  const pop = document.getElementById('hint-pop');
+  if (pop && !pop.contains(e.target)) closeHint();
+}
+function closeHint() {
+  document.removeEventListener('click', _hintOutsideClick, { capture: true });
+  const pop = document.getElementById('hint-pop');
+  if (pop) pop.remove();
+}
+window.openHint = openHint;
+window.closeHint = closeHint;
+
+// === Image lightbox — opens a larger view of clicked photos ===
+function openLightbox(url, caption, ev) {
+  if (ev) { ev.stopPropagation(); }
+  const lb = document.getElementById('lightbox');
+  if (!lb) return;
+  const img = document.getElementById('lb-img');
+  const cap = document.getElementById('lb-cap');
+  if (img) { img.src = url; img.alt = caption || ''; }
+  if (cap) { cap.textContent = caption || ''; }
+  lb.classList.add('open');
+  lb.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => { const x = lb.querySelector('.mx'); if (x) x.focus(); }, 50);
+}
+function closeLightbox() {
+  const lb = document.getElementById('lightbox');
+  if (!lb) return;
+  lb.classList.remove('open');
+  lb.setAttribute('aria-hidden', 'true');
+  const img = document.getElementById('lb-img');
+  if (img) img.src = '';
+  document.body.style.overflow = '';
+}
+window.openLightbox = openLightbox;
+window.closeLightbox = closeLightbox;
 
 function escapeHtml(s) {
   if (s == null) return '';
@@ -281,10 +385,10 @@ function renderDogDetail() {
     <div class="sec">
       <div class="sech">${t('common.health')}</div>
       <div class="kv">
-        <div class="kvr"><span class="kvk">HD</span><span class="kvv">${dog.hd}</span></div>
+        <div class="kvr"><span class="kvk">HD <button type="button" class="info-i" onclick="openHint('hded',event)" aria-label="Was bedeuten HD/ED?">i</button></span><span class="kvv">${dog.hd}</span></div>
         <div class="kvr"><span class="kvk">ED</span><span class="kvv">${dog.ed}</span></div>
         <div class="kvr"><span class="kvk">${t('common.formwert')}</span><span class="kvv">${dog.formwert}</span></div>
-        <div class="kvr"><span class="kvk">${t('common.ztp')}</span><span class="kvv">${dog.ztp ? '✓ ' + formatDateDE(dog.ztpDate) : '—'}</span></div>
+        <div class="kvr"><span class="kvk">${t('common.ztp')} <button type="button" class="info-i" onclick="openHint('ztp',event)" aria-label="Was ist ZTP?">i</button></span><span class="kvv">${dog.ztp ? '✓ ' + formatDateDE(dog.ztpDate) : '—'}</span></div>
         ${dog.eyes ? `<div class="kvr"><span class="kvk">${t('common.eyes')}</span><span class="kvv">${dog.eyes.result} (${formatDateDE(dog.eyes.date)})</span></div>` : ''}
         ${dog.workTitles ? `<div class="kvr"><span class="kvk">${t('common.titles')}</span><span class="kvv">${dog.workTitles.join(', ')}</span></div>` : ''}
       </div>
@@ -789,6 +893,10 @@ document.addEventListener('keydown', function(e) {
   if (e.key !== 'Escape') return;
   const ae = document.activeElement;
   if (ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)) return;
+  // Close in priority order — closest to user gets closed first
+  if (document.getElementById('lightbox')?.classList.contains('open')) { closeLightbox(); return; }
+  if (document.getElementById('ancestor-modal')?.classList.contains('open')) { closeAncestor(); return; }
+  if (document.getElementById('settings-modal')?.classList.contains('open')) { closeSettings(); return; }
   closePDF();
   closePuppy();
 });

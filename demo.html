@@ -53,6 +53,29 @@ header{background:var(--surf);border-bottom:1px solid var(--b);position:sticky;t
 .bk-acc:hover{background:rgba(45,106,79,.06)}
 .acc-av{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#2D6A4F,#52B788);color:#fff;font-weight:700;font-size:.7rem;letter-spacing:.5px}
 .acc-av-lg{width:56px;height:56px;font-size:1.1rem;flex-shrink:0}
+/* Image lightbox */
+.lbox{display:none;position:fixed;inset:0;z-index:300;align-items:center;justify-content:center;padding:1.5rem}
+.lbox.open{display:flex;animation:lbFadeIn .25s ease}
+.lb-bg{position:absolute;inset:0;background:rgba(8,12,10,.86);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.lb-x{position:absolute;top:14px;right:14px;z-index:2;background:rgba(255,255,255,.92);color:#1a1a1a;border:none}
+.lb-x:hover{background:#fff;color:var(--p)}
+.lb-fig{position:relative;z-index:1;margin:0;display:flex;flex-direction:column;align-items:center;gap:.8rem;max-width:min(880px,92vw);max-height:88vh;animation:lbZoomIn .28s cubic-bezier(.34,1.56,.64,1)}
+.lb-fig img{max-width:100%;max-height:78vh;border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.08);object-fit:contain;display:block;background:#0c0c0e}
+.lb-fig figcaption{color:#fff;font-size:.95rem;font-weight:500;text-align:center;letter-spacing:.2px;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+@keyframes lbFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes lbZoomIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){.lbox.open,.lb-fig{animation:none}}
+@media(max-width:600px){.lb-fig img{max-height:70vh;border-radius:10px}.lb-x{top:8px;right:8px}}
+/* Info hint icon + popover (educational tooltips on COI / ZTP / HD-ED / Welpen-Paket / privacy) */
+.info-i{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:rgba(45,106,79,.1);color:#2D6A4F;border:1px solid rgba(45,106,79,.25);font-size:10px;font-weight:700;font-family:Georgia,serif;font-style:italic;cursor:help;margin-left:6px;vertical-align:middle;transition:all .15s;padding:0;line-height:1}
+.info-i:hover{background:#2D6A4F;color:#fff;border-color:#2D6A4F}
+.hint-pop{position:fixed;z-index:350;width:320px;max-width:calc(100vw - 24px);background:#fff;border:1px solid rgba(45,106,79,.2);border-radius:12px;padding:14px 16px 16px;box-shadow:0 12px 32px rgba(0,0,0,.18),0 4px 8px rgba(0,0,0,.06);font-size:.82rem;line-height:1.55;color:#1a1a1a;animation:hintIn .18s ease-out}
+.hint-pop .hint-x{position:absolute;top:6px;right:6px;background:transparent;border:none;width:24px;height:24px;border-radius:50%;color:#999;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.hint-pop .hint-x:hover{background:rgba(0,0,0,.05);color:#1a1a1a}
+.hint-pop .hint-h{font-weight:600;font-size:.85rem;color:#2D6A4F;margin-bottom:6px;padding-right:20px}
+.hint-pop .hint-t{color:#525258;font-size:.78rem;line-height:1.6}
+@keyframes hintIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+@media (prefers-reduced-motion: reduce){.hint-pop{animation:none}}
 /* Settings modal */
 .ml-wide{max-width:680px}
 .setdemo{background:linear-gradient(135deg,#F0FDF4,#ECFDF5);border:1px solid #D8F3DC;border-radius:8px;padding:.7rem .9rem;font-size:.78rem;color:#1B4332;margin-bottom:1.25rem;line-height:1.5}
@@ -552,7 +575,7 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
           <button class="oc-card oc-primary" type="button" onclick="openPDFPreview('welpenpaket','aaron')">
             <div class="oc-ic">📦</div>
             <div class="oc-tx">
-              <div class="oc-nm"><span class="de">Welpen-Paket erstellen</span><span class="en">Generate puppy packet</span><span class="ru">Собрать Welpen-Paket</span></div>
+              <div class="oc-nm"><span class="de">Welpen-Paket erstellen</span><span class="en">Generate puppy packet</span><span class="ru">Собрать Welpen-Paket</span><span class="info-i" onclick="event.stopPropagation();openHint('paket',event)" role="button" tabindex="0" aria-label="Was ist im Welpen-Paket?">i</span></div>
               <div class="oc-mt"><span class="de">PDF + QR-Code für Aaron · 5 Welpen verfügbar</span><span class="en">PDF + QR for Aaron · 5 puppies available</span><span class="ru">PDF + QR для Aaron · 5 щенков</span></div>
             </div>
             <span class="oc-ar">→</span>
@@ -632,7 +655,7 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
   <!-- Tab 4: COI -->
   <section class="tabview" id="tab-coi" data-tab="coi">
     <div class="cnt">
-      <h1><span class="de">COI Rechner</span><span class="en">COI Calculator</span><span class="ru">COI Калькулятор</span></h1>
+      <h1><span class="de">COI Rechner</span><span class="en">COI Calculator</span><span class="ru">COI Калькулятор</span><button type="button" class="info-i" onclick="openHint('coi',event)" aria-label="Was ist COI?">i</button></h1>
       <p class="sub2"><span class="de">Inzuchtkoeffizient nach Wright. Gemeinsame Vorfahren werden farbig markiert.</span><span class="en">Wright inbreeding coefficient. Common ancestors highlighted.</span><span class="ru">Коэффициент инбридинга по Райту. Общие предки выделены цветом.</span></p>
 
       <div class="coir">
@@ -734,6 +757,16 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
   </div>
 </div>
 
+<!-- Image lightbox: opens when user clicks any dog/puppy photo -->
+<div class="lbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true" onclick="if(event.target===this||event.target.classList.contains('lb-bg'))closeLightbox()">
+  <div class="lb-bg"></div>
+  <button class="mx lb-x" onclick="closeLightbox()" aria-label="Schließen">✕</button>
+  <figure class="lb-fig">
+    <img id="lb-img" src="" alt=""/>
+    <figcaption id="lb-cap"></figcaption>
+  </figure>
+</div>
+
 <!-- Account & Settings modal: opens from the "Mein Konto" button in the header -->
 <div class="mo" id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="set-title" aria-hidden="true" onclick="if(event.target===this)closeSettings()">
   <div class="ml ml-wide">
@@ -795,7 +828,7 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
 
         <!-- Zwinger-Sichtbarkeit -->
         <section class="setblock">
-          <h3 class="seth"><span class="de">Zwinger-Profil Sichtbarkeit</span><span class="en">Kennel profile visibility</span><span class="ru">Видимость профиля</span></h3>
+          <h3 class="seth"><span class="de">Zwinger-Profil Sichtbarkeit</span><span class="en">Kennel profile visibility</span><span class="ru">Видимость профиля</span><button type="button" class="info-i" onclick="openHint('privacy',event)" aria-label="Sichtbarkeit erklärt">i</button></h3>
           <label class="setrad"><input type="radio" name="vis" value="private"/><div><b><span class="de">Privat</span><span class="en">Private</span><span class="ru">Приватно</span></b><div class="setsub"><span class="de">Nur in Ihrem Dashboard</span><span class="en">Only in your dashboard</span><span class="ru">Только в dashboard</span></div></div></label>
           <label class="setrad"><input type="radio" name="vis" value="link" checked/><div><b><span class="de">Per Link</span><span class="en">Link-only</span><span class="ru">По ссылке</span></b><div class="setsub"><span class="de">QR an Käufer, nicht in Google indexiert</span><span class="en">QR for buyers, not indexed</span><span class="ru">QR покупателям, не в поиске</span></div></div></label>
           <label class="setrad"><input type="radio" name="vis" value="public" disabled/><div><b><span class="de">Öffentlich</span><span class="en">Public</span><span class="ru">Публично</span></b> <span class="setbadge">Pro</span><div class="setsub"><span class="de">Indexierbares Zwinger-Profil, Deckrüden-Marketing</span><span class="en">Indexable kennel profile</span><span class="ru">Индексируемый профиль</span></div></div></label>

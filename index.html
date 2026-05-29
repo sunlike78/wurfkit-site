@@ -46,7 +46,7 @@
    slightly lifted near-black background so the landing reads consistently with
    the in-app surfaces (which use #2D6A4F primary on white) instead of jumping
    between bright #34D399 and saturated #09090B. */
-:root{--a:#52B788;--ad:#2D6A4F;--bg:#0C0D11;--s:#16171B;--s2:#1E1F24;--b:#2A2B30;--bl:#3F4046;--t:#FAFAFA;--t2:#B4B4BB;--t3:#8E8E96;--g:rgba(255,255,255,0.04);--g2:rgba(255,255,255,0.07);--gw:rgba(82,183,136,0.18);--gw2:rgba(82,183,136,0.09);--r:16px;--rs:10px;--rx:6px}
+:root{--a:#52B788;--ad:#2D6A4F;--bg:#13141A;--s:#1C1D24;--s2:#23252D;--b:#2F3038;--bl:#44464E;--t:#F5F5F7;--t2:#BCBCC4;--t3:#92929A;--g:rgba(255,255,255,0.04);--g2:rgba(255,255,255,0.07);--gw:rgba(82,183,136,0.16);--gw2:rgba(82,183,136,0.08);--r:16px;--rs:10px;--rx:6px}
 /* === BASE === */
 *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
 html,body{overflow-x:hidden;max-width:100vw}
@@ -73,14 +73,14 @@ h1 em{color:var(--a);font-style:italic}
 .hs{font-size:1.05rem;color:var(--t2);line-height:1.75;max-width:560px;margin:0 auto 2.5rem;font-weight:300}
 .hf{display:flex;gap:8px;max-width:440px;margin:0 auto}
 .hctas{display:flex;flex-direction:column;align-items:center;gap:14px;margin:1rem 0 0}
-.hcta-primary{display:inline-flex;align-items:center;gap:14px;padding:1.05rem 2rem;background:linear-gradient(135deg,#34D399,#10B981);color:#062F1B;border-radius:14px;font-size:1.05rem;font-weight:700;text-decoration:none;letter-spacing:-.01em;box-shadow:0 12px 32px rgba(52,211,153,.32),0 4px 10px rgba(52,211,153,.18),inset 0 1px 0 rgba(255,255,255,.4);transition:all .25s;position:relative;overflow:hidden;animation:hctaGlow 3.5s ease-in-out infinite}
-.hcta-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transition:left .65s}
+.hcta-primary{display:inline-flex;align-items:center;gap:14px;padding:1.05rem 2rem;background:linear-gradient(135deg,#52B788,#2D6A4F);color:#F5FFFA;border-radius:14px;font-size:1.05rem;font-weight:700;text-decoration:none;letter-spacing:-.01em;box-shadow:0 10px 28px rgba(45,106,79,.28),0 3px 8px rgba(45,106,79,.16),inset 0 1px 0 rgba(255,255,255,.18);transition:all .25s;position:relative;overflow:hidden;animation:hctaGlow 4.5s ease-in-out infinite}
+.hcta-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);transition:left .75s}
 .hcta-primary:hover::before{left:100%}
-.hcta-primary:hover{transform:translateY(-2px);box-shadow:0 18px 44px rgba(52,211,153,.45),0 6px 14px rgba(52,211,153,.22),inset 0 1px 0 rgba(255,255,255,.5)}
-.hcta-icon{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;background:rgba(6,47,27,.15);border-radius:50%;font-size:.85rem}
+.hcta-primary:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(45,106,79,.38),0 4px 10px rgba(45,106,79,.2),inset 0 1px 0 rgba(255,255,255,.22)}
+.hcta-icon{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;background:rgba(255,255,255,.18);border-radius:50%;font-size:.85rem}
 .hcta-arrow{transition:transform .2s;font-size:1.2rem}
 .hcta-primary:hover .hcta-arrow{transform:translateX(4px)}
-@keyframes hctaGlow{0%,100%{box-shadow:0 12px 32px rgba(52,211,153,.32),0 4px 10px rgba(52,211,153,.18),inset 0 1px 0 rgba(255,255,255,.4)}50%{box-shadow:0 12px 36px rgba(52,211,153,.5),0 4px 12px rgba(52,211,153,.28),inset 0 1px 0 rgba(255,255,255,.5)}}
+@keyframes hctaGlow{0%,100%{box-shadow:0 10px 28px rgba(45,106,79,.28),0 3px 8px rgba(45,106,79,.16),inset 0 1px 0 rgba(255,255,255,.18)}50%{box-shadow:0 10px 32px rgba(45,106,79,.4),0 3px 10px rgba(45,106,79,.22),inset 0 1px 0 rgba(255,255,255,.22)}}
 .hcta-info{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;color:var(--t3);font-weight:500}
 .hcta-dot{width:6px;height:6px;border-radius:50%;background:var(--a);animation:p 2s infinite}
 .hcta-trust{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;color:var(--t3);font-weight:500;margin-top:-2px;opacity:.85}
@@ -175,6 +175,20 @@ h2{font-family:'Instrument Serif',serif;font-size:clamp(1.9rem,4.5vw,2.8rem);fon
 .pat{font-size:.92rem;font-weight:500;margin-bottom:.5rem}
 .pax{font-size:.8rem;color:var(--t3);line-height:1.65}
 /* === COMPONENT: KILLER-FEATURES === */
+/* "Zucht in Zahlen" — factual context block between Probleme and Funktionen */
+.zz{padding:6rem 1.5rem;border-bottom:1px solid var(--b)}
+.zzi{max-width:960px;margin:0 auto}
+.zzg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:3rem 0 1.6rem}
+.zzc{background:var(--g);border:1px solid var(--b);border-radius:var(--r);padding:1.7rem 1.4rem;text-align:center;transition:all .25s}
+.zzc:hover{background:var(--g2);border-color:var(--bl)}
+.zzn{font-family:'Instrument Serif',serif;font-size:3.4rem;font-weight:400;color:var(--a);line-height:1;margin-bottom:.5rem;letter-spacing:-.02em}
+.zzt{font-size:.92rem;font-weight:600;margin-bottom:.6rem;color:var(--t);letter-spacing:-.005em}
+.zzx{font-size:.78rem;color:var(--t3);line-height:1.65}
+.zzd{display:grid;grid-template-columns:1fr auto 1fr;gap:.5rem 1.4rem;align-items:center;background:var(--g);border:1px solid var(--b);border-radius:var(--r);padding:1.5rem 1.8rem;margin-top:.6rem}
+.zzdcol{display:flex;flex-direction:column;gap:.4rem}
+.zzdh{font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);font-weight:600}
+.zzdl{font-size:.85rem;color:var(--t2);line-height:1.55}
+.zzar{font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--a);opacity:.55;line-height:1}
 .ks{padding:6rem 1.5rem;position:relative}
 .ks::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--gw2) 0%,transparent 70%);pointer-events:none}
 .ki{max-width:960px;margin:0 auto;position:relative}
@@ -209,6 +223,10 @@ h1{font-size:clamp(1.95rem,8.5vw,2.8rem)}
 .pax{font-size:.72rem}
 .kg{gap:14px}
 .kc{padding:1.5rem}
+.zz{padding:4rem 1.25rem}
+.zzn{font-size:2.6rem}
+.zzd{grid-template-columns:1fr;padding:1.4rem 1.4rem;gap:.6rem}
+.zzar{transform:rotate(90deg);margin:.3rem auto}
 .dgrid,.dg,.fg{grid-template-columns:1fr}
 .dp{min-height:170px;padding:1.25rem}
 .cw{padding:1.5rem}
@@ -462,6 +480,52 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 <div class="pac" onclick="openModal('pain4')"><div class="pan">04</div><div class="pat de">Welpenübergabe = Chaos</div><div class="pat en">Handover = chaos</div><div class="pat ru">Передача = хаос</div><div class="pax de">5 Dokumente einzeln drucken. WurfKit: 1 Klick → PDF + QR.</div><div class="pax en">5 docs printed separately. WurfKit: 1 click → PDF + QR.</div><div class="pax ru">5 документов печатать отдельно. WurfKit: 1 клик → PDF + QR.</div></div>
 <div class="pac" onclick="openModal('pain5')"><div class="pan">05</div><div class="pat de">Daten überall verstreut</div><div class="pat en">Data scattered</div><div class="pat ru">Данные разбросаны</div><div class="pax de">WhatsApp, E-Mail, Schrank. WurfKit bündelt alles.</div><div class="pax en">WhatsApp, email, drawers. WurfKit centralizes all.</div><div class="pax ru">WhatsApp, email, шкафы. WurfKit собирает всё.</div></div>
 </div></div></section>
+
+<section class="zz rv"><div class="zzi">
+<div class="sl de">VDH-Welt</div><div class="sl en">VDH world</div><div class="sl ru">Мир VDH</div>
+<h2 class="de">Zucht in Zahlen</h2><h2 class="en">Breeding in numbers</h2><h2 class="ru">Заводчество в цифрах</h2>
+<p class="ss de">Was hinter jedem VDH-Wurf steckt — Vereinslandschaft, Vorbereitungszeit, Dokumentenflut. WurfKit ist für genau diesen Alltag gebaut.</p>
+<p class="ss en">What sits behind every VDH litter — club landscape, prep time, document load. WurfKit is built for exactly this reality.</p>
+<p class="ss ru">Что стоит за каждым VDH-помётом — структура клубов, время подготовки, объём документов. WurfKit сделан именно для этой реальности.</p>
+<div class="zzg">
+  <div class="zzc">
+    <div class="zzn">185</div>
+    <div class="zzt de">Mitgliedsvereine im VDH</div><div class="zzt en">VDH member clubs</div><div class="zzt ru">Клубов в VDH</div>
+    <div class="zzx de">Davon 167 Zuchtvereine — jeder mit eigener Zuchtordnung und eigenen Wurfmeldungsfristen.</div>
+    <div class="zzx en">Of which 167 breeding clubs — each with its own breeding rules and litter registration deadlines.</div>
+    <div class="zzx ru">Из них 167 племенных клубов — у каждого своя Zuchtordnung и свои сроки Wurfmeldung.</div>
+  </div>
+  <div class="zzc">
+    <div class="zzn">~8</div>
+    <div class="zzt de">Wochen pro Wurf</div><div class="zzt en">Weeks per litter</div><div class="zzt ru">Недель на помёт</div>
+    <div class="zzx de">Vom Deckakt über Wurfmeldung, Wurfabnahme und Impfungen bis zur Übergabe.</div>
+    <div class="zzx en">From mating through litter registration, club inspection and vaccinations to handover.</div>
+    <div class="zzx ru">От вязки через Wurfmeldung, Wurfabnahme и прививки до передачи щенков.</div>
+  </div>
+  <div class="zzc">
+    <div class="zzn">6+</div>
+    <div class="zzt de">Dokumente pro Welpe</div><div class="zzt en">Documents per puppy</div><div class="zzt ru">Документов на щенка</div>
+    <div class="zzx de">Kaufvertrag, Ahnentafel, EU-Heimtierausweis, Mikrochip-Beleg, Impfübersicht, Fütterungsplan.</div>
+    <div class="zzx en">Contract, pedigree, EU pet passport, microchip proof, vaccination record, feeding plan.</div>
+    <div class="zzx ru">Договор, родословная, EU-паспорт, подтверждение чипа, прививки, план кормления.</div>
+  </div>
+</div>
+<div class="zzd">
+  <div class="zzdcol">
+    <div class="zzdh de">Heute üblich</div><div class="zzdh en">Today, typically</div><div class="zzdh ru">Как сегодня</div>
+    <div class="zzdl de">Word-Vorlagen, Excel-Tabellen, Aktenordner. Jedes Dokument einzeln, jede Wurfmeldung manuell.</div>
+    <div class="zzdl en">Word templates, Excel sheets, paper folders. Each document on its own, every litter registration by hand.</div>
+    <div class="zzdl ru">Шаблоны Word, таблицы Excel, бумажные папки. Каждый документ отдельно, каждая Wurfmeldung вручную.</div>
+  </div>
+  <div class="zzar">→</div>
+  <div class="zzdcol">
+    <div class="zzdh de">Mit WurfKit</div><div class="zzdh en">With WurfKit</div><div class="zzdh ru">С WurfKit</div>
+    <div class="zzdl de">Ein Profil pro Hund, alle Dokumente automatisch aus diesen Daten, Welpen-Paket in einem Klick.</div>
+    <div class="zzdl en">One profile per dog, all documents generated automatically from that data, Welpen-Paket in one click.</div>
+    <div class="zzdl ru">Один профиль на собаку, все документы автоматически из этих данных, Welpen-Paket в один клик.</div>
+  </div>
+</div>
+</div></section>
 
 <section class="ks rv"><div class="ki">
 <div class="sl de">Nur in WurfKit</div><div class="sl en">Only in WurfKit</div><div class="sl ru">Только в WurfKit</div>

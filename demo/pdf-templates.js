@@ -527,13 +527,18 @@ function buildImpfuebersichtHTML(puppy) {
 function buildFuetterungsplanHTML(puppy) {
   const litter = LITTERS.find(l => l.id === puppy.litterId);
   const qrUrl = `https://wurfkit.de/welpe/${puppy.id}`;
+  // PNG dataURL <img> instead of inline SVG: html2canvas v1 stalls / hits
+  // recursion on dense inline SVG (qrcode-generator emits 400+ rects), which
+  // triggered "Maximum call stack size exceeded" specifically in Welpen-Paket
+  // — confirmed by isolating QR as the trigger (root cause investigation).
   let qrSVG = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:72px">📱</div>';
   try {
     if (typeof qrcode !== 'undefined') {
       const qr = qrcode(0, 'M');
       qr.addData(qrUrl);
       qr.make();
-      qrSVG = qr.createSvgTag({ scalable: true, cellSize: 4, margin: 1 });
+      const qrDataURL = qr.createDataURL(4, 1);
+      qrSVG = `<img src="${qrDataURL}" alt="QR" style="width:100%;height:100%;object-fit:contain;display:block"/>`;
     }
   } catch(e) {}
 
@@ -720,20 +725,42 @@ async function renderPageToCanvas(htmlContent, opts) {
 }
 
 // Adds a fixed-size A4 canvas as exactly one PDF page — no slicing logic needed.
+// After addImage we proactively free the canvas pixel buffer (set w/h to 0) so
+// multi-page documents like Welpen-Paket don't accumulate ~3.5M-pixel canvases
+// across 6-7 pages in memory while later pages still render.
 function addCanvasAsPage(doc, canvas, isFirst) {
-  const imgData = canvas.toDataURL('image/jpeg', 0.92);
+  const imgData = canvas.toDataURL('image/jpeg', 0.88);
   const pdfWidth = doc.internal.pageSize.getWidth();
   const pdfHeight = doc.internal.pageSize.getHeight();
   if (!isFirst) doc.addPage();
   doc.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+  try { canvas.width = 0; canvas.height = 0; } catch (e) { /* best-effort */ }
 }
 
 // Renders all pages of one document section sequentially.
+// Per-page try/catch: if one page fails (e.g. html2canvas stack overflow on
+// pathological inline SVG), we log the full error + insert a visible error
+// placeholder page so the rest of the document still completes. Without this,
+// a single bad page killed the whole multi-section Welpen-Paket flow.
 async function renderSectionPages(pagesHTML, baseOpts, doc, isFirstSection, progressFn) {
   const total = pagesHTML.length;
   for (let i = 0; i < total; i++) {
     if (progressFn) progressFn(i, total);
-    const canvas = await renderPageToCanvas(pagesHTML[i], Object.assign({}, baseOpts, { pageIdx: i, pageTotal: total }));
+    const pageOpts = Object.assign({}, baseOpts, { pageIdx: i, pageTotal: total });
+    const label = (baseOpts.docMeta || (baseOpts.cover ? 'Cover' : 'page')) + ' · Seite ' + (i + 1) + '/' + total;
+    let canvas;
+    try {
+      canvas = await renderPageToCanvas(pagesHTML[i], pageOpts);
+    } catch (e) {
+      console.error('[PDF] Render failed on "' + label + '":', e, e && e.stack);
+      try {
+        const fallbackHTML = `<div style="padding:40px;color:#7A1F1F"><h1 style="font-size:18px;margin:0 0 12px">Diese Seite konnte nicht generiert werden</h1><p style="font-size:12px;line-height:1.6">«${escapeHtml(label)}» — beim Rendern ist ein Fehler aufgetreten. Die übrigen Seiten des Dokuments wurden trotzdem erstellt.</p><p style="font-family:monospace;font-size:10px;color:#999;margin-top:24px;word-break:break-all">${escapeHtml(String(e && e.message || e))}</p></div>`;
+        canvas = await renderPageToCanvas(fallbackHTML, { docMeta: 'Fehler', pageIdx: 0, pageTotal: 1 });
+      } catch (e2) {
+        console.error('[PDF] Fallback page also failed:', e2);
+        continue;
+      }
+    }
     addCanvasAsPage(doc, canvas, isFirstSection && i === 0);
   }
 }
@@ -794,8 +821,8 @@ async function downloadPDF() {
       doc.save(`Welpen-Paket_${puppy.name}_vom_Waldberg.pdf`);
     }
   } catch (e) {
-    console.error('PDF generation failed:', e);
-    alert('PDF-Generierung fehlgeschlagen: ' + e.message);
+    console.error('PDF generation failed:', e, e && e.stack);
+    alert('PDF-Generierung fehlgeschlagen: ' + (e && e.message ? e.message : e) + '\n\nDetails siehe Browser-Konsole.');
   } finally {
     if (btn) { btn.disabled = false; btn.innerHTML = origText; }
   }
