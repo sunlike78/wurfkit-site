@@ -42,7 +42,11 @@
 </script>
 <style>
 /* === DESIGN TOKENS === */
-:root{--a:#34D399;--ad:#059669;--bg:#09090B;--s:#131316;--s2:#1C1C21;--b:#27272A;--bl:#3F3F46;--t:#FAFAFA;--t2:#B4B4BB;--t3:#8E8E96;--g:rgba(255,255,255,0.04);--g2:rgba(255,255,255,0.07);--gw:rgba(52,211,153,0.15);--gw2:rgba(52,211,153,0.08);--r:16px;--rs:10px;--rx:6px}
+/* Color palette aligned with the demo app: softer green (#52B788) for accent and
+   slightly lifted near-black background so the landing reads consistently with
+   the in-app surfaces (which use #2D6A4F primary on white) instead of jumping
+   between bright #34D399 and saturated #09090B. */
+:root{--a:#52B788;--ad:#2D6A4F;--bg:#0C0D11;--s:#16171B;--s2:#1E1F24;--b:#2A2B30;--bl:#3F4046;--t:#FAFAFA;--t2:#B4B4BB;--t3:#8E8E96;--g:rgba(255,255,255,0.04);--g2:rgba(255,255,255,0.07);--gw:rgba(82,183,136,0.18);--gw2:rgba(82,183,136,0.09);--r:16px;--rs:10px;--rx:6px}
 /* === BASE === */
 *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
 html,body{overflow-x:hidden;max-width:100vw}
@@ -344,6 +348,13 @@ footer a:hover{text-decoration-color:var(--a)}
 .mbd ul li::before{content:'→';color:var(--a);font-weight:600;flex-shrink:0}
 .mct{display:inline-block;background:var(--a);color:var(--bg);padding:.7rem 1.5rem;border-radius:var(--rs);font-weight:600;font-size:.85rem;cursor:pointer;border:none;font-family:inherit;transition:all .2s;text-decoration:none}
 .mct:hover{background:#fff}
+/* === COMPONENT: SCROLL-REVEAL === */
+/* Subtle fade + slide-up when sections enter viewport. The IntersectionObserver
+   adds .rev once; transitions stay short and easing is gentle. Users who prefer
+   reduced motion see everything visible from the start. */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .55s cubic-bezier(.4,0,.2,1),transform .55s cubic-bezier(.4,0,.2,1)}
+.rv.rev{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
 /* === LANG VISIBILITY === */
 .de,.ru,.en{display:none}
 body.l-de .de{display:block}body.l-en .en{display:block}body.l-ru .ru{display:block}
@@ -375,13 +386,13 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 </div>
 </div></section>
 
-<section class="ps">
+<section class="ps rv">
 <div class="sl de">So sieht WurfKit aus</div><div class="sl en">WurfKit in action</div><div class="sl ru">Как выглядит WurfKit</div>
 <h2 class="de">Ihr persönlicher Bereich. Alles, was ein Züchter braucht.</h2><h2 class="en">Your personal workspace. Everything a breeder needs.</h2><h2 class="ru">Ваш личный кабинет. Всё, что нужно заводчику.</h2>
 <p class="ss de">Nach der Anmeldung: Ihr Dashboard im Browser. Daten DSGVO-konform in der EU.</p><p class="ss en">After sign-in: your dashboard in the browser. Data DSGVO-compliant in the EU.</p><p class="ss ru">После входа: ваш dashboard прямо в браузере. Данные по DSGVO в ЕС.</p>
 
 <!-- === Wide desktop mockup — anchors web-first + dashboard signal === -->
-<div class="dtm">
+<div class="dtm rv">
   <div class="pbc"><div class="pbcd"></div><div class="pbcd"></div><div class="pbcd"></div><div class="pbcu">wurfkit.de/dashboard · Maria Schmidt</div></div>
   <div class="dtm-body">
     <aside class="dtm-side">
@@ -432,7 +443,7 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 <div class="pw"><div class="pcd"><div class="pbc"><div class="pbcd"></div><div class="pbcd"></div><div class="pbcd"></div><div class="pbcu">wurfkit.de/coi</div></div><div class="pt"><div class="ptt"><span class="di">COI Rechner</span><span class="ei">COI Calc</span><span class="ri">COI</span></div><div class="pts">Luna × Rex</div></div><div class="pb"><div class="coir"><div class="coin">3.2%</div><div class="cois">COI</div><div class="coio"><span class="di">Niedrig ✓</span><span class="ei">Low ✓</span><span class="ri">Низкий ✓</span></div></div><div class="pc"><div class="pct"><span class="di">Stammbaum</span><span class="ei">Pedigree</span><span class="ri">Родословная</span></div><div style="display:flex;align-items:center;margin-bottom:3px"><div class="tn tnr">Luna × Rex</div></div><div style="margin-left:8px;display:flex;flex-direction:column;gap:2px"><div style="display:flex;align-items:center;gap:2px"><div style="width:8px;height:.5px;background:var(--b)"></div><div class="tn tnp">Baron</div><div class="tn tng">Ares</div><div class="tn tng">Stella</div></div><div style="display:flex;align-items:center;gap:2px"><div style="width:8px;height:.5px;background:var(--b)"></div><div class="tn tnp">Cleo</div><div class="tn tnh">Ares*</div><div class="tn tng">Hera</div></div></div></div><div class="pc"><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px"><div class="pl" style="width:45px"><span class="di">Ihr COI</span><span class="ei">Your COI</span><span class="ri">Ваш COI</span></div><div style="flex:1;height:4px;background:var(--b);border-radius:2px"><div style="width:16%;height:4px;background:var(--a);border-radius:2px"></div></div><div class="pv">3.2%</div></div><div style="display:flex;align-items:center;gap:5px"><div class="pl" style="width:45px"><span class="di">Rasse Ø</span><span class="ei">Breed Ø</span><span class="ri">Порода Ø</span></div><div style="flex:1;height:4px;background:var(--b);border-radius:2px"><div style="width:40%;height:4px;background:#FACC15;border-radius:2px"></div></div><div class="pv">8.1%</div></div></div></div></div><div class="pcap"><span class="di">COI Rechner</span><span class="ei">COI calc</span><span class="ri">COI</span></div></div>
 </div></section>
 
-<section class="ds"><div class="di2">
+<section class="ds rv"><div class="di2">
 <div class="sl de">Dokumente</div><div class="sl en">Documents</div><div class="sl ru">Документы</div>
 <h2 class="de">So sehen Ihre Dokumente aus.</h2><h2 class="en">Your documents, reimagined.</h2><h2 class="ru">Так выглядят ваши документы.</h2>
 <p class="ss de">Professionell, an VDH-Vorgaben orientiert, automatisch befüllt.</p><p class="ss en">Professional, aligned with VDH guidelines, auto-filled.</p><p class="ss ru">Профессионально, по образцам VDH, с автозаполнением.</p>
@@ -441,7 +452,7 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 <div class="dc" onclick="openModal('wurfmeldung')"><div class="dl"><span class="di">AUTOGENERIERT</span><span class="ei">AUTO-GENERATED</span><span class="ri">АВТОГЕНЕРАЦИЯ</span></div><div class="dp"><div class="dh" style="display:flex;align-items:center;justify-content:center;gap:8px"><span style="font-size:1rem">📋</span><div><div style="font-size:.9rem;font-weight:600;color:var(--t)">VDH Wurfmeldung</div><div style="font-size:.65rem;color:var(--t3);margin-top:2px">Litter Registration</div></div></div><div style="font-size:.7rem;color:var(--t3);line-height:1.9"><div class="df"><span class="dk">Zwingername</span><span class="dv">vom Waldberg</span></div><div class="df"><span class="dk">Zuchtverein</span><span class="dv">DRC e.V.</span></div><div class="df"><span class="dk">Zuchthündin</span><span class="dv">Luna vom Waldberg</span></div><div class="df"><span class="dk">ZB-Nr.</span><span class="dv">DRC 24-12345</span></div><div class="df"><span class="dk">Deckrüde</span><span class="dv">Rex von der Sonnenhöhe</span></div><div class="df"><span class="dk">Wurfdatum</span><span class="dv">12.01.2026</span></div><div class="df"><span class="dk">Welpen</span><span class="dv">5 (3R, 2H)</span></div><div style="margin-top:8px;font-size:.68rem">Hiermit melde ich den Wurf gemäß §8 VDH-Zuchtordnung...</div></div></div><div class="din"><div class="dil"><h3>VDH Wurfmeldung</h3><p>2 <span class="di">Seiten</span><span class="ei">pages</span><span class="ri">стр.</span> · PDF</p></div><div class="dbd"><span class="di">Vorschau</span><span class="ei">Preview</span><span class="ri">Просмотр</span></div></div></div>
 </div></div></section>
 
-<section class="pas"><div class="pai">
+<section class="pas rv"><div class="pai">
 <div class="sl de">Kennen Sie das?</div><div class="sl en">Sound familiar?</div><div class="sl ru">Знакомо?</div>
 <h2 class="de">5 Probleme die jeden Züchter nerven</h2><h2 class="en">5 problems every breeder faces</h2><h2 class="ru">5 проблем каждого заводчика</h2>
 <div class="pag">
@@ -452,7 +463,7 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 <div class="pac" onclick="openModal('pain5')"><div class="pan">05</div><div class="pat de">Daten überall verstreut</div><div class="pat en">Data scattered</div><div class="pat ru">Данные разбросаны</div><div class="pax de">WhatsApp, E-Mail, Schrank. WurfKit bündelt alles.</div><div class="pax en">WhatsApp, email, drawers. WurfKit centralizes all.</div><div class="pax ru">WhatsApp, email, шкафы. WurfKit собирает всё.</div></div>
 </div></div></section>
 
-<section class="ks"><div class="ki">
+<section class="ks rv"><div class="ki">
 <div class="sl de">Nur in WurfKit</div><div class="sl en">Only in WurfKit</div><div class="sl ru">Только в WurfKit</div>
 <h2 class="de">Funktionen, die Züchtern wirklich Arbeit abnehmen.</h2><h2 class="en">Features that genuinely save breeders work.</h2><h2 class="ru">Функции, которые действительно снимают рутину с заводчика.</h2>
 <div class="kg">
@@ -461,7 +472,7 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 <div class="kc" onclick="openModal('deckruede')"><div class="kb"><span class="di">TEILBARES PROFIL</span><span class="ei">SHAREABLE PROFILE</span><span class="ri">ПУБЛИЧНЫЙ ПРОФИЛЬ</span></div><div class="kt de">Deckrüden-Profil zum Teilen</div><div class="kt en">Shareable Stud Profile</div><div class="kt ru">Профиль кобеля</div><div class="kx de" style="margin-bottom:1rem">Öffentliche Profilseite. Link teilen → andere Züchter sehen WurfKit.</div><div class="kx en" style="margin-bottom:1rem">Public profile page. Share link → other breeders discover WurfKit.</div><div class="kx ru" style="margin-bottom:1rem">Публичная страница. Делитесь ссылкой → другие видят WurfKit.</div><div class="km" style="text-align:center;padding:1rem"><div style="width:48px;height:48px;border-radius:50%;background:var(--g2);margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:22px">🦮</div><div style="font-size:.88rem;font-weight:600">Rex vom Waldberg</div><div style="font-size:.72rem;color:var(--t3);margin:4px 0 8px">Dt. Schäferhund · HD A1 · COI 2.8%</div><div style="display:flex;gap:4px;justify-content:center;flex-wrap:wrap"><span class="pb2 xg" style="font-size:7px">V</span><span class="pb2 xb" style="font-size:7px">SchH3</span><span class="pb2 xa" style="font-size:7px">Angekört</span></div><div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--b);font-size:.7rem;color:var(--a);font-weight:500">wurfkit.de/rex-waldberg →</div></div></div>
 </div></div></section>
 
-<section class="fs"><div class="fi">
+<section class="fs rv"><div class="fi">
 <div class="sl de">Alle Funktionen</div><div class="sl en">All features</div><div class="sl ru">Все функции</div>
 <h2 class="de">Alles was Sie brauchen.</h2><h2 class="en">Everything you need.</h2><h2 class="ru">Всё что нужно.</h2>
 <div class="fg">
@@ -482,7 +493,7 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 </div></div></section>
 
 <!-- === SECTION: PRIVACY-MODES (private/link-only/public) === -->
-<section class="pm"><div class="pmi">
+<section class="pm rv"><div class="pmi">
 <div class="sl de">Privat oder öffentlich — Sie entscheiden</div><div class="sl en">Private or public — your choice</div><div class="sl ru">Приватно или публично — выбираете вы</div>
 <h2 class="de">Private Verwaltung. Öffentliche Profile nur auf Wunsch.</h2><h2 class="en">Private workspace. Public profiles only when you want them.</h2><h2 class="ru">Приватная админка. Публичные профили — только если хотите.</h2>
 <p class="ss de">Verwalten Sie Hunde, Würfe, Käufer und Dokumente intern. Wenn Sie möchten, teilen Sie ausgewählte Informationen — über QR-Codes, Welpen-Pakete, Deckrüden-Profile oder ein öffentliches Zwinger-Profil.</p>
@@ -496,7 +507,7 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 </div></section>
 
 <!-- === SECTION: ABOUT === -->
-<section class="about"><div class="abouti">
+<section class="about rv"><div class="abouti">
 <div class="sl de">Hinter WurfKit</div><div class="sl en">About</div><div class="sl ru">О проекте</div>
 <p class="aboutq de">Welpen sind das Schöne. Papierkram ist der Rest. WurfKit übernimmt den Rest.</p>
 <p class="aboutq en">Puppies are the joy. Paperwork is the rest. WurfKit takes the rest.</p>
@@ -505,20 +516,20 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 </div></section>
 
 <!-- === SECTION: FAQ === -->
-<section class="faq"><div class="faqi">
+<section class="faq rv"><div class="faqi">
 <div class="sl de">FAQ</div><div class="sl en">FAQ</div><div class="sl ru">FAQ</div>
 <h2 class="de">Häufige Fragen</h2><h2 class="en">Common questions</h2><h2 class="ru">Частые вопросы</h2>
 <div class="faqlist" id="faqlist"></div>
 </div></section>
 
-<section class="cs">
+<section class="cs rv">
 <div class="sl de">Kontakt</div><div class="sl en">Contact</div><div class="sl ru">Контакт</div>
 <h2 class="de">Fragen?</h2><h2 class="en">Questions?</h2><h2 class="ru">Вопросы?</h2>
 <p class="ss de">Antwort innerhalb von 24 Stunden.</p><p class="ss en">Response within 24 hours.</p><p class="ss ru">Ответим в течение 24 часов.</p>
 <div class="cw"><form name="contact" class="cf"><input type="hidden" name="form-name" value="contact"/><input type="text" name="name" placeholder="Name" required aria-label="Ihr Name"/><input type="email" name="email" placeholder="E-Mail" required aria-label="Ihre E-Mail-Adresse"/><select name="topic" aria-label="Thema der Anfrage"><option value="" disabled selected>Thema</option><option value="feedback">Feedback</option><option value="feature">Feature</option><option value="beta">Beta-Tester</option><option value="breeder">Züchter</option><option value="other">Sonstiges</option></select><textarea name="message" placeholder="Nachricht..." required aria-label="Ihre Nachricht" maxlength="1500"></textarea><button type="submit"><span class="di">Senden</span><span class="ei">Send</span><span class="ri">Отправить</span></button></form></div>
 </section>
 
-<section class="ct">
+<section class="ct rv">
 <h2 class="de">Dabei sein von Anfang an.</h2><h2 class="en">Be there from day one.</h2><h2 class="ru">Будьте в числе первых.</h2>
 <p class="ss de">Frühbucher-Rabatt und erster Zugang.</p><p class="ss en">Early bird discount and first access.</p><p class="ss ru">Скидка и первый доступ.</p>
 <form name="waitlist-cta" class="ctf"><input type="hidden" name="form-name" value="waitlist-cta"/><input type="email" name="email" placeholder="E-Mail" required aria-label="E-Mail-Adresse für Warteliste"/><button type="submit"><span class="di">Vormerken</span><span class="ei">Join</span><span class="ri">Записаться</span></button></form>
@@ -649,6 +660,21 @@ function renderFAQ(){
   }catch(e){/* FAQ render failed — other modules continue */}
 }
 
+// === MODULE: Scroll-Reveal ===
+// Subtle fade-in-up for sections as they enter the viewport. Skips if the
+// browser lacks IntersectionObserver — then content is just immediately visible.
+function initScrollReveal(){
+  try{
+    if(typeof IntersectionObserver==='undefined')return;
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){e.target.classList.add('rev');io.unobserve(e.target)}
+      });
+    },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+  }catch(e){/* fallback: leave .rv as-is, no animation */}
+}
+
 // === MODULE: Modal (data + open/close) ===
 var M={
 kaufvertrag:{
@@ -741,6 +767,7 @@ try{initLang()}catch(e){}
 try{initForms()}catch(e){}
 try{renderFAQ()}catch(e){}
 try{initModal()}catch(e){}
+try{initScrollReveal()}catch(e){}
 
 // === EXPOSE === inline HTML onclick handlers need these globals
 window.setLang=setLang;
