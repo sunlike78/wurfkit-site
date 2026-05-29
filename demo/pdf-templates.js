@@ -343,78 +343,120 @@ function buildWelpenpaketCoverHTML(puppy) {
   `;
 }
 
-// === Ahnentafel page ===
-function buildAhnentafelHTML(puppy) {
+// === Ahnentafel — single-page fixed-slot layout ===
+// Print-template approach: every section is a fixed-height box. Content scales
+// down inside its slot (compact font / dense grid) and overflow within a slot
+// is clipped — so the tree can never physically spill into the next page.
+// Slot heights (sum target ≤ 983px content area = 1123 page - 140 padding):
+//   header (h1 + sub):            85px
+//   Welpe / Wurfstatistik row:   135px
+//   Vater-Linie block:           305px (h2 + 4-col grid, gap 4px)
+//   Mutter-Linie block:          305px
+//   Gemeinsame Vorfahren:         85px (optional, conditional)
+//   Hinweis (disc):               70px
+// Each block is wrapped in `.slot` with explicit height + overflow:hidden so
+// any unexpected oversize is contained, never leaks into the next slot/page.
+function buildAhnentafelPages(puppy) {
   const litter = LITTERS.find(l => l.id === puppy.litterId);
   const dam = DOGS.find(d => d.id === litter.damId);
   const sire = litter.externalSire;
 
-  // Build pedigree using existing data
   const sireTree = buildPedigreeTree({ ...sire, fullName: sire.name }, ANCESTORS);
   const damTree = buildPedigreeTree(dam, ANCESTORS);
   const result = calculateCOI({ ...sire, fullName: sire.name, pedigree: sire.pedigree }, dam, ANCESTORS);
   const commonIds = new Set(result.commonAncestors.map(c => c.id));
 
+  // Compact cell — fits 4 columns x up to 8 rows inside a 305px slot
   function renderCell(node, side) {
-    if (!node) return '<div class="pedigree-cell" style="opacity:.4">—</div>';
+    if (!node) return '<div class="pcell-c" style="opacity:.4">—</div>';
     const cls = commonIds.has(node.id) ? 'common' : side;
     const titles = node.titles && node.titles.length ? node.titles.join(', ') + ' · ' : '';
-    return `<div class="pedigree-cell ${cls}">
-      <div class="nm">${escapeHtml(node.name || '—')}</div>
-      <div class="sub">${titles}${escapeHtml(node.zbNr || '')}${node.hd ? ' · HD ' + escapeHtml(node.hd) : ''}${node.formwert ? ' · ' + escapeHtml(node.formwert) : ''}</div>
+    return `<div class="pcell-c ${cls}">
+      <div class="pcell-n">${escapeHtml(node.name || '—')}</div>
+      <div class="pcell-s">${titles}${escapeHtml(node.zbNr || '')}${node.hd ? ' · HD ' + escapeHtml(node.hd) : ''}${node.formwert ? ' · ' + escapeHtml(node.formwert) : ''}</div>
     </div>`;
   }
 
-  return `
-    <h1>STAMMBAUM-ÜBERSICHT</h1>
-    <div class="sub">${escapeHtml(puppy.fullName)} · ${escapeHtml(litter.breed)} · 3 Generationen</div>
+  const hasCommon = result.commonAncestors && result.commonAncestors.length;
+  // Slot heights — compress conditionally so Hinweis always fits
+  const commonBlock = hasCommon ? `
+    <div class="slot" style="height:80px">
+      <h2 style="margin:0 0 4px;font-size:14px">Gemeinsame Vorfahren</h2>
+      <div style="font-size:10px;color:#1a1a1a;line-height:1.45">
+        ${result.commonAncestors.length} gemeinsamer Vorfahre${result.commonAncestors.length>1?'n':''} zwischen Vater- und Mutterlinie (gelb hervorgehoben), Beiträge zum COI:
+        ${result.commonAncestors.map(c => `<b>${escapeHtml(c.name)}</b> (${(c.contribution * 100).toFixed(2)}%)`).join(' · ')}
+      </div>
+    </div>` : '';
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px">
-      <div>
-        <h3>Welpe</h3>
-        <div class="pedigree-cell" style="background:#D8F3DC;border-color:#52B788;border-width:2px">
-          <div class="nm" style="font-size:13px">${escapeHtml(puppy.name)}</div>
-          <div class="sub">${escapeHtml(puppy.fullName)}<br/>geb. ${formatDateDE(litter.birthDate)} · ${escapeHtml(puppy.color)}<br/>Mikrochip: ${escapeHtml(puppy.microchip)}</div>
+  return [`
+    <style>
+      /* === Slot layout for Ahnentafel A4 page === */
+      .ahnentafel .slot{box-sizing:border-box;overflow:hidden;position:relative}
+      .ahnentafel .pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;height:265px;align-content:start}
+      .ahnentafel .pcol{display:flex;flex-direction:column;gap:3px;min-height:0}
+      .ahnentafel .pcell-c{padding:4px 6px;border:1px solid #D4D4C8;border-radius:3px;background:#F5F5F0;font-size:9px;line-height:1.2;flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+      .ahnentafel .pcell-c.sire{background:#DBEAFE;border-color:#93C5FD}
+      .ahnentafel .pcell-c.dam{background:#FCE7F3;border-color:#F9A8D4}
+      .ahnentafel .pcell-c.common{background:#FEF3C7;border-color:#FCD34D;border-width:1.5px}
+      .ahnentafel .pcell-n{font-weight:600;font-size:9.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .ahnentafel .pcell-s{font-size:8px;color:#71717A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .ahnentafel h2{font-size:14px;margin:0 0 6px}
+      .ahnentafel .head-slot h1{font-size:24px;margin:0}
+      .ahnentafel .head-slot .sub{margin-top:2px}
+    </style>
+    <div class="ahnentafel">
+      <div class="slot head-slot" style="height:70px">
+        <h1>STAMMBAUM-ÜBERSICHT</h1>
+        <div class="sub">${escapeHtml(puppy.fullName)} · ${escapeHtml(litter.breed)} · 3 Generationen</div>
+      </div>
+      <div class="slot" style="height:130px;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div>
+          <h3 style="margin:0 0 5px">Welpe</h3>
+          <div class="pcell-c" style="background:#D8F3DC;border-color:#52B788;border-width:1.5px;font-size:10px">
+            <div class="pcell-n" style="font-size:11px;white-space:normal">${escapeHtml(puppy.name)}</div>
+            <div class="pcell-s" style="white-space:normal;font-size:9px;line-height:1.45">${escapeHtml(puppy.fullName)}<br/>geb. ${formatDateDE(litter.birthDate)} · ${escapeHtml(puppy.color)}<br/>Mikrochip: ${escapeHtml(puppy.microchip)}</div>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin:0 0 5px">Wurfstatistik</h3>
+          <div class="ku" style="grid-template-columns:90px 1fr;font-size:10px;gap:2px 8px">
+            <b>Wurfdatum</b><span>${formatDateDE(litter.birthDate)}</span>
+            <b>Wurfbuchstabe</b><span>${escapeHtml(litter.litterLetter)}</span>
+            <b>Wurfstärke</b><span>${litter.wurfStaerke.total} (${litter.wurfStaerke.male} R, ${litter.wurfStaerke.female} H)</span>
+            <b>COI (Wurf)</b><span>${result.coi.toFixed(2)}% · Rasse-Ø ${BREED_AVG_COI[litter.breed] || 7.1}%</span>
+            <b>Züchter</b><span>${escapeHtml(BREEDER.fullName)}</span>
+          </div>
         </div>
       </div>
-      <div>
-        <h3>Wurfstatistik</h3>
-        <div class="ku" style="grid-template-columns:120px 1fr;font-size:11px">
-          <b>Wurfdatum</b><span>${formatDateDE(litter.birthDate)}</span>
-          <b>Wurfbuchstabe</b><span>${escapeHtml(litter.litterLetter)}</span>
-          <b>Wurfstärke</b><span>${litter.wurfStaerke.total} (${litter.wurfStaerke.male} R, ${litter.wurfStaerke.female} H)</span>
-          <b>COI (Wurf)</b><span>${result.coi.toFixed(2)}% (Rasse-Ø: ${BREED_AVG_COI[litter.breed] || 7.1}%)</span>
-          <b>Züchter</b><span>${escapeHtml(BREEDER.fullName)} (${escapeHtml(BREEDER.kennelName)})</span>
+      <div class="slot" style="height:295px">
+        <h2>Vater (Deckrüde) — Linie</h2>
+        <div class="pgrid">
+          <div class="pcol">${renderCell({ name: sire.name, zbNr: sire.zbNr, hd: sire.hd, formwert: sire.formwert, titles: sire.titles }, 'sire')}</div>
+          <div class="pcol">${sireTree ? renderCell(sireTree.gen1.sire, 'sire') + renderCell(sireTree.gen1.dam, 'sire') : ''}</div>
+          <div class="pcol">${sireTree ? renderCell(sireTree.gen2.pgs, 'sire') + renderCell(sireTree.gen2.pgd, 'sire') + renderCell(sireTree.gen2.mgs, 'sire') + renderCell(sireTree.gen2.mgd, 'sire') : ''}</div>
+          <div class="pcol">${sireTree ? Object.values(sireTree.gen3).map(n => renderCell(n, 'sire')).join('') : ''}</div>
         </div>
       </div>
+      <div class="slot" style="height:295px">
+        <h2>Mutter (Zuchthündin) — Linie</h2>
+        <div class="pgrid">
+          <div class="pcol">${renderCell({ name: dam.fullName, zbNr: dam.zbNr, hd: dam.hd, formwert: dam.formwert }, 'dam')}</div>
+          <div class="pcol">${damTree ? renderCell(damTree.gen1.sire, 'dam') + renderCell(damTree.gen1.dam, 'dam') : ''}</div>
+          <div class="pcol">${damTree ? renderCell(damTree.gen2.pgs, 'dam') + renderCell(damTree.gen2.pgd, 'dam') + renderCell(damTree.gen2.mgs, 'dam') + renderCell(damTree.gen2.mgd, 'dam') : ''}</div>
+          <div class="pcol">${damTree ? Object.values(damTree.gen3).map(n => renderCell(n, 'dam')).join('') : ''}</div>
+        </div>
+      </div>
+      ${commonBlock}
+      <div class="slot" style="${hasCommon ? '' : 'margin-top:6px;'}">
+        <div class="disc" style="font-size:9.5px;padding:8px 12px;margin:0"><b>Hinweis:</b> Diese Stammbaum-Übersicht ist eine <b>Vorbereitung</b> auf die offizielle VDH-Ahnentafel. Die rechtlich verbindliche Ahnentafel mit Zuchtbuchnummer wird vom Zuchtbuchamt des ${escapeHtml(BREEDER.zuchtverein)} ausgestellt.</div>
+      </div>
     </div>
+  `];
+}
 
-    <h2>Vater (Deckrüde) — Linie</h2>
-    <div class="pedigree-grid">
-      <div class="ped-col">${renderCell({ name: sire.name, zbNr: sire.zbNr, hd: sire.hd, formwert: sire.formwert, titles: sire.titles }, 'sire')}</div>
-      <div class="ped-col">${sireTree ? renderCell(sireTree.gen1.sire, 'sire') + renderCell(sireTree.gen1.dam, 'sire') : ''}</div>
-      <div class="ped-col">${sireTree ? renderCell(sireTree.gen2.pgs, 'sire') + renderCell(sireTree.gen2.pgd, 'sire') + renderCell(sireTree.gen2.mgs, 'sire') + renderCell(sireTree.gen2.mgd, 'sire') : ''}</div>
-      <div class="ped-col">${sireTree ? Object.values(sireTree.gen3).map(n => renderCell(n, 'sire')).join('') : ''}</div>
-    </div>
-
-    <h2>Mutter (Zuchthündin) — Linie</h2>
-    <div class="pedigree-grid">
-      <div class="ped-col">${renderCell({ name: dam.fullName, zbNr: dam.zbNr, hd: dam.hd, formwert: dam.formwert }, 'dam')}</div>
-      <div class="ped-col">${damTree ? renderCell(damTree.gen1.sire, 'dam') + renderCell(damTree.gen1.dam, 'dam') : ''}</div>
-      <div class="ped-col">${damTree ? renderCell(damTree.gen2.pgs, 'dam') + renderCell(damTree.gen2.pgd, 'dam') + renderCell(damTree.gen2.mgs, 'dam') + renderCell(damTree.gen2.mgd, 'dam') : ''}</div>
-      <div class="ped-col">${damTree ? Object.values(damTree.gen3).map(n => renderCell(n, 'dam')).join('') : ''}</div>
-    </div>
-
-    ${result.commonAncestors.length ? `
-    <h2>Gemeinsame Vorfahren</h2>
-    <p>Zwischen Vater- und Mutterlinie wurden ${result.commonAncestors.length} gemeinsame Vorfahren identifiziert (gelb hervorgehoben). Diese tragen zum COI-Wert bei.</p>
-    <ul>
-      ${result.commonAncestors.map(c => `<li><b>${escapeHtml(c.name)}</b> · Beitrag: ${(c.contribution * 100).toFixed(2)}%</li>`).join('')}
-    </ul>
-    ` : ''}
-
-    <div class="disc"><b>Hinweis:</b> Diese Stammbaum-Übersicht ist eine <b>Vorbereitung</b> auf die offizielle VDH-Ahnentafel. Die rechtlich verbindliche Ahnentafel mit Zuchtbuchnummer wird vom Zuchtbuchamt des ${escapeHtml(BREEDER.zuchtverein)} ausgestellt.</div>
-  `;
+// Backwards-compat shim for any caller expecting a single HTML blob
+function buildAhnentafelHTML(puppy) {
+  return buildAhnentafelPages(puppy).join(PAGE_BREAK_HTML);
 }
 
 // === Impfübersicht page ===
@@ -610,6 +652,30 @@ async function renderPageToCanvas(htmlContent, opts) {
     setTimeout(resolve, 3000);
   })));
   await new Promise(r => setTimeout(r, 150));
+
+  // === FIT-TO-PAGE SAFETY NET ===
+  // After layout settles, measure: did anything overflow its slot, did the page
+  // itself overflow A4? Log both so any future template change is caught even
+  // without a manual visual check. window.__pdfOverflowWarnings is exposed for
+  // automated E2E to assert against.
+  if (!window.__pdfOverflowWarnings) window.__pdfOverflowWarnings = [];
+  try {
+    const pageInnerH = inner.scrollHeight;
+    const label = (opts.docMeta || 'page') + ' #' + (opts.pageIdx != null ? (opts.pageIdx + 1) : '?');
+    if (pageInnerH > A4_HEIGHT) {
+      const msg = 'PDF overflow: page "' + label + '" content ' + pageInnerH + 'px > A4 ' + A4_HEIGHT + 'px — bottom clipped';
+      console.warn(msg);
+      window.__pdfOverflowWarnings.push({ kind: 'page', label, scrollH: pageInnerH, max: A4_HEIGHT });
+    }
+    const slots = inner.querySelectorAll('.slot');
+    slots.forEach((s, i) => {
+      if (s.scrollHeight > s.clientHeight + 1) {
+        const msg = 'PDF slot overflow on "' + label + '" slot #' + (i + 1) + ': ' + s.scrollHeight + 'px > ' + s.clientHeight + 'px';
+        console.warn(msg);
+        window.__pdfOverflowWarnings.push({ kind: 'slot', label, slotIdx: i + 1, scrollH: s.scrollHeight, max: s.clientHeight });
+      }
+    });
+  } catch (e) { /* measurement is best-effort */ }
 
   // Hard timeout in case html2canvas hangs on font or layout edge-cases
   // (seen in headless puppeteer with complex CSS gradients + position:fixed wrappers).
