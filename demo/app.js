@@ -128,20 +128,33 @@ function escapeHtml(s) {
 }
 
 // Animate stat counter from 0 to value
+// Animate stat counters from 0 → target on first overview view only.
+// Re-running on every goTab('overview') used to race with the previous
+// animation and could leave intermediate values (2/0/4/2 instead of
+// 3/1/5/3) visible during transitions. After the first run the final
+// value is locked via dataset.animated and the guard skips re-anim.
 function animateStats() {
   document.querySelectorAll('.stn').forEach(el => {
     const target = parseInt(el.dataset.target || el.textContent, 10);
     if (isNaN(target)) return;
     el.dataset.target = target;
-    let current = 0;
+    // Already animated once — keep final value, do not re-animate
+    if (el.dataset.animated === '1') {
+      el.textContent = target;
+      return;
+    }
     const start = performance.now();
     const dur = 800;
     function step(now) {
       const p = Math.min((now - start) / dur, 1);
       const eased = 1 - Math.pow(1 - p, 3);
       el.textContent = Math.floor(eased * target);
-      if (p < 1) requestAnimationFrame(step);
-      else el.textContent = target;
+      if (p < 1) {
+        requestAnimationFrame(step);
+      } else {
+        el.textContent = target;
+        el.dataset.animated = '1';
+      }
     }
     requestAnimationFrame(step);
   });
