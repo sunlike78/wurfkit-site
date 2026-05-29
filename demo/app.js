@@ -570,6 +570,69 @@ async function openPDFPreview(type, id) {
   document.getElementById('pdf-prev').innerHTML = buildPreviewHTML(type, id);
 }
 
+// === Ancestor info modal — opens from pedigree SVG cell click ===
+// Lookup ANCESTORS by zbNr (the cell stores zbNr as identifier).
+function findAncestorByZbNr(zbNr) {
+  if (!zbNr) return null;
+  for (const k in ANCESTORS) {
+    if (ANCESTORS[k] && ANCESTORS[k].zbNr === zbNr) return ANCESTORS[k];
+  }
+  return null;
+}
+function openAncestorModal(zbNr) {
+  const a = findAncestorByZbNr(zbNr);
+  const m = document.getElementById('ancestor-modal');
+  if (!m) return;
+  const L = STATE.lang;
+  const labels = {
+    color: { de: 'Farbe', en: 'Color', ru: 'Окрас' },
+    birth: { de: 'Wurftag', en: 'Birth date', ru: 'Дата рождения' },
+    titles: { de: 'Titel', en: 'Titles', ru: 'Титулы' },
+    hd: { de: 'HD', en: 'HD', ru: 'HD' },
+    ed: { de: 'ED', en: 'ED', ru: 'ED' },
+    formwert: { de: 'Formwert', en: 'Conformation', ru: 'Экстерьер' },
+    notFound: { de: 'Daten zu diesem Vorfahren sind in der Demo nicht hinterlegt.', en: 'Demo data for this ancestor is not stored.', ru: 'Данные об этом предке в демо отсутствуют.' },
+    demoNote: { de: 'In der Demo sind Vorfahren statische Beispieldaten. Im Live-Produkt: vollständiges Profil mit Fotos, Würfen, Gesundheits-Dokumenten und Verbindungen zu anderen Hunden Ihres Zwingers.', en: 'In the demo, ancestors are static sample data. In the live product: full profile with photos, litters, health documents and links to other dogs in your kennel.', ru: 'В демо предки — статические тестовые данные. В live-продукте: полный профиль с фотографиями, помётами, документами о здоровье и связями с другими собаками вашего питомника.' }
+  };
+  const get = (k) => labels[k][L] || labels[k].de;
+
+  document.getElementById('anc-name').textContent = (a && a.name) ? a.name : (zbNr || '—');
+  document.getElementById('anc-zbnr').textContent = (a && a.zbNr) ? a.zbNr : '';
+
+  let body = '';
+  if (!a) {
+    body = `<p style="font-size:.85rem;color:var(--t3);line-height:1.6">${get('notFound')}</p>`;
+  } else {
+    const rows = [];
+    if (a.color)    rows.push([get('color'), a.color]);
+    if (a.birth)    rows.push([get('birth'), formatDateDE ? formatDateDE(a.birth) : a.birth]);
+    if (a.titles && a.titles.length) rows.push([get('titles'), a.titles.join(' · ')]);
+    if (a.hd)       rows.push([get('hd'), a.hd]);
+    if (a.ed)       rows.push([get('ed'), a.ed]);
+    if (a.formwert) rows.push([get('formwert'), a.formwert]);
+    body = '<div class="ku" style="display:grid;grid-template-columns:120px 1fr;gap:6px 12px;font-size:.88rem;margin-bottom:1rem">'
+      + rows.map(r => `<b style="color:var(--t3);font-weight:500">${r[0]}</b><span>${escapeHtml(String(r[1]))}</span>`).join('')
+      + '</div>'
+      + `<div style="font-size:.75rem;color:var(--t3);line-height:1.55;padding-top:.85rem;border-top:1px dashed var(--b);font-style:italic">${get('demoNote')}</div>`;
+  }
+  document.getElementById('anc-body').innerHTML = body;
+
+  m.classList.add('open');
+  m.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => { const x = m.querySelector('.mx'); if (x) x.focus(); trapFocus(m); }, 50);
+}
+function closeAncestor() {
+  const m = document.getElementById('ancestor-modal');
+  if (!m) return;
+  releaseTrap(m);
+  m.classList.remove('open');
+  m.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+window.openAncestorModal = openAncestorModal;
+window.closeAncestor = closeAncestor;
+
 function closePDF() {
   const m = document.getElementById('pdf-modal');
   releaseTrap(m);
@@ -621,8 +684,20 @@ function calcCOI() {
   if (!sireDog || !damDog || !sireDog.pedigree || !damDog.pedigree) {
     document.getElementById('coi-value').textContent = 'N/A';
     document.getElementById('coi-status').className = 'coist warn';
-    document.getElementById('coi-status').innerHTML = STATE.lang === 'de' ? 'Stammbaum unvollständig' : STATE.lang === 'en' ? 'Pedigree incomplete' : 'Родословная неполная';
-    document.getElementById('ped-svg').innerHTML = '';
+    document.getElementById('coi-status').innerHTML = STATE.lang === 'de' ? 'Stammbaum nur in dieser Demo unvollständig' : STATE.lang === 'en' ? 'Pedigree incomplete in this demo' : 'В этом демо родословная неполная';
+    // Explain rather than show empty space — clarify the demo-data limit
+    const sireName = sireDog && (sireDog.fullName || sireDog.name) || (STATE.lang === 'ru' ? 'выбранный кобель' : 'selected sire');
+    const damName = damDog && (damDog.fullName || damDog.name) || (STATE.lang === 'ru' ? 'выбранная сука' : 'selected dam');
+    const ph = STATE.lang === 'de'
+      ? `<div class="pedempty"><div class="pedempty-ic">🌳</div><div class="pedempty-h">Für diese Kombination ist in der Demo kein Stammbaum hinterlegt</div><div class="pedempty-t">Nur das Pärchen <b>Apollo vom Sonnenhof × Luna vom Waldberg</b> hat in dieser Demo eine vollständige 3-Generationen-Ahnentafel. Im Live-Produkt importieren Sie Ahnentafeln als PDF oder Foto — unsere KI füllt das Diagramm automatisch.</div></div>`
+      : STATE.lang === 'en'
+      ? `<div class="pedempty"><div class="pedempty-ic">🌳</div><div class="pedempty-h">No pedigree stored for this combination in the demo</div><div class="pedempty-t">Only the pair <b>Apollo vom Sonnenhof × Luna vom Waldberg</b> has a full 3-generation tree in this demo. In the live product you upload Ahnentafels as PDF or photo — our AI fills the diagram automatically.</div></div>`
+      : `<div class="pedempty"><div class="pedempty-ic">🌳</div><div class="pedempty-h">Для этой комбинации в демо родословная не загружена</div><div class="pedempty-t">Только пара <b>Apollo vom Sonnenhof × Luna vom Waldberg</b> имеет полное 3-поколенное дерево в этом демо. В live-продукте вы загружаете родословные в PDF или на фото — наш AI заполняет диаграмму автоматически.</div></div>`;
+    document.getElementById('ped-svg').innerHTML = ph;
+    // Reset the bars to a neutral state so they don't lie about a number
+    const barThis = document.getElementById('bar-this');
+    if (barThis) { barThis.style.width = '0%'; }
+    const bv = document.getElementById('bar-this-v'); if (bv) bv.textContent = '—';
     return;
   }
 

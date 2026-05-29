@@ -24,20 +24,35 @@ function renderPedigreeSVG(sireDog, damDog, ancestorsPool, container) {
 
   let svg = `<svg class="ped" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
 
-  function cell(x, y, node, sideClass, isCommon) {
+  function cell(x, y, node, sideClass, isCommon, opts) {
     if (!node) {
       svg += `<rect x="${x}" y="${y}" width="${cellW}" height="${cellH}" rx="4"/>`;
       svg += `<text x="${x + cellW / 2}" y="${y + cellH / 2 + 3}" text-anchor="middle" fill="#aaa" font-size="10">—</text>`;
       return;
     }
     const cls = isCommon ? 'common' : sideClass;
-    svg += `<rect class="${cls}" x="${x}" y="${y}" width="${cellW}" height="${cellH}" rx="4"/>`;
     const name = node.name || '—';
     const truncName = name.length > 24 ? name.substring(0, 22) + '…' : name;
-    svg += `<text class="t" x="${x + 6}" y="${y + 14}">${escapeXml(truncName)}</text>`;
     const sub = (node.zbNr || '') + (node.hd ? ' · HD ' + node.hd : '') + (node.formwert ? ' · ' + node.formwert : '');
     const truncSub = sub.length > 30 ? sub.substring(0, 28) + '…' : sub;
+
+    // Wrap cell in clickable <g>: parents (Gen 1) → open dog detail;
+    // grandparents / great-grandparents → open ancestor-info modal.
+    // Identifier passed via data attribute. Keyboard accessible via tabindex.
+    const dogId = opts && opts.dogId ? escapeXml(opts.dogId) : '';
+    const zbNr = node.zbNr ? escapeXml(node.zbNr) : '';
+    const action = dogId
+      ? `onclick="goTab('overview');openDogDetail('${dogId}')"`
+      : zbNr
+        ? `onclick="openAncestorModal('${zbNr}')"`
+        : '';
+    const titleTxt = escapeXml(name) + (node.zbNr ? ' — ' + escapeXml(node.zbNr) : '');
+    svg += `<g class="pcell" tabindex="0" role="button" aria-label="${titleTxt}" ${action} onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.dispatchEvent(new MouseEvent('click'))}">`;
+    svg += `<title>${titleTxt}</title>`;
+    svg += `<rect class="${cls}" x="${x}" y="${y}" width="${cellW}" height="${cellH}" rx="4"/>`;
+    svg += `<text class="t" x="${x + 6}" y="${y + 14}">${escapeXml(truncName)}</text>`;
     svg += `<text class="s" x="${x + 6}" y="${y + 27}">${escapeXml(truncSub)}</text>`;
+    svg += `</g>`;
   }
 
   function line(x1, y1, x2, y2) {

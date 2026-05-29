@@ -44,8 +44,11 @@ header{background:var(--surf);border-bottom:1px solid var(--b);position:sticky;t
 .ls{display:flex;background:var(--surf2);border:1px solid var(--b);border-radius:99px;overflow:hidden}
 .lb{padding:.3rem .7rem;font-size:.7rem;font-weight:600;color:var(--t3);transition:all .15s;letter-spacing:.5px}
 .lb.active{background:var(--p);color:#fff}
-.bk{font-size:.78rem;color:var(--t3);padding:.4rem .8rem;border-radius:99px;border:1px solid var(--b);transition:all .15s}
+.bk{font-size:.78rem;color:var(--t3);padding:.4rem .8rem;border-radius:99px;border:1px solid var(--b);transition:all .15s;display:inline-flex;align-items:center;gap:5px}
 .bk:hover{border-color:var(--p);color:var(--p)}
+.bk-home{color:var(--p);border-color:rgba(45,106,79,.25);background:rgba(45,106,79,.04)}
+.bk-home:hover{background:rgba(45,106,79,.1)}
+.bk-ico{font-size:.85rem;line-height:1}
 
 /* Banner */
 .bn{background:linear-gradient(135deg,var(--pp),#EBF7EE);border-bottom:1px solid var(--b);padding:.6rem 1.25rem;text-align:center;font-size:.78rem;color:var(--pd);font-weight:500}
@@ -321,6 +324,20 @@ h3{font-size:1rem;font-weight:600;margin-bottom:.5rem}
 
 /* Pedigree SVG */
 .pedw{margin-top:1.5rem;background:var(--surf);border:1px solid var(--b);border-radius:var(--r);padding:1.25rem;overflow-x:auto;-webkit-overflow-scrolling:touch;position:relative}
+.pedhint{display:flex;gap:.85rem;background:linear-gradient(135deg,#F0FDF4,#ECFDF5);border:1px solid #D8F3DC;border-radius:10px;padding:.85rem 1rem;margin:.5rem 0 1.25rem}
+.pedhint-ic{font-size:1.25rem;flex-shrink:0;line-height:1.2}
+.pedhint-h{font-size:.85rem;font-weight:600;color:var(--p);margin-bottom:.25rem;line-height:1.35}
+.pedhint-t{font-size:.78rem;color:var(--t2);line-height:1.55}
+/* SVG cell hover/focus state for clickable ancestors */
+svg.ped .pcell{cursor:pointer}
+svg.ped .pcell rect{transition:filter .15s,stroke-width .15s}
+svg.ped .pcell:hover rect,svg.ped .pcell:focus rect{filter:brightness(.94);stroke-width:2.2}
+svg.ped .pcell:focus{outline:none}
+/* Empty-pedigree placeholder in COI calculator */
+.pedempty{padding:2rem 1.5rem;text-align:center;background:var(--g);border:1px dashed var(--b);border-radius:10px;margin:.5rem 0}
+.pedempty-ic{font-size:2rem;opacity:.5;margin-bottom:.5rem}
+.pedempty-h{font-size:.95rem;font-weight:600;color:var(--t);margin-bottom:.4rem}
+.pedempty-t{font-size:.82rem;color:var(--t2);line-height:1.55;max-width:520px;margin:0 auto}
 .pedw::after{content:'';position:absolute;top:0;right:0;bottom:0;width:24px;background:linear-gradient(90deg,transparent,var(--surf));pointer-events:none;border-radius:0 var(--r) var(--r) 0}
 .pedt{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:500;margin-bottom:1rem;letter-spacing:-.01em}
 .pedt::after{content:'⇄';float:right;color:var(--t3);font-size:.85rem;font-weight:400;opacity:.7}
@@ -370,9 +387,10 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
 /* Mobile-first responsive */
 @media(max-width:768px){
   .cnt{padding:1.25rem 1rem}
-  .bk .de,.bk .en,.bk .ru{display:none}
-  .bk::before{content:'←'}
-  .bk{padding:.5rem .7rem;font-size:1rem;line-height:1}
+  /* On mobile keep only icons in the two header links to save space */
+  .bk-home .bk-tx,.bk-exit .bk-tx{display:none}
+  .bk-home,.bk-exit{padding:.45rem .65rem;font-size:1rem;line-height:1}
+  .bk-home .bk-ico,.bk-exit .bk-ico{font-size:1rem}
   .ddh{grid-template-columns:1fr;text-align:center;padding:1.25rem}
   .dxa{width:120px;height:120px;font-size:54px}
   .kv{grid-template-columns:1fr}
@@ -448,21 +466,27 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
 
 <header>
 <div class="hd">
-  <a href="index.html" class="lg" aria-label="WurfKit Home"><b>Wurf</b>Kit<span class="sub"><span class="de">Demo</span><span class="en">Demo</span><span class="ru">Демо</span></span></a>
+  <a href="#" onclick="goTab('overview');return false" class="lg" aria-label="Übersicht"><b>Wurf</b>Kit<span class="sub"><span class="de">Demo</span><span class="en">Demo</span><span class="ru">Демо</span></span></a>
   <div class="hr">
+    <a href="#" onclick="goTab('overview');return false" class="bk bk-home" aria-label="Übersicht">
+      <span class="bk-ico">🏠</span><span class="bk-tx"><span class="de">Übersicht</span><span class="en">Overview</span><span class="ru">Обзор</span></span>
+    </a>
     <div class="ls" role="group" aria-label="Sprache">
       <button class="lb active" id="btn-de" onclick="setLang('de')" aria-pressed="true">DE</button>
       <button class="lb" id="btn-en" onclick="setLang('en')" aria-pressed="false">EN</button>
       <button class="lb" id="btn-ru" onclick="setLang('ru')" aria-pressed="false">RU</button>
     </div>
-    <a href="index.html" class="bk" aria-label="Zurück zur Hauptseite">←&nbsp;<span class="de">Hauptseite</span><span class="en">Home</span><span class="ru">На сайт</span></a>
+    <a href="index.html" class="bk bk-exit" aria-label="Demo verlassen — zur Marketingseite wurfkit.de">
+      <span class="bk-tx">wurfkit.de</span><span class="bk-ico">↗</span>
+    </a>
   </div>
 </div>
 </header>
 
 <div class="bn">
-  <span class="de"><b>Demo-Modus.</b> Alle Daten sind erfunden. Maria Schmidt &laquo;vom Waldberg&raquo; existiert nicht. Probiere alle Funktionen aus.</span>
-  <span class="en"><b>Demo mode.</b> All data is fictional. Maria Schmidt &laquo;vom Waldberg&raquo; does not exist. Try all features.</span>
+  <span class="de"><b>Demo mit Beispieldaten.</b> Sie können hier die wichtigsten Abläufe mit vorbereiteten Daten (Zwinger «vom Waldberg») durchspielen. Funktionen wie eigene Hunde anlegen, Ahnentafel-Import, Erinnerungen und Käufer-Versand sind im Live-Produkt mit Ihrem Konto verfügbar.</span>
+  <span class="en"><b>Demo with sample data.</b> Walk through the main flows with prepared data (kennel «vom Waldberg»). Features like adding your own dogs, Ahnentafel import, reminders and buyer dispatch are available in the live product with your account.</span>
+  <span class="ru"><b>Демо с примерными данными.</b> Здесь можно пройти основные сценарии на подготовленных данных (питомник «vom Waldberg»). Добавление своих собак, импорт родословных, напоминания и отправка покупателям — в live-продукте после регистрации.</span>
   <span class="ru"><b>Демо-режим.</b> Все данные вымышленные. Питомник Maria Schmidt &laquo;vom Waldberg&raquo; не существует. Попробуйте все функции.</span>
 </div>
 
@@ -599,6 +623,13 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
 
       <div class="pedw">
         <div class="pedt"><span class="de">Stammbaum (3 Generationen)</span><span class="en">Pedigree (3 generations)</span><span class="ru">Родословная (3 поколения)</span></div>
+        <div class="pedhint">
+          <div class="pedhint-ic">💡</div>
+          <div>
+            <div class="pedhint-h"><span class="de">Klick auf einen Vorfahren — alle Daten ansehen.</span><span class="en">Click any ancestor to see all data.</span><span class="ru">Кликните на любого предка — увидите все данные.</span></div>
+            <div class="pedhint-t"><span class="de">Im Live-Produkt: Ahnentafel als PDF oder Foto hochladen → unsere KI erkennt Namen, ZB-Nr. und Generationen automatisch. Manuell ergänzen jederzeit möglich. Bereits importierte Vorfahren werden zwischen Zwingern wiederverwendet — die Datenbank wächst gemeinsam.</span><span class="en">Live product: upload Ahnentafel as PDF or photo → our AI extracts names, registration numbers and generations automatically. Manual edits any time. Already-imported ancestors are shared across kennels — the database grows together.</span><span class="ru">В live-продукте: загружаете родословную в PDF или на фото → AI распознаёт имена, ZB-номера и поколения автоматически. Редактирование вручную всегда доступно. Уже импортированные предки переиспользуются между питомниками — база растёт сообща.</span></div>
+          </div>
+        </div>
         <div id="ped-svg"></div>
         <div style="display:flex;gap:1rem;font-size:.78rem;color:var(--t3);margin-top:.75rem;flex-wrap:wrap">
           <span style="display:inline-flex;align-items:center;gap:6px"><span style="display:inline-block;width:14px;height:14px;background:#DBEAFE;border:1px solid #93C5FD;border-radius:3px"></span><span class="de">Vorfahren Rüde</span><span class="en">Sire ancestors</span><span class="ru">Предки кобеля</span></span>
@@ -662,6 +693,18 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
   <div class="ml">
     <button class="mx" onclick="closePuppy()" aria-label="Close">✕</button>
     <div id="puppy-detail"></div>
+  </div>
+</div>
+
+<!-- Ancestor info modal: opens when user clicks any cell in the pedigree SVG -->
+<div class="mo" id="ancestor-modal" role="dialog" aria-modal="true" aria-labelledby="anc-name" aria-hidden="true" onclick="if(event.target===this)closeAncestor()">
+  <div class="ml">
+    <button class="mx" onclick="closeAncestor()" aria-label="Schließen">✕</button>
+    <div class="mh">
+      <div class="mt" id="anc-name">—</div>
+      <div class="mss" id="anc-zbnr">—</div>
+    </div>
+    <div class="mb" id="anc-body"></div>
   </div>
 </div>
 
