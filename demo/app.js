@@ -570,6 +570,37 @@ async function openPDFPreview(type, id) {
   document.getElementById('pdf-prev').innerHTML = buildPreviewHTML(type, id);
 }
 
+// === Account & Settings modal — opens from header "Mein Konto" button ===
+function openSettings() {
+  const m = document.getElementById('settings-modal');
+  if (!m) return;
+  m.classList.add('open');
+  m.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => { const x = m.querySelector('.mx'); if (x) x.focus(); trapFocus(m); }, 50);
+}
+function closeSettings() {
+  const m = document.getElementById('settings-modal');
+  if (!m) return;
+  releaseTrap(m);
+  m.classList.remove('open');
+  m.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+function saveSettings() {
+  const el = document.getElementById('set-saved');
+  if (!el) return;
+  const L = STATE.lang;
+  el.textContent = L === 'de' ? '✓ Im Live-Produkt würden Ihre Änderungen jetzt mit Ihrem Konto gespeichert.'
+                 : L === 'en' ? '✓ In the live product your changes would now be saved to your account.'
+                              : '✓ В live-продукте ваши изменения сейчас сохранились бы в вашем аккаунте.';
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3500);
+}
+window.openSettings = openSettings;
+window.closeSettings = closeSettings;
+window.saveSettings = saveSettings;
+
 // === Ancestor info modal — opens from pedigree SVG cell click ===
 // Lookup ANCESTORS by zbNr (the cell stores zbNr as identifier).
 function findAncestorByZbNr(zbNr) {

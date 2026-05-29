@@ -49,6 +49,34 @@ header{background:var(--surf);border-bottom:1px solid var(--b);position:sticky;t
 .bk-home{color:var(--p);border-color:rgba(45,106,79,.25);background:rgba(45,106,79,.04)}
 .bk-home:hover{background:rgba(45,106,79,.1)}
 .bk-ico{font-size:.85rem;line-height:1}
+.bk-acc{background:transparent;font:inherit;cursor:pointer}
+.bk-acc:hover{background:rgba(45,106,79,.06)}
+.acc-av{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#2D6A4F,#52B788);color:#fff;font-weight:700;font-size:.7rem;letter-spacing:.5px}
+.acc-av-lg{width:56px;height:56px;font-size:1.1rem;flex-shrink:0}
+/* Settings modal */
+.ml-wide{max-width:680px}
+.setdemo{background:linear-gradient(135deg,#F0FDF4,#ECFDF5);border:1px solid #D8F3DC;border-radius:8px;padding:.7rem .9rem;font-size:.78rem;color:#1B4332;margin-bottom:1.25rem;line-height:1.5}
+.setgrid{display:flex;flex-direction:column;gap:1.25rem}
+.setblock{background:var(--surf);border:1px solid var(--b);border-radius:10px;padding:1rem 1.15rem}
+.seth{font-size:.92rem;font-weight:600;color:var(--ink);margin:0 0 .8rem;letter-spacing:-.01em}
+.setlbl{font-size:.7rem;color:var(--t3);font-weight:500;letter-spacing:.3px;text-transform:uppercase;margin:.5rem 0 .25rem;display:block}
+.setin{width:100%;padding:.55rem .75rem;border:1px solid var(--b);border-radius:6px;font-family:inherit;font-size:.85rem;background:#fff;color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s;box-sizing:border-box}
+.setin:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(45,106,79,.12)}
+.setrow{display:flex;gap:.85rem;align-items:flex-start}
+.setsub{font-size:.75rem;color:var(--t3);margin:0 0 .55rem;line-height:1.5}
+.setchk,.setrad{display:flex;align-items:flex-start;gap:.6rem;padding:.45rem 0;font-size:.82rem;color:var(--ink);cursor:pointer}
+.setchk input,.setrad input{margin-top:2px;cursor:pointer;accent-color:var(--p);flex-shrink:0}
+.setchk input:disabled+span,.setrad input:disabled+div{opacity:.55}
+.setbadge{display:inline-block;background:rgba(45,106,79,.12);color:var(--p);font-size:.62rem;font-weight:700;padding:1px 7px;border-radius:99px;letter-spacing:.5px;margin-left:4px;vertical-align:middle}
+.planrow{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem}
+.plan{padding:.7rem .5rem;background:var(--g);border:1px solid var(--b);border-radius:8px;text-align:center;position:relative;font-size:.78rem}
+.plan-active{background:linear-gradient(135deg,rgba(45,106,79,.08),rgba(82,183,136,.04));border-color:var(--p)}
+.pln{font-weight:600;color:var(--ink);margin-bottom:.15rem}
+.plp{color:var(--t3);font-size:.78rem}
+.plactive{position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--p);color:#fff;font-size:.58rem;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:.5px}
+.setsaved{font-size:.78rem;color:var(--p);text-align:center;margin-top:.6rem;height:1.2em;font-weight:500;opacity:0;transition:opacity .25s}
+.setsaved.show{opacity:1}
+@media(max-width:600px){.planrow{grid-template-columns:repeat(2,1fr)}.ml-wide{max-width:96vw}}
 
 /* Banner */
 .bn{background:linear-gradient(135deg,var(--pp),#EBF7EE);border-bottom:1px solid var(--b);padding:.6rem 1.25rem;text-align:center;font-size:.78rem;color:var(--pd);font-weight:500}
@@ -74,11 +102,15 @@ main{flex:1;padding-bottom:96px}
 /* Tab nav */
 nav.tabs{position:fixed;bottom:0;left:0;right:0;background:var(--surf);border-top:1px solid var(--b);box-shadow:0 -2px 12px rgba(0,0,0,.04);z-index:40}
 .tbi{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
-.tb{padding:.6rem .25rem;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--t3);transition:color .15s,transform .2s;font-size:.65rem;font-weight:600;letter-spacing:.3px;background:transparent;border:none;cursor:pointer;font-family:inherit;border-radius:8px}
-.tb:hover{color:var(--p);background:rgba(45,106,79,.06)}
-.tb:hover svg{transform:translateY(-2px)}
+.tb{padding:.6rem .25rem;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--t3);transition:color .2s,background .2s,transform .25s;font-size:.65rem;font-weight:600;letter-spacing:.3px;background:transparent;border:none;cursor:pointer;font-family:inherit;border-radius:8px;position:relative}
+.tb:hover{color:var(--p);background:rgba(45,106,79,.08);transform:translateY(-1px)}
+.tb:hover svg{transform:translateY(-3px) scale(1.08)}
+.tb:active{transform:translateY(0) scale(.97)}
 .tb.active{color:var(--p)}
-.tb svg{width:22px;height:22px;stroke-width:1.8;transition:transform .2s}
+.tb.active svg{animation:tabPulse 2.4s ease-in-out infinite}
+.tb svg{width:22px;height:22px;stroke-width:1.8;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+@keyframes tabPulse{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.5px)}}
+@media (prefers-reduced-motion: reduce){.tb.active svg{animation:none}.tb:hover svg,.tb:hover{transform:none}}
 
 /* Sections */
 section.tabview{display:none}
@@ -478,6 +510,10 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
       <button class="lb" id="btn-en" onclick="setLang('en')" aria-pressed="false">EN</button>
       <button class="lb" id="btn-ru" onclick="setLang('ru')" aria-pressed="false">RU</button>
     </div>
+    <button type="button" class="bk bk-acc" onclick="openSettings()" aria-label="Mein Konto und Einstellungen">
+      <span class="acc-av">MS</span>
+      <span class="bk-tx"><span class="de">Mein Konto</span><span class="en">My account</span><span class="ru">Аккаунт</span></span>
+    </button>
     <a href="index.html" class="bk bk-exit" aria-label="Demo verlassen — zur Marketingseite wurfkit.de">
       <span class="bk-tx">wurfkit.de</span><span class="bk-ico">↗</span>
     </a>
@@ -695,6 +731,94 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
   <div class="ml">
     <button class="mx" onclick="closePuppy()" aria-label="Close">✕</button>
     <div id="puppy-detail"></div>
+  </div>
+</div>
+
+<!-- Account & Settings modal: opens from the "Mein Konto" button in the header -->
+<div class="mo" id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="set-title" aria-hidden="true" onclick="if(event.target===this)closeSettings()">
+  <div class="ml ml-wide">
+    <button class="mx" onclick="closeSettings()" aria-label="Schließen">✕</button>
+    <div class="mh">
+      <div class="mt" id="set-title"><span class="de">Mein Konto</span><span class="en">My account</span><span class="ru">Аккаунт</span></div>
+      <div class="mss"><span class="de">Profil, Benachrichtigungen, Zwinger-Profil und Abonnement</span><span class="en">Profile, notifications, kennel profile and subscription</span><span class="ru">Профиль, уведомления, профиль питомника и подписка</span></div>
+    </div>
+    <div class="mb">
+      <!-- Demo banner inside the modal — consistent demo-mode framing -->
+      <div class="setdemo">
+        <span class="de"><b>Demo:</b> Sie können hier alles ausfüllen und ändern. Im Live-Produkt werden Änderungen mit Ihrem Konto gespeichert.</span>
+        <span class="en"><b>Demo:</b> You can fill in and change anything here. In the live product changes are saved to your account.</span>
+        <span class="ru"><b>Демо:</b> Здесь можно всё заполнить и поменять. В live-продукте изменения сохраняются в вашем аккаунте.</span>
+      </div>
+
+      <div class="setgrid">
+        <!-- Profile -->
+        <section class="setblock">
+          <h3 class="seth"><span class="de">Profil</span><span class="en">Profile</span><span class="ru">Профиль</span></h3>
+          <div class="setrow">
+            <div class="acc-av acc-av-lg" aria-hidden="true">MS</div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:.5rem">
+              <input class="setin" type="text" value="Maria Schmidt" aria-label="Name"/>
+              <input class="setin" type="email" value="maria@vom-waldberg.de" aria-label="E-Mail"/>
+              <input class="setin" type="tel" value="+49 89 12345678" aria-label="Telefon"/>
+            </div>
+          </div>
+        </section>
+
+        <!-- Zwinger -->
+        <section class="setblock">
+          <h3 class="seth"><span class="de">Zwinger &amp; Adresse</span><span class="en">Kennel &amp; address</span><span class="ru">Питомник и адрес</span></h3>
+          <label class="setlbl"><span class="de">Zwingername (FCI/VDH-geschützt)</span><span class="en">Kennel name</span><span class="ru">Имя питомника</span></label>
+          <input class="setin" type="text" value="vom Waldberg"/>
+          <label class="setlbl"><span class="de">Anschrift</span><span class="en">Address</span><span class="ru">Адрес</span></label>
+          <input class="setin" type="text" value="Schwanthalerstraße 42"/>
+          <div style="display:grid;grid-template-columns:80px 1fr;gap:.5rem">
+            <input class="setin" type="text" value="80336" aria-label="PLZ"/>
+            <input class="setin" type="text" value="München" aria-label="Ort"/>
+          </div>
+          <label class="setlbl"><span class="de">Verein / Mitglieds-Nr.</span><span class="en">Club / member no.</span><span class="ru">Клуб / номер</span></label>
+          <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:.5rem">
+            <input class="setin" type="text" value="Deutscher Retriever Club e.V. (DRC)"/>
+            <input class="setin" type="text" value="DRC-12345"/>
+          </div>
+        </section>
+
+        <!-- Notifications -->
+        <section class="setblock">
+          <h3 class="seth"><span class="de">Benachrichtigungen</span><span class="en">Notifications</span><span class="ru">Уведомления</span></h3>
+          <p class="setsub"><span class="de">Wie sollen Sie an Termine erinnert werden?</span><span class="en">How should reminders reach you?</span><span class="ru">Как получать напоминания?</span></p>
+          <label class="setchk"><input type="checkbox" checked/><span class="de">📧 E-Mail an maria@vom-waldberg.de</span><span class="en">📧 Email to maria@vom-waldberg.de</span><span class="ru">📧 Email на maria@vom-waldberg.de</span></label>
+          <label class="setchk"><input type="checkbox" checked/><span class="de">🔔 Browser-Push (PWA)</span><span class="en">🔔 Browser push (PWA)</span><span class="ru">🔔 Push в браузере (PWA)</span></label>
+          <label class="setchk"><input type="checkbox"/><span class="de">📅 iCal-Abo für Google/Apple Kalender</span><span class="en">📅 iCal subscription for Google/Apple Calendar</span><span class="ru">📅 iCal для Google/Apple Calendar</span></label>
+          <label class="setchk"><input type="checkbox" disabled/><span class="de">💬 WhatsApp <span class="setbadge">Pro</span></span><span class="en">💬 WhatsApp <span class="setbadge">Pro</span></span><span class="ru">💬 WhatsApp <span class="setbadge">Pro</span></span></label>
+          <label class="setchk"><input type="checkbox" disabled/><span class="de">📱 SMS <span class="setbadge">Pro</span></span><span class="en">📱 SMS <span class="setbadge">Pro</span></span><span class="ru">📱 SMS <span class="setbadge">Pro</span></span></label>
+        </section>
+
+        <!-- Zwinger-Sichtbarkeit -->
+        <section class="setblock">
+          <h3 class="seth"><span class="de">Zwinger-Profil Sichtbarkeit</span><span class="en">Kennel profile visibility</span><span class="ru">Видимость профиля</span></h3>
+          <label class="setrad"><input type="radio" name="vis" value="private"/><div><b><span class="de">Privat</span><span class="en">Private</span><span class="ru">Приватно</span></b><div class="setsub"><span class="de">Nur in Ihrem Dashboard</span><span class="en">Only in your dashboard</span><span class="ru">Только в dashboard</span></div></div></label>
+          <label class="setrad"><input type="radio" name="vis" value="link" checked/><div><b><span class="de">Per Link</span><span class="en">Link-only</span><span class="ru">По ссылке</span></b><div class="setsub"><span class="de">QR an Käufer, nicht in Google indexiert</span><span class="en">QR for buyers, not indexed</span><span class="ru">QR покупателям, не в поиске</span></div></div></label>
+          <label class="setrad"><input type="radio" name="vis" value="public" disabled/><div><b><span class="de">Öffentlich</span><span class="en">Public</span><span class="ru">Публично</span></b> <span class="setbadge">Pro</span><div class="setsub"><span class="de">Indexierbares Zwinger-Profil, Deckrüden-Marketing</span><span class="en">Indexable kennel profile</span><span class="ru">Индексируемый профиль</span></div></div></label>
+        </section>
+
+        <!-- Subscription -->
+        <section class="setblock">
+          <h3 class="seth"><span class="de">Abonnement</span><span class="en">Subscription</span><span class="ru">Подписка</span></h3>
+          <div class="planrow">
+            <div class="plan"><div class="pln"><span class="de">Free</span><span class="en">Free</span><span class="ru">Free</span></div><div class="plp">€ 0</div></div>
+            <div class="plan plan-active"><div class="pln">Starter</div><div class="plp">€ 9,99</div><div class="plactive"><span class="de">Aktiv</span><span class="en">Active</span><span class="ru">Активен</span></div></div>
+            <div class="plan"><div class="pln">Standard</div><div class="plp">€ 14,99</div></div>
+            <div class="plan"><div class="pln">Pro</div><div class="plp">€ 24,99</div></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="btn-row" style="margin-top:1.25rem">
+        <button class="btn primary" onclick="saveSettings()"><span class="de">Änderungen speichern</span><span class="en">Save changes</span><span class="ru">Сохранить</span></button>
+        <button class="btn secondary" onclick="closeSettings()"><span class="de">Schließen</span><span class="en">Close</span><span class="ru">Закрыть</span></button>
+      </div>
+      <div class="setsaved" id="set-saved" aria-live="polite"></div>
+    </div>
   </div>
 </div>
 

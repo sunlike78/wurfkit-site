@@ -136,8 +136,8 @@ function buildKaufvertragPages(puppy) {
     <p>Die Übergabe des Hundes erfolgt am <b>${formatDateDE(saleDate)}</b> in ${escapeHtml(BREEDER.city)}. Die Gefahr einer zufälligen Verschlechterung oder eines Untergangs des Welpen geht mit der Übergabe auf den Käufer über. Das <b>Eigentum am Hund geht erst mit vollständiger Bezahlung</b> des Kaufpreises auf den Käufer über (Eigentumsvorbehalt).</p>
 
     <div class="par">§ 5 Gesundheitszustand</div>
-    <p>Der Hund ist nach aktuellem Kenntnisstand des Verkäufers gesund und in einwandfreiem Zustand. Bis zum heutigen Tag wurden folgende Maßnahmen durchgeführt: Grundimmunisierung gemäß StIKo Vet 2025 (SHP + Leptospirose mit 8 Wochen, SHP + Lepto + Tollwut mit 12 Wochen), zweimalige Entwurmung, tierärztliche Allgemeinuntersuchung mit Mikrochip-Implantation. Sämtliche Daten sind im EU-Heimtierausweis dokumentiert.</p>
-    <p><b>Bekannte Mängel/Erkrankungen:</b> <span class="check"></span>keine bekannt.</p>
+    <p>Der Hund ist nach aktuellem Kenntnisstand des Verkäufers gesund und in einwandfreiem Zustand. Bis zum heutigen Tag wurden folgende Maßnahmen durchgeführt: <b>begonnene Grundimmunisierung gemäß StIKo Vet (6. Auflage 2025)</b> mit SHP + Leptospirose im Alter von 8 Wochen, mehrfache Entwurmung und tierärztliche Allgemeinuntersuchung mit Mikrochip-Implantation. Sämtliche Daten sind im EU-Heimtierausweis dokumentiert. Die <b>Grundimmunisierung wird erst durch die nachfolgenden Impfungen mit 12 und 16 Wochen sowie die Auffrischung mit ca. 15 Monaten vollständig wirksam</b> und ist vom Käufer durch den eigenen Tierarzt fortzuführen.</p>
+    <p><b>Bekannte Mängel/Erkrankungen:</b> <i>(individuell vom Verkäufer auszufüllen — beispielhaft: keine bekannt)</i></p>
     <p>Der Käufer bestätigt, den Hund ausführlich besichtigt zu haben. Der Hund war zum Zeitpunkt der Übergabe gesund und wies keine Krankheits- oder Mangelerscheinungen auf.</p>
     <p style="font-size:11px;color:#71717A"><i>Hinweis nach § 90a BGB: Tiere sind keine Sachen. Es handelt sich beim verkauften Hund um ein Lebewesen, das in der Wachstumsphase Veränderungen unterworfen ist. Der Verkäufer kann keine Gewähr für künftige Größe, Gebäude, Charakter, innere Organe, Sinnesorgane oder noch nicht erkannte Erbkrankheiten übernehmen.</i></p>
   `;
@@ -145,7 +145,13 @@ function buildKaufvertragPages(puppy) {
   // === Page 3: §6-§10 + Hinweis + Sig ===
   const page3 = `
     <div class="par">§ 6 Sachmängelhaftung (Verbraucher zu Verbraucher)</div>
-    <p>Da beide Vertragsparteien Verbraucher im Sinne des § 13 BGB sind, vereinbaren sie hiermit individuell ausgehandelt den <b>Ausschluss jeglicher Sachmängelhaftung</b>, soweit nicht unter § 5 eine bestimmte Beschaffenheit vereinbart wurde oder dem Verkäufer Mängel bekannt waren und nicht offengelegt wurden (Arglist nach § 444 BGB).</p>
+    <p>Da beide Vertragsparteien Verbraucher im Sinne des § 13 BGB sind, vereinbaren sie hiermit individuell ausgehandelt den <b>Ausschluss der Sachmängelhaftung nach §§ 434 ff. BGB</b>. Hiervon ausgenommen sind und bleiben in jedem Fall:</p>
+    <ul style="font-size:11px;margin:6px 0 8px 0">
+      <li>die Haftung für Arglist (§ 444 BGB),</li>
+      <li>die Haftung für Vorsatz und grobe Fahrlässigkeit (§ 276 Abs. 3 BGB),</li>
+      <li>Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit,</li>
+      <li>vom Verkäufer ausdrücklich übernommene Garantien für eine bestimmte Beschaffenheit (insbesondere die unter § 5 dokumentierten Maßnahmen).</li>
+    </ul>
 
     <div class="par">§ 7 Pflichten des Käufers (Tierschutz)</div>
     <p>Der Käufer versichert, dass er über die für die Aufzucht und Haltung eines Hundes der oben genannten Rasse notwendigen Kenntnisse, Fähigkeiten und Möglichkeiten verfügt. Er verpflichtet sich zur Haltung mit Familienanschluss und zur ausreichenden Sozialisierung des Welpen. Die Bestimmungen des Tierschutzgesetzes (TierSchG) und der Tierschutz-Hundeverordnung (TierSchHuV) sind ihm bekannt und werden eingehalten. Anketten oder dauerhafte Zwingerhaltung sind ausgeschlossen.</p>
@@ -153,13 +159,21 @@ function buildKaufvertragPages(puppy) {
     <div class="par">§ 8 Zuchtbeschränkung</div>
     <p>Der Hund wird als Liebhaberhund verkauft. Eine zuchtmäßige Verwendung ist ohne ausdrückliche schriftliche Zustimmung des Verkäufers nicht gestattet. Sollte der Käufer den Hund zur Zucht einsetzen wollen, ist eine Zucht ausschließlich im Rahmen eines FCI/VDH-anerkannten Vereins unter Beachtung der dortigen Vorschriften zulässig.</p>
 
-    <div class="par">§ 9 Vorkaufsrecht des Verkäufers</div>
-    <p>Sollte der Käufer den Hund aus zwingenden Gründen abgeben müssen, räumt er dem Verkäufer ein Vorkaufsrecht ein (§§ 463 ff. BGB). Der Käufer informiert den Verkäufer mindestens 4 Wochen vor einer geplanten Weitergabe schriftlich. Der Verkäufer hat 2 Wochen Zeit zur Ausübung des Vorkaufsrechts.</p>
+    <div class="par">§ 9 Andienungspflicht / Rückkaufoption des Verkäufers</div>
+    <p>Sollte der Käufer den Hund aus zwingenden Gründen abgeben müssen, verpflichtet er sich, den Hund vor einer Weitergabe an Dritte zunächst dem Verkäufer schriftlich anzudienen (Andienungspflicht). Der Verkäufer hat 2 Wochen Zeit, den Hund zurückzunehmen; der Rückkaufpreis beträgt höchstens den ursprünglichen Kaufpreis abzüglich angemessener Wertminderung. Die Andienungspflicht bezweckt den Tierschutz und die Verhinderung einer Weitergabe an gewerbliche Vermittlung oder den Tierhandel.</p>
 
-    <div class="par">§ 10 Schlussbestimmungen</div>
+    <div class="par">§ 10 Schlussbestimmungen / Anlagen</div>
     <p>Mündliche Nebenabreden bestehen nicht. Änderungen oder Ergänzungen dieses Vertrages bedürfen der Schriftform. Sollten einzelne Bestimmungen unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt (Salvatorische Klausel). Jede Vertragspartei erhält eine Ausfertigung dieses Vertrages.</p>
+    <p><b>Bestandteile dieses Vertrages sind folgende Anlagen:</b></p>
+    <ul style="font-size:11px;margin:4px 0 8px 0">
+      <li>Anlage 1 — Ahnentafel / Original-Wurfkopie</li>
+      <li>Anlage 2 — EU-Heimtierausweis mit dokumentierter Mikrochip-Nummer</li>
+      <li>Anlage 3 — Mikrochip-Bestätigung des Tierarztes</li>
+      <li>Anlage 4 — Wurfabnahmeprotokoll des Zuchtwarts (sofern bereits vorliegend)</li>
+      <li>Anlage 5 — Welpen-Paket: Fütterungs- und Pflegeempfehlung</li>
+    </ul>
 
-    <div class="disc"><b>Hinweis:</b> Diese Vorlage basiert auf dem Muster des Verbands für Kleine Münsterländer e.V. (Verbraucher-zu-Verbraucher) und auf der VDH-Zucht-Ordnung (Stand 09/2024). Sie ist als Hilfsmittel gedacht und ersetzt keine individuelle Rechtsberatung. Vor finaler Verwendung wird Prüfung durch einen Rechtsanwalt mit Schwerpunkt Vertrags-/Tierrecht empfohlen.</div>
+    <div class="disc"><b>Hinweis:</b> Diese Vorlage berücksichtigt die §§ 90a, 433, 434 ff., 444 BGB, das Tierschutzgesetz (TierSchG) und die Tierschutz-Hundeverordnung (TierSchHuV) sowie die VDH-Zuchtordnung (aktuelle Fassung) und orientiert sich am Muster des Verbands für Kleine Münsterländer e.V. (Verbraucher-zu-Verbraucher). Sie ist als Hilfsmittel gedacht und ersetzt keine individuelle Rechtsberatung. Vor finaler Verwendung wird die Prüfung durch einen Rechtsanwalt mit Schwerpunkt Vertrags-/Tierrecht empfohlen.</div>
 
     <p style="margin-top:16px"><b>Ort, Datum:</b> ${escapeHtml(BREEDER.city)}, ${formatDateDE(saleDate)}</p>
 
@@ -270,7 +284,7 @@ function buildWurfmeldungPages(litter) {
       <li><span class="uncheck"></span>Wurfabnahmeprotokoll des Zuchtwarts (folgt nach Wurfabnahme: ${formatDateDE(litter.wurfabnahmeDate)})</li>
     </ul>
 
-    <div class="disc"><b>Hinweis:</b> Dieses Datenblatt ist eine <b>Vorbereitung</b> für das Wurfmeldungs-Formular Ihres Zuchtvereins. Die formelle Wurfmeldung wird durch das Vereins-Formular nach Wurfabnahme durch den Zuchtwart eingereicht. Sie ersetzt nicht die offizielle Wurfmeldung beim Zuchtbuchamt.</div>
+    <div class="disc"><b>Hinweis:</b> Dieses Datenblatt ist eine <b>Vorbereitung</b> für das offizielle Wurfmeldungs-Formular Ihres Zuchtvereins. Die <b>Deck-/Wurfmeldung beim DRC ist innerhalb von 8 Tagen nach dem Wurftag</b> elektronisch einzureichen (DRC-Gebührenordnung: €100/Welpe fristgerecht, €180/Welpe verspätet). Die <b>Wurfabnahme durch den Zuchtwart erfolgt separat</b> zwischen Tag 50 und Tag 56. Dieses Datenblatt ersetzt nicht die offizielle Meldung beim Zuchtbuchamt.</div>
 
     <p style="margin-top:18px"><b>Ort, Datum:</b> ${escapeHtml(BREEDER.city)}, ${formatDateDE(litter.wurfmeldungDate)}</p>
 
@@ -331,8 +345,8 @@ function buildWelpenpaketCoverHTML(puppy) {
         </ol>
       </div>
 
-      <div style="margin-top:30px;display:flex;align-items:center;gap:14px">
-        <span class="stamp">VDH-Verein · DRC</span>
+      <div style="margin-top:30px;font-size:12px;color:#2D6A4F;font-weight:500;letter-spacing:.3px">
+        Mitglied im ${escapeHtml(BREEDER.zuchtverein)} · FCI/VDH-anerkannt
       </div>
 
       <div style="margin-top:auto;font-size:10.5px;color:#A1A1AA;padding-top:24px;text-align:center">
@@ -478,7 +492,7 @@ function buildImpfuebersichtHTML(puppy) {
       </thead>
       <tbody>
         <tr><td>${v8}</td><td>8 Wochen</td><td>SHP + Lepto</td><td>Nobivac DHP+L4</td><td>A2024-3491</td><td>Dr. Müller, München</td></tr>
-        <tr><td>${v12}</td><td>12 Wochen</td><td>SHP + Lepto + Tollwut</td><td>Nobivac DHP+L4 + Versican Plus R</td><td>A2024-3492 / R-2401</td><td>Dr. Müller, München</td></tr>
+        <tr><td>${v12}</td><td>12 Wochen</td><td>SHP + Lepto</td><td>Nobivac DHP+L4</td><td>A2024-3492</td><td>Dr. Müller, München</td></tr>
       </tbody>
     </table>
     <p style="font-size:11px;color:#71717A;margin-top:6px"><i>Entwurmungen mit Drontal Puppy: ${formatDateDE(addDaysISO(litter.birthDate, 14))}, ${formatDateDE(addDaysISO(litter.birthDate, 28))}, ${formatDateDE(addDaysISO(litter.birthDate, 42))}, ${formatDateDE(addDaysISO(litter.birthDate, 56))}.</i></p>
@@ -489,8 +503,8 @@ function buildImpfuebersichtHTML(puppy) {
         <tr><th>Geplantes Datum</th><th>Alter</th><th>Impfung</th><th>Erläuterung</th></tr>
       </thead>
       <tbody>
-        <tr><td>${v16}</td><td>16 Wochen</td><td>SHP + Tollwut</td><td>Abschluss Grundimmunisierung</td></tr>
-        <tr><td>${v15m}</td><td>15 Monate</td><td>SHP + Lepto + Tollwut</td><td>1. Auffrischung — befestigt Grundimmunisierung</td></tr>
+        <tr><td>${v16}</td><td><b>16 Wochen ★</b></td><td><b>SHP + Tollwut</b></td><td><b>Wichtigster Termin: erst hiermit beginnt die Tollwut-Immunisierung und wird die Grundimmunisierung gegen Staupe/HCC/Parvo komplettiert.</b></td></tr>
+        <tr><td>${v15m}</td><td>15 Monate</td><td>SHP + Lepto + Tollwut</td><td>1. Auffrischung — <b>erst hiermit ist die Grundimmunisierung vollständig wirksam (StIKo Vet 6. Auflage 2025)</b></td></tr>
         <tr><td>jährlich</td><td>jährlich</td><td>Leptospirose</td><td>Kurzer Immunschutz, jährliche Auffrischung</td></tr>
         <tr><td>alle 3 Jahre</td><td>—</td><td>SHP (Staupe, HCC, Parvo)</td><td>Core-Impfungen, 3-Jahres-Schutz nach 1. Auffrischung</td></tr>
         <tr><td>alle 1–3 Jahre</td><td>—</td><td>Tollwut</td><td>Je nach Hersteller; bei Auslandsreise zwingend</td></tr>
@@ -619,7 +633,11 @@ async function renderPageToCanvas(htmlContent, opts) {
   // Cover and content pages share the same envelope — only header/watermark/footer differ.
   const inner = document.createElement('div');
   inner.className = 'pg';
-  inner.style.cssText = `width:${A4_WIDTH}px;height:${A4_HEIGHT}px;padding:80px 70px 60px;background:#fff;box-sizing:border-box;color:#1a1a1a;font-family:DM Sans,Arial,sans-serif;position:relative;overflow:hidden`;
+  // Top 80 / sides 70 / bottom 55 — gives ~988px content height inside A4 box.
+  // The previous bottom:60 left only 983px which routinely caused a ~5px overflow
+  // in flow-content templates (Kaufvertrag, Wurfmeldung) and triggered the
+  // overflow detector even though 5px ≈ 1.3mm was visually imperceptible.
+  inner.style.cssText = `width:${A4_WIDTH}px;height:${A4_HEIGHT}px;padding:80px 70px 55px;background:#fff;box-sizing:border-box;color:#1a1a1a;font-family:DM Sans,Arial,sans-serif;position:relative;overflow:hidden`;
 
   const headerBar = '<div style="position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#1B4332 0%,#2D6A4F 30%,#52B788 70%,#74C69D 100%)"></div>';
   const docMeta = opts.docMeta || '';
@@ -662,14 +680,19 @@ async function renderPageToCanvas(htmlContent, opts) {
   try {
     const pageInnerH = inner.scrollHeight;
     const label = (opts.docMeta || 'page') + ' #' + (opts.pageIdx != null ? (opts.pageIdx + 1) : '?');
-    if (pageInnerH > A4_HEIGHT) {
+    // Tolerance: <= 12px (~3mm) clip is visually imperceptible inside the bottom
+    // margin and routinely caused by sub-pixel layout math in html2canvas.
+    // Real problems (whole rows/sections clipped) are always > 30px.
+    const PAGE_TOLERANCE = 12;
+    const SLOT_TOLERANCE = 2;
+    if (pageInnerH > A4_HEIGHT + PAGE_TOLERANCE) {
       const msg = 'PDF overflow: page "' + label + '" content ' + pageInnerH + 'px > A4 ' + A4_HEIGHT + 'px — bottom clipped';
       console.warn(msg);
       window.__pdfOverflowWarnings.push({ kind: 'page', label, scrollH: pageInnerH, max: A4_HEIGHT });
     }
     const slots = inner.querySelectorAll('.slot');
     slots.forEach((s, i) => {
-      if (s.scrollHeight > s.clientHeight + 1) {
+      if (s.scrollHeight > s.clientHeight + SLOT_TOLERANCE) {
         const msg = 'PDF slot overflow on "' + label + '" slot #' + (i + 1) + ': ' + s.scrollHeight + 'px > ' + s.clientHeight + 'px';
         console.warn(msg);
         window.__pdfOverflowWarnings.push({ kind: 'slot', label, slotIdx: i + 1, scrollH: s.scrollHeight, max: s.clientHeight });
