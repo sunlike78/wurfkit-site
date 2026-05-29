@@ -159,7 +159,33 @@ h3{font-size:1rem;font-weight:600;margin-bottom:.5rem}
 .sub2{color:var(--t2);font-size:.92rem;margin-bottom:1.5rem}
 
 /* Stats row */
+/* Outcome-first action block — "what's ready right now" instead of inventory */
+.oc{background:linear-gradient(135deg,#F0FDF4 0%,#ECFDF5 100%);border:1px solid #D8F3DC;border-radius:var(--r);padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 1px 3px rgba(45,106,79,.05)}
+.oc-hd{margin-bottom:1.25rem}
+.oc-lab{font-size:.65rem;font-weight:700;color:var(--p);letter-spacing:2px;margin-bottom:.4rem;display:flex;align-items:center;gap:6px}
+.oc-lab::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--p);box-shadow:0 0 0 4px rgba(45,106,79,.18)}
+.oc-h{font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;font-weight:500;color:var(--ink);margin:0 0 .35rem;letter-spacing:-.01em;line-height:1.2}
+.oc-sub{font-size:.85rem;color:var(--t2);margin:0;line-height:1.5}
+.oc-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
+.oc-card{background:var(--surf);border:1px solid var(--b);border-radius:10px;padding:.95rem 1rem;display:flex;align-items:center;gap:.75rem;text-align:left;cursor:pointer;font:inherit;transition:all .2s;box-shadow:0 1px 2px rgba(0,0,0,.03);width:100%}
+.oc-card:hover{transform:translateY(-2px);border-color:var(--p);box-shadow:0 6px 18px rgba(45,106,79,.12)}
+.oc-card.oc-primary{background:linear-gradient(135deg,var(--p),#52B788);color:#fff;border-color:transparent}
+.oc-card.oc-primary:hover{box-shadow:0 8px 22px rgba(45,106,79,.32)}
+.oc-card.oc-primary .oc-mt{color:rgba(255,255,255,.85)}
+.oc-card.oc-primary .oc-ar{color:#fff}
+.oc-ic{width:36px;height:36px;border-radius:8px;background:rgba(45,106,79,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.oc-card.oc-primary .oc-ic{background:rgba(255,255,255,.18)}
+.oc-tx{flex:1;min-width:0}
+.oc-nm{font-size:.92rem;font-weight:600;line-height:1.25;margin-bottom:2px}
+.oc-mt{font-size:.72rem;color:var(--t3);line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.oc-ar{font-size:1.15rem;color:var(--t3);flex-shrink:0;transition:transform .2s}
+.oc-card:hover .oc-ar{transform:translateX(3px)}
+@media(max-width:780px){.oc-actions{grid-template-columns:1fr;gap:.55rem}.oc-h{font-size:1.25rem}.oc{padding:1.2rem}}
+
 .st{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1.5rem}
+.st-compact .sti{padding:.7rem .85rem}
+.st-compact .stn{font-size:1.5rem}
+.st-compact .stl{font-size:.62rem}
 .sti{background:var(--surf);border:1px solid var(--b);border-radius:var(--r);padding:1rem;box-shadow:var(--sh);text-align:left}
 .sti-btn{font:inherit;color:inherit;cursor:pointer;width:100%;display:block;text-align:left}
 .sti-btn:hover{border-color:var(--p);transform:translateY(-3px);box-shadow:var(--sh2);background:linear-gradient(135deg,var(--surf),var(--pp))}
@@ -230,6 +256,9 @@ h3{font-size:1rem;font-weight:600;margin-bottom:.5rem}
 .btn.ghost{color:var(--p);background:transparent;padding:.5rem .8rem}
 .btn.ghost:hover{background:var(--pp)}
 .btn-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+.skip-prev{display:flex;align-items:flex-start;gap:.5rem;margin-top:.85rem;padding-top:.85rem;border-top:1px solid var(--b);font-size:.78rem;color:var(--t3);cursor:pointer;user-select:none}
+.skip-prev input{margin-top:2px;cursor:pointer;accent-color:var(--p)}
+.skip-prev:hover{color:var(--t2)}
 
 /* Checklist (Zuchtprüfung) */
 .chk{display:flex;flex-direction:column;gap:.4rem}
@@ -448,7 +477,44 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
         <span class="ru">Maria Schmidt · Питомник «vom Waldberg» · München · VDH 12345</span>
       </p>
 
-      <div class="st">
+      <!-- Outcome-first action block: "what's ready right now" instead of inventory -->
+      <div class="oc">
+        <div class="oc-hd">
+          <div class="oc-ti">
+            <div class="oc-lab"><span class="de">WURF «A» IST BEREIT</span><span class="en">LITTER «A» IS READY</span><span class="ru">ПОМЁТ «A» ГОТОВ</span></div>
+            <h2 class="oc-h"><span class="de">5 Welpen · 3 Dokumente · 1 Klick</span><span class="en">5 puppies · 3 documents · 1 click</span><span class="ru">5 щенков · 3 документа · 1 клик</span></h2>
+            <p class="oc-sub"><span class="de">Luna × Apollo, Wurftag 12.01.2026. Aaron, Ben, Caro, Diego, Elsa — alle Unterlagen sind vorbereitet.</span><span class="en">Luna × Apollo, whelp date 2026-01-12. Aaron, Ben, Caro, Diego, Elsa — all documents prepared.</span><span class="ru">Luna × Apollo, дата рождения 12.01.2026. Aaron, Ben, Caro, Diego, Elsa — все документы готовы.</span></p>
+          </div>
+        </div>
+        <div class="oc-actions">
+          <button class="oc-card oc-primary" type="button" onclick="openPDFPreview('welpenpaket','aaron')">
+            <div class="oc-ic">📦</div>
+            <div class="oc-tx">
+              <div class="oc-nm"><span class="de">Welpen-Paket erstellen</span><span class="en">Generate puppy packet</span><span class="ru">Собрать Welpen-Paket</span></div>
+              <div class="oc-mt"><span class="de">PDF + QR-Code für Aaron · 5 Welpen verfügbar</span><span class="en">PDF + QR for Aaron · 5 puppies available</span><span class="ru">PDF + QR для Aaron · 5 щенков</span></div>
+            </div>
+            <span class="oc-ar">→</span>
+          </button>
+          <button class="oc-card" type="button" onclick="openPDFPreview('wurfmeldung','w1')">
+            <div class="oc-ic">📋</div>
+            <div class="oc-tx">
+              <div class="oc-nm"><span class="de">Wurfmeldung öffnen</span><span class="en">Open litter registration</span><span class="ru">Wurfmeldung</span></div>
+              <div class="oc-mt"><span class="de">DRC e.V. · 5 Welpen · vorbereitet</span><span class="en">DRC e.V. · 5 puppies · ready</span><span class="ru">DRC e.V. · 5 щенков · готово</span></div>
+            </div>
+            <span class="oc-ar">→</span>
+          </button>
+          <button class="oc-card" type="button" onclick="goTab('coi')">
+            <div class="oc-ic">🧬</div>
+            <div class="oc-tx">
+              <div class="oc-nm"><span class="de">Zuchtprüfung</span><span class="en">Breeding check</span><span class="ru">Допуск к разведению</span></div>
+              <div class="oc-mt"><span class="de">COI 3.2% · HD/ED ✓ · ZTP ✓</span><span class="en">COI 3.2% · HD/ED ✓ · ZTP ✓</span><span class="ru">COI 3.2% · HD/ED ✓ · ZTP ✓</span></div>
+            </div>
+            <span class="oc-ar">→</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="st st-compact">
         <button class="sti sti-btn" onclick="goTab('overview');document.querySelector('.dl')?.scrollIntoView({behavior:'smooth',block:'start'})" type="button"><div class="stn" id="st-dogs">3</div><div class="stl"><span class="de">Hunde</span><span class="en">Dogs</span><span class="ru">Собаки</span></div></button>
         <button class="sti sti-btn" onclick="goTab('litters')" type="button"><div class="stn" id="st-litters">1</div><div class="stl"><span class="de">Würfe</span><span class="en">Litters</span><span class="ru">Помёты</span></div></button>
         <button class="sti sti-btn" onclick="goTab('litters')" type="button"><div class="stn" id="st-pups">5</div><div class="stl"><span class="de">Welpen</span><span class="en">Puppies</span><span class="ru">Щенки</span></div></button>
@@ -547,7 +613,7 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
 <!-- Mobile sticky CTA: keeps "Warteliste sichern" within reach when scrolling demo -->
 <a href="/#signup" class="stickycta" aria-label="Frühzugang sichern — zur Warteliste">
   <span class="icon">▶</span>
-  <span class="label"><span class="de">Frühzugang sichern · zur Warteliste</span><span class="en">Reserve early access · join waitlist</span><span class="ru">Записаться в waitlist</span></span>
+  <span class="label"><span class="de">Frühzugang sichern</span><span class="en">Reserve early access</span><span class="ru">Записаться в waitlist</span></span>
   <span class="arrow">→</span>
 </a>
 
@@ -583,6 +649,10 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
         <button class="btn primary" id="pdf-dl" onclick="downloadPDF()">📄&nbsp;<span class="de">PDF herunterladen</span><span class="en">Download PDF</span><span class="ru">Скачать PDF</span></button>
         <button class="btn secondary" onclick="closePDF()"><span class="de">Schließen</span><span class="en">Close</span><span class="ru">Закрыть</span></button>
       </div>
+      <label class="skip-prev">
+        <input type="checkbox" id="pdf-skip-prev" onchange="setSkipPreview(this.checked)"/>
+        <span><span class="de">Vorschau überspringen — beim nächsten Mal direkt herunterladen</span><span class="en">Skip preview — go straight to download next time</span><span class="ru">Пропускать превью — в следующий раз скачивать сразу</span></span>
+      </label>
     </div>
   </div>
 </div>

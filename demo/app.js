@@ -513,8 +513,26 @@ function docAction(i) {
 }
 
 // ===== PDF preview =====
+// Skip-preview preference (per-browser, persists across sessions).
+// Toggled via checkbox in the PDF modal footer; reset by ticking it off again.
+function getSkipPreview() {
+  try { return localStorage.getItem('wk-skip-pdf-preview') === '1'; } catch (e) { return false; }
+}
+function setSkipPreview(checked) {
+  try { localStorage.setItem('wk-skip-pdf-preview', checked ? '1' : '0'); } catch (e) {}
+}
+window.setSkipPreview = setSkipPreview;
+
 async function openPDFPreview(type, id) {
   STATE.currentPDF = { type, id };
+
+  // Skip-preview shortcut: jump straight to download without opening the modal
+  if (getSkipPreview()) {
+    try { await PDFLibs(); } catch (e) { console.warn('PDF libs load failed:', e); }
+    if (typeof downloadPDF === 'function') await downloadPDF();
+    return;
+  }
+
   const m = document.getElementById('pdf-modal');
   const titles = {
     kaufvertrag: { de: 'Welpen-Kaufvertrag', en: 'Puppy Purchase Contract', ru: 'Договор купли-продажи' },
@@ -523,6 +541,10 @@ async function openPDFPreview(type, id) {
   };
   document.getElementById('pdf-mt').textContent = titles[type][STATE.lang] || titles[type].de;
   document.getElementById('pdf-mss').textContent = STATE.lang === 'de' ? 'Vorschau · Klick «PDF herunterladen» für echtes PDF' : STATE.lang === 'en' ? 'Preview · Click «Download PDF» for actual PDF' : 'Превью · Нажмите «Скачать PDF» для реального PDF';
+
+  // Restore skip-preview checkbox state from localStorage so the user sees their current setting
+  const skipBox = document.getElementById('pdf-skip-prev');
+  if (skipBox) skipBox.checked = getSkipPreview();
 
   const loadingTxt = STATE.lang === 'de' ? 'Lade Vorschau…' : STATE.lang === 'en' ? 'Loading preview…' : 'Загрузка превью…';
   document.getElementById('pdf-prev').innerHTML = '<div style="padding:80px 40px;text-align:center;color:#888;font-size:14px">' + loadingTxt + '</div>';
