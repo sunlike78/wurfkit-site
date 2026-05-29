@@ -54,6 +54,18 @@ header{background:var(--surf);border-bottom:1px solid var(--b);position:sticky;t
 /* Layout */
 main{flex:1;padding-bottom:96px}
 @media(max-width:520px){main{padding-bottom:88px}}
+
+/* Mobile sticky CTA — keeps "back to landing + waitlist" within reach
+   while user explores demo. Hidden on desktop where the back link in the
+   header is already easy to reach. */
+.stickycta{display:none;position:fixed;bottom:68px;left:12px;right:12px;z-index:50;background:linear-gradient(135deg,#2D6A4F,#52B788);color:#fff;text-decoration:none;border-radius:14px;padding:.85rem 1rem;font-size:.85rem;font-weight:600;letter-spacing:-.01em;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 10px 28px rgba(45,106,79,.4),0 2px 6px rgba(0,0,0,.15)}
+.stickycta .icon{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:rgba(255,255,255,.18);border-radius:50%;font-size:.75rem;flex-shrink:0}
+.stickycta .arrow{font-size:1.1rem;transition:transform .2s;flex-shrink:0}
+.stickycta:hover{transform:translateY(-1px);box-shadow:0 14px 32px rgba(45,106,79,.5)}
+.stickycta:hover .arrow{transform:translateX(3px)}
+.stickycta .label{flex:1;line-height:1.25}
+@media(max-width:780px){.stickycta{display:flex}main{padding-bottom:158px}}
+@media(max-width:520px){.stickycta{bottom:64px;padding:.75rem .9rem;font-size:.8rem}main{padding-bottom:150px}}
 .cnt{max-width:1200px;margin:0 auto;padding:1.5rem 1.25rem}
 
 /* Tab nav */
@@ -531,6 +543,13 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
     </div>
   </section>
 </main>
+
+<!-- Mobile sticky CTA: keeps "Warteliste sichern" within reach when scrolling demo -->
+<a href="/#signup" class="stickycta" aria-label="Frühzugang sichern — zur Warteliste">
+  <span class="icon">▶</span>
+  <span class="label"><span class="de">Frühzugang sichern · zur Warteliste</span><span class="en">Reserve early access · join waitlist</span><span class="ru">Записаться в waitlist</span></span>
+  <span class="arrow">→</span>
+</a>
 
 <nav class="tabs" role="navigation" aria-label="Hauptnavigation">
 <div class="tbi">

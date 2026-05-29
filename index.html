@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://script.google.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://script.google.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>WurfKit – Welpen-Unterlagen in Minuten statt Stunden | Online-Plattform für VDH-Züchter</title>
 <meta name="description" content="WurfKit ist die Online-Plattform für VDH-Hundezüchter: Kaufvertrag, Wurfmeldung und Welpen-Paket automatisch generieren. COI berechnen, Zuchtzulassung prüfen. Direkt im Browser, ohne Installation. Auf Deutsch.">
@@ -79,6 +79,8 @@ h1 em{color:var(--a);font-style:italic}
 @keyframes hctaGlow{0%,100%{box-shadow:0 12px 32px rgba(52,211,153,.32),0 4px 10px rgba(52,211,153,.18),inset 0 1px 0 rgba(255,255,255,.4)}50%{box-shadow:0 12px 36px rgba(52,211,153,.5),0 4px 12px rgba(52,211,153,.28),inset 0 1px 0 rgba(255,255,255,.5)}}
 .hcta-info{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;color:var(--t3);font-weight:500}
 .hcta-dot{width:6px;height:6px;border-radius:50%;background:var(--a);animation:p 2s infinite}
+.hcta-trust{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;color:var(--t3);font-weight:500;margin-top:-2px;opacity:.85}
+.hcta-trust span:first-child{font-size:.85rem;opacity:.85}
 .hf input{flex:1;padding:.85rem 1.1rem;border:1.5px solid var(--b);border-radius:var(--rs);font-family:inherit;font-size:.88rem;background:var(--s);color:var(--t);outline:none;transition:border-color .2s}
 .hf input:focus{border-color:var(--a)}.hf input::placeholder{color:var(--t3)}
 .hf button{background:var(--a);color:var(--bg);border:none;border-radius:var(--rs);padding:.85rem 1.5rem;font-family:inherit;font-size:.88rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s}
@@ -90,6 +92,41 @@ h2{font-family:'Instrument Serif',serif;font-size:clamp(1.9rem,4.5vw,2.8rem);fon
 .ss{font-size:.95rem;color:var(--t2);text-align:center;max-width:540px;margin:0 auto 3.5rem;line-height:1.65;font-weight:300}
 /* === COMPONENT: SCREEN-MOCKUPS (.ps + .pcd + .pbc browser-chrome) === */
 .ps{padding:6rem 1.5rem;display:flex;flex-direction:column;align-items:center}
+/* Wide desktop mockup — anchors the "web-first" signal above the 4 phone-shaped cards */
+.dtm{width:100%;max-width:780px;background:var(--s);border-radius:12px;border:1px solid var(--b);overflow:hidden;box-shadow:0 28px 80px rgba(0,0,0,.5),0 0 40px var(--gw2);margin:0 auto 3rem;transition:transform .3s,box-shadow .3s}
+.dtm:hover{transform:translateY(-4px);box-shadow:0 32px 88px rgba(0,0,0,.55),0 0 60px var(--gw)}
+.dtm-body{display:grid;grid-template-columns:160px 1fr;min-height:340px}
+.dtm-side{background:#0f0f12;border-right:1px solid var(--b);padding:14px 10px;display:flex;flex-direction:column;gap:2px}
+.dtm-logo{font-family:'Instrument Serif',serif;font-size:1.05rem;font-weight:400;color:var(--t);letter-spacing:-.02em;padding:4px 8px 14px;border-bottom:1px solid var(--b);margin-bottom:8px}
+.dtm-logo b{color:var(--a)}
+.dtm-nav{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:6px;font-size:.78rem;color:var(--t2);cursor:pointer;transition:background .15s}
+.dtm-nav .ico{font-size:.95rem;width:18px;text-align:center}
+.dtm-nav.active{background:rgba(52,211,153,.12);color:var(--a)}
+.dtm-nav:hover{background:var(--g)}
+.dtm-main{padding:18px 22px;display:flex;flex-direction:column}
+.dtm-top{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:14px;border-bottom:1px solid var(--b)}
+.dtm-title{font-family:'Instrument Serif',serif;font-size:1.35rem;font-weight:400;letter-spacing:-.01em}
+.dtm-sub{font-size:.7rem;color:var(--t3);margin-top:2px}
+.dtm-userpill{display:flex;align-items:center;gap:6px;background:var(--g);border:1px solid var(--b);padding:4px 10px;border-radius:99px;font-size:.7rem;color:var(--t2)}
+.dtm-userpill::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--a)}
+.dtm-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px;flex:1}
+.dtm-card{background:var(--g);border:1px solid var(--b);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px;transition:all .2s}
+.dtm-card:hover{border-color:rgba(52,211,153,.4);background:var(--g2)}
+.dtm-card .ic{width:32px;height:32px;border-radius:8px;background:var(--g2);display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:2px}
+.dtm-card .nm{font-size:.82rem;font-weight:600;color:var(--t);line-height:1.25}
+.dtm-card .mt{font-size:.66rem;color:var(--t3);line-height:1.45;flex:1}
+.dtm-card .btn{margin-top:8px;background:var(--a);color:var(--bg);font-size:.7rem;font-weight:600;padding:6px 10px;border-radius:6px;text-align:center;letter-spacing:.2px}
+.dtm-card.featured{background:linear-gradient(135deg,rgba(52,211,153,.12),rgba(52,211,153,.04));border-color:rgba(52,211,153,.3)}
+.dtm-card.featured .nm{color:var(--a)}
+@media(max-width:780px){
+  .dtm{max-width:100%}
+  .dtm-body{grid-template-columns:1fr;min-height:auto}
+  .dtm-side{flex-direction:row;overflow-x:auto;border-right:none;border-bottom:1px solid var(--b);padding:8px;gap:4px}
+  .dtm-logo{border-bottom:none;border-right:1px solid var(--b);padding:4px 12px 4px 4px;margin:0 4px 0 0;font-size:.95rem}
+  .dtm-nav{flex-shrink:0;padding:6px 10px;font-size:.7rem}
+  .dtm-main{padding:14px}
+  .dtm-cards{grid-template-columns:1fr;gap:8px}
+}
 .prw{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
 .pw{display:flex;flex-direction:column;align-items:center}
 .pcd{width:235px;background:var(--s);border-radius:12px;border:1px solid var(--b);overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);transition:transform .3s,box-shadow .3s}
@@ -233,6 +270,18 @@ section,.hero,.ps,.pas,.ks,.ds,.fs,.cs,.ct{overflow-x:hidden;max-width:100vw}
 .fic{width:36px;height:36px;background:var(--g2);border-radius:var(--rx);display:flex;align-items:center;justify-content:center;margin-bottom:.8rem;font-size:16px}
 .fti{font-size:.88rem;font-weight:500;margin-bottom:.4rem}.ftx{font-size:.78rem;color:var(--t3);line-height:1.65}
 .fn{display:inline-block;background:var(--a);color:var(--bg);font-size:.55rem;font-weight:700;padding:1px 6px;border-radius:99px;margin-left:5px;vertical-align:middle;letter-spacing:.5px}
+.fn-soon{background:rgba(250,204,21,.18);color:#FACC15;border:1px solid rgba(250,204,21,.35)}
+/* === COMPONENT: PRIVACY-MODES === */
+.pm{padding:6rem 1.5rem;background:linear-gradient(180deg,var(--bg) 0%,#0d0d10 100%);border-top:1px solid var(--b);border-bottom:1px solid var(--b)}
+.pmi{max-width:1000px;margin:0 auto}
+.pmg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:3rem}
+.pmc{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:1.8rem 1.5rem;text-align:left;transition:all .25s}
+.pmc:hover{border-color:rgba(52,211,153,.3);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.pmh{width:46px;height:46px;background:var(--g2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:1rem}
+.pmt{font-family:'Instrument Serif',serif;font-size:1.5rem;font-weight:400;letter-spacing:-.01em;margin-bottom:.6rem;display:flex;align-items:center;gap:8px}
+.pmb{background:rgba(52,211,153,.18);color:var(--a);font-size:.58rem;font-weight:700;padding:2px 9px;border-radius:99px;letter-spacing:1.5px;border:1px solid rgba(52,211,153,.25);vertical-align:middle}
+.pmx{font-size:.85rem;color:var(--t2);line-height:1.65;font-weight:300}
+@media(max-width:780px){.pm{padding:4rem 1rem}.pmg{grid-template-columns:1fr;gap:10px}.pmc{padding:1.4rem}}
 /* === COMPONENT: FAQ === */
 .faq{padding:6rem 1.5rem;background:var(--s);border-top:1px solid var(--b);border-bottom:1px solid var(--b)}
 .faqi{max-width:760px;margin:0 auto}
@@ -316,6 +365,7 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 <div class="hctas">
   <a href="demo.html" class="hcta-primary"><span class="hcta-icon">▶</span><span><span class="di">Live-Demo öffnen</span><span class="ei">Open live demo</span><span class="ri">Открыть демо</span></span><span class="hcta-arrow">→</span></a>
   <div class="hcta-info"><span class="hcta-dot"></span><span class="di">Im Browser · keine Installation · echte PDFs</span><span class="ei">In browser · no install · real PDFs</span><span class="ri">В браузере · без установки · реальные PDF</span></div>
+  <div class="hcta-trust"><span>🔒</span><span class="di">Persönlicher Bereich · DSGVO-konform · Daten in der EU</span><span class="ei">Personal workspace · DSGVO-compliant · data hosted in the EU</span><span class="ri">Личный кабинет · DSGVO · данные в ЕС</span></div>
 </div>
 
 <div style="margin:2.5rem auto 0;max-width:480px;padding:1.25rem 1.5rem;background:var(--g);border:1px solid var(--b);border-radius:var(--r)">
@@ -327,8 +377,54 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 
 <section class="ps">
 <div class="sl de">So sieht WurfKit aus</div><div class="sl en">WurfKit in action</div><div class="sl ru">Как выглядит WurfKit</div>
-<h2 class="de">Vier Bereiche. Alles, was ein Züchter braucht.</h2><h2 class="en">Four areas. Everything a breeder needs.</h2><h2 class="ru">Четыре раздела. Всё, что нужно заводчику.</h2>
-<p class="ss de">Von der Übersicht bis zum fertigen Welpen-Paket.</p><p class="ss en">From overview to finished puppy packet.</p><p class="ss ru">От обзора питомника до готового пакета щенка.</p>
+<h2 class="de">Ihr persönlicher Bereich. Alles, was ein Züchter braucht.</h2><h2 class="en">Your personal workspace. Everything a breeder needs.</h2><h2 class="ru">Ваш личный кабинет. Всё, что нужно заводчику.</h2>
+<p class="ss de">Nach der Anmeldung: Ihr Dashboard im Browser. Daten DSGVO-konform in der EU.</p><p class="ss en">After sign-in: your dashboard in the browser. Data DSGVO-compliant in the EU.</p><p class="ss ru">После входа: ваш dashboard прямо в браузере. Данные по DSGVO в ЕС.</p>
+
+<!-- === Wide desktop mockup — anchors web-first + dashboard signal === -->
+<div class="dtm">
+  <div class="pbc"><div class="pbcd"></div><div class="pbcd"></div><div class="pbcd"></div><div class="pbcu">wurfkit.de/dashboard · Maria Schmidt</div></div>
+  <div class="dtm-body">
+    <aside class="dtm-side">
+      <div class="dtm-logo"><b>Wurf</b>Kit</div>
+      <div class="dtm-nav active"><span class="ico">🏠</span><span><span class="di">Übersicht</span><span class="ei">Overview</span><span class="ri">Обзор</span></span></div>
+      <div class="dtm-nav"><span class="ico">🐕</span><span><span class="di">Meine Hunde</span><span class="ei">My Dogs</span><span class="ri">Собаки</span></span></div>
+      <div class="dtm-nav"><span class="ico">🐾</span><span><span class="di">Würfe</span><span class="ei">Litters</span><span class="ri">Помёты</span></span></div>
+      <div class="dtm-nav"><span class="ico">📄</span><span><span class="di">Dokumente</span><span class="ei">Documents</span><span class="ri">Документы</span></span></div>
+      <div class="dtm-nav"><span class="ico">🧬</span><span>COI</span></div>
+      <div class="dtm-nav"><span class="ico">⚙️</span><span><span class="di">Einstellungen</span><span class="ei">Settings</span><span class="ri">Настройки</span></span></div>
+    </aside>
+    <main class="dtm-main">
+      <div class="dtm-top">
+        <div>
+          <div class="dtm-title de">Wurf «A» vom Waldberg</div><div class="dtm-title en">Litter «A» vom Waldberg</div><div class="dtm-title ru">Помёт «A» vom Waldberg</div>
+          <div class="dtm-sub"><span class="di">5 Welpen · Wurftag 12.01.2026 · Luna × Apollo</span><span class="ei">5 puppies · whelp date 2026-01-12 · Luna × Apollo</span><span class="ri">5 щенков · день рождения 12.01.2026 · Luna × Apollo</span></div>
+        </div>
+        <div class="dtm-userpill">Maria Schmidt</div>
+      </div>
+      <div class="dtm-cards">
+        <div class="dtm-card featured">
+          <div class="ic">📦</div>
+          <div class="nm"><span class="di">Welpen-Paket bündeln</span><span class="ei">Bundle puppy packet</span><span class="ri">Собрать пакет</span></div>
+          <div class="mt"><span class="di">5 × PDF + QR-Code an Käufer</span><span class="ei">5 × PDF + QR for each buyer</span><span class="ri">5 × PDF + QR для покупателей</span></div>
+          <div class="btn"><span class="di">1 Klick generieren</span><span class="ei">1 click generate</span><span class="ri">Создать одним кликом</span></div>
+        </div>
+        <div class="dtm-card">
+          <div class="ic">📋</div>
+          <div class="nm">Wurfmeldung</div>
+          <div class="mt"><span class="di">DRC e.V. · vorbereitet</span><span class="ei">DRC e.V. · ready</span><span class="ri">DRC e.V. · готово</span></div>
+          <div class="btn"><span class="di">PDF herunterladen</span><span class="ei">Download PDF</span><span class="ri">Скачать PDF</span></div>
+        </div>
+        <div class="dtm-card">
+          <div class="ic">✅</div>
+          <div class="nm"><span class="di">Zuchtvoraussetzungen</span><span class="ei">Breeding prerequisites</span><span class="ri">Условия допуска</span></div>
+          <div class="mt"><span class="di">HD/ED ✓ · COI 3.2% · ZTP ✓</span><span class="ei">HD/ED ✓ · COI 3.2% · ZTP ✓</span><span class="ri">HD/ED ✓ · COI 3.2% · ZTP ✓</span></div>
+          <div class="btn"><span class="di">Details ansehen</span><span class="ei">View details</span><span class="ri">Подробности</span></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
 <div class="prw">
 <div class="pw"><div class="pcd"><div class="pbc"><div class="pbcd"></div><div class="pbcd"></div><div class="pbcd"></div><div class="pbcu">wurfkit.de/zwinger</div></div><div class="pt"><div class="ptt"><span class="di">Mein Zwinger</span><span class="ei">My Kennel</span><span class="ri">Питомник</span></div><div class="pts">3 <span class="di">Hunde</span><span class="ei">dogs</span><span class="ri">собаки</span></div></div><div class="pb"><div class="psg"><div class="psi"><div class="psn">3</div><div class="psl"><span class="di">Hunde</span><span class="ei">Dogs</span><span class="ri">Собаки</span></div></div><div class="psi"><div class="psn">5</div><div class="psl"><span class="di">Welpen</span><span class="ei">Pups</span><span class="ri">Щенки</span></div></div><div class="psi"><div class="psn">2</div><div class="psl"><span class="di">Würfe</span><span class="ei">Litters</span><span class="ri">Помёты</span></div></div><div class="psi"><div class="psn">1</div><div class="psl"><span class="di">Läufig</span><span class="ei">Heat</span><span class="ri">Течка</span></div></div></div><div class="pc"><div class="pdr"><div class="pav">🐕</div><div style="flex:1"><div class="pdn">Luna</div><div class="pdb">Golden Retriever · 3J</div></div><span class="pb2 xa"><span class="di">Läufig</span><span class="ei">Heat</span><span class="ri">Течка</span></span></div><div class="pdr"><div class="pav">🐩</div><div style="flex:1"><div class="pdn">Bella</div><div class="pdb">Labrador · 5J</div></div><span class="pb2 xg">✓</span></div><div class="pdr"><div class="pav">🦮</div><div style="flex:1"><div class="pdn">Rex</div><div class="pdb">Schäferhund · 2J</div></div><span class="pb2 xb"><span class="di">Rüde</span><span class="ei">Male</span><span class="ri">Кобель</span></span></div></div></div></div><div class="pcap"><span class="di">Übersicht</span><span class="ei">Overview</span><span class="ri">Обзор</span></div></div>
 <div class="pw"><div class="pcd"><div class="pbc"><div class="pbcd"></div><div class="pbcd"></div><div class="pbcd"></div><div class="pbcu">wurfkit.de/welpen-paket</div></div><div class="pt"><div class="ptt"><span class="di">Welpen-Paket</span><span class="ei">Puppy Packet</span><span class="ri">Пакет щенка</span></div><div class="pts">1 Klick · PDF + QR</div></div><div class="pb"><div class="pc"><div class="pr" style="margin-bottom:4px"><span class="pl"><span class="di">Kaufvertrag</span><span class="ei">Contract</span><span class="ri">Договор</span></span><span class="pb2 xg">✓</span></div><div class="pr" style="margin-bottom:4px"><span class="pl"><span class="di">Ahnentafel</span><span class="ei">Pedigree</span><span class="ri">Родословная</span></span><span class="pb2 xg">✓</span></div><div class="pr" style="margin-bottom:4px"><span class="pl"><span class="di">Impfnachweis</span><span class="ei">Vaccines</span><span class="ri">Прививки</span></span><span class="pb2 xg">✓</span></div><div class="pr" style="margin-bottom:4px"><span class="pl"><span class="di">Fütterungsplan</span><span class="ei">Feeding</span><span class="ri">Кормление</span></span><span class="pb2 xg">✓</span></div><div class="pr"><span class="pl">QR-Code</span><span class="pb2 xg">✓</span></div></div><div class="pbtn">📄 <span class="di">PDF generieren</span><span class="ei">Generate PDF</span><span class="ri">Создать PDF</span></div></div></div><div class="pcap"><span class="di">Welpen-Paket</span><span class="ei">Puppy packet</span><span class="ri">Пакет щенка</span></div></div>
@@ -379,7 +475,25 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 <div class="fc"><div class="fic">💰</div><div class="fti de">Wurf-Finanzen <span class="fn">NEU</span></div><div class="fti en">Finances <span class="fn">NEW</span></div><div class="fti ru">Финансы <span class="fn">NEW</span></div><div class="ftx de">Einnahmen/Ausgaben pro Wurf.</div><div class="ftx en">Income/expenses per litter.</div><div class="ftx ru">Доходы/расходы по помёту.</div></div>
 <div class="fc"><div class="fic">🌐</div><div class="fti de">DE · EN · RU</div><div class="fti en">DE · EN · RU</div><div class="fti ru">DE · EN · RU</div><div class="ftx de">Interface und Support auf Deutsch, Englisch und Russisch. Dokumente auf Deutsch (VDH-Standard).</div><div class="ftx en">Interface and support in German, English and Russian. Documents in German (VDH standard).</div><div class="ftx ru">Интерфейс и поддержка на немецком, английском и русском. Документы на немецком (стандарт VDH).</div></div>
 <div class="fc"><div class="fic">🌐</div><div class="fti de">Im Browser. Überall verfügbar.</div><div class="fti en">In your browser. Anywhere.</div><div class="fti ru">В браузере. Везде.</div><div class="ftx de">Keine Installation. Chrome, Firefox, Safari, Edge — am Computer, Tablet, Smartphone. Daten synchron auf allen Geräten.</div><div class="ftx en">No install. Chrome, Firefox, Safari, Edge — on computer, tablet, smartphone. Data synced across all devices.</div><div class="ftx ru">Без установки. Chrome, Firefox, Safari, Edge — на компьютере, планшете, смартфоне. Данные синхронизируются на всех устройствах.</div></div>
+<div class="fc"><div class="fic">💾</div><div class="fti de">Ihr Konto, Ihre Daten — dauerhaft</div><div class="fti en">Your account, your data — persistent</div><div class="fti ru">Ваш аккаунт, ваши данные — навсегда</div><div class="ftx de">Kein einmaliger PDF-Generator. Hundeprofile, Würfe, Käufer, Termine bleiben dauerhaft gespeichert. Beim nächsten Wurf alles wiederverwenden. CSV/PDF-Export jederzeit.</div><div class="ftx en">Not a one-shot PDF generator. Dog profiles, litters, buyers, dates stay saved. Reuse everything for the next litter. CSV/PDF export anytime.</div><div class="ftx ru">Не одноразовый PDF-генератор. Профили собак, помёты, покупатели, даты сохраняются. На следующий помёт — всё переиспользуется. Экспорт CSV/PDF в любой момент.</div></div>
+<div class="fc"><div class="fic">🗓️</div><div class="fti de">Wurfkalender vom Deckakt bis zur Übergabe <span class="fn fn-soon">BALD</span></div><div class="fti en">Litter calendar from mating to handover <span class="fn fn-soon">SOON</span></div><div class="fti ru">Календарь помёта от вязки до передачи <span class="fn fn-soon">СКОРО</span></div><div class="ftx de">Deckdatum eingeben → automatische Aufgaben, Erinnerungen und Checklisten: Ultraschall, Wurfkiste, Entwurmung, Impfung, Chip, Wurfabnahme, Vertrag, Welpen-Paket.</div><div class="ftx en">Enter mating date → auto tasks, reminders and checklists: ultrasound, whelping box, deworming, vaccination, chip, breeding inspection, contract, puppy packet.</div><div class="ftx ru">Дата вязки → авто-задачи, напоминания и чеклисты: УЗИ, родильный ящик, дегельминтизация, прививки, чип, осмотр помёта, договор, Welpen-Paket.</div></div>
+<div class="fc"><div class="fic">🔔</div><div class="fti de">Erinnerungen, wo Sie wollen <span class="fn fn-soon">BALD</span></div><div class="fti en">Reminders wherever you want <span class="fn fn-soon">SOON</span></div><div class="fti ru">Напоминания где удобно <span class="fn fn-soon">СКОРО</span></div><div class="ftx de">E-Mail · Browser-Push · iCal-Abo für Google/Apple Kalender. WhatsApp und SMS für Pro geplant. Keine vergessenen HD-Termine oder Impfungen mehr.</div><div class="ftx en">Email · browser push · iCal subscription for Google/Apple Calendar. WhatsApp and SMS planned for Pro. No more forgotten HD appointments or vaccinations.</div><div class="ftx ru">Email · push в браузере · iCal-подписка для Google/Apple Calendar. WhatsApp и SMS — для Pro. Больше никаких пропущенных HD-визитов или прививок.</div></div>
+<div class="fc"><div class="fic">🤖</div><div class="fti de">KI-Assistenz für Käuferkommunikation <span class="fn fn-soon">BALD</span></div><div class="fti en">AI assist for buyer conversations <span class="fn fn-soon">SOON</span></div><div class="fti ru">AI-помощник для общения с покупателями <span class="fn fn-soon">СКОРО</span></div><div class="ftx de">Entwurf-Antworten auf typische Anfragen, Spam/seriös-Klassifizierung, Nachbetreuungs-Vorschläge. Sie prüfen vor dem Senden — Ihre Stimme bleibt.</div><div class="ftx en">Draft replies for typical inquiries, spam/serious classification, follow-up suggestions. You review before sending — your voice stays yours.</div><div class="ftx ru">Черновики ответов на типовые запросы, классификация spam/серьёзный, подсказки follow-up. Вы правите перед отправкой — ваш голос остаётся вашим.</div></div>
 </div></div></section>
+
+<!-- === SECTION: PRIVACY-MODES (private/link-only/public) === -->
+<section class="pm"><div class="pmi">
+<div class="sl de">Privat oder öffentlich — Sie entscheiden</div><div class="sl en">Private or public — your choice</div><div class="sl ru">Приватно или публично — выбираете вы</div>
+<h2 class="de">Private Verwaltung. Öffentliche Profile nur auf Wunsch.</h2><h2 class="en">Private workspace. Public profiles only when you want them.</h2><h2 class="ru">Приватная админка. Публичные профили — только если хотите.</h2>
+<p class="ss de">Verwalten Sie Hunde, Würfe, Käufer und Dokumente intern. Wenn Sie möchten, teilen Sie ausgewählte Informationen — über QR-Codes, Welpen-Pakete, Deckrüden-Profile oder ein öffentliches Zwinger-Profil.</p>
+<p class="ss en">Manage dogs, litters, buyers and documents privately. When you want to, share selected information — via QR codes, puppy packets, stud-dog profiles, or a public kennel profile.</p>
+<p class="ss ru">Управляйте собаками, помётами, покупателями и документами приватно. Если хотите — делитесь выборочной информацией через QR-коды, Welpen-Paket, профили кобелей или публичный профиль питомника.</p>
+<div class="pmg">
+<div class="pmc"><div class="pmh">🔒</div><div class="pmt de">Privat</div><div class="pmt en">Private</div><div class="pmt ru">Приватно</div><div class="pmx de">Nur in Ihrem Dashboard. Nichts ist online sichtbar.</div><div class="pmx en">Only in your dashboard. Nothing is publicly visible.</div><div class="pmx ru">Только в вашем dashboard. Ничего публично не видно.</div></div>
+<div class="pmc"><div class="pmh">🔗</div><div class="pmt de">Per Link</div><div class="pmt en">Link-only</div><div class="pmt ru">По ссылке</div><div class="pmx de">QR an Käufer, Welpen-Seite per Direkt-Link erreichbar — aber nicht in Google indexiert.</div><div class="pmx en">QR for the buyer, puppy page reachable via direct link — but not indexed by Google.</div><div class="pmx ru">QR покупателю, страница щенка доступна по прямой ссылке — но не индексируется в Google.</div></div>
+<div class="pmc"><div class="pmh">🌐</div><div class="pmt de">Öffentlich <span class="pmb">PRO</span></div><div class="pmt en">Public <span class="pmb">PRO</span></div><div class="pmt ru">Публично <span class="pmb">PRO</span></div><div class="pmx de">Indexierbares Zwinger-Profil, Deckrüden-Marketing, „Welpen verfügbar". Sie kontrollieren jeden Status.</div><div class="pmx en">Indexable kennel profile, stud-dog marketing, "puppies available" listing. You control every status.</div><div class="pmx ru">Индексируемый профиль питомника, маркетинг кобелей, «Welpen verfügbar». Вы контролируете каждый статус.</div></div>
+</div>
+</div></section>
 
 <!-- === SECTION: ABOUT === -->
 <section class="about"><div class="abouti">
@@ -448,6 +562,10 @@ function initLang(){
 }
 
 // === MODULE: Form → Google Sheets ===
+// Primary path: fetch POST with text/plain body (avoids CORS preflight,
+// keeps PII out of URL/query logs — better for DSGVO).
+// Fallback: original new Image() GET — only triggered if POST rejects
+// (network error or server not yet updated to handle JSON body).
 function sendToSheet(formData){
   if(SHEET_URL==='YOUR_GOOGLE_APPS_SCRIPT_URL_HERE'){window.location.href='danke.html';return}
   var redirected=false;
@@ -455,12 +573,32 @@ function sendToSheet(formData){
   try{
     var lang='de';try{lang=localStorage.getItem('wk-lang')||'de'}catch(e){}
     formData['lang']=lang;
-    var params=[];for(var k in formData){if(Object.prototype.hasOwnProperty.call(formData,k))params.push(encodeURIComponent(k)+'='+encodeURIComponent(formData[k]))}
+
+    // Watchdog: navigate to danke.html within 2s even if network is slow/stuck
+    setTimeout(go,2000);
+
+    // Try POST first
+    fetch(SHEET_URL,{
+      method:'POST',
+      mode:'no-cors',
+      // text/plain content-type avoids CORS preflight while still letting
+      // Apps Script doPost read the JSON body via e.postData.contents.
+      headers:{'Content-Type':'text/plain;charset=UTF-8'},
+      body:JSON.stringify(formData)
+    }).then(go).catch(function(){fallbackGET(formData,go)});
+  }catch(e){fallbackGET(formData,go)}
+}
+function fallbackGET(formData,done){
+  try{
+    var params=[];
+    for(var k in formData){
+      if(Object.prototype.hasOwnProperty.call(formData,k))
+        params.push(encodeURIComponent(k)+'='+encodeURIComponent(formData[k]));
+    }
     var img=new Image();
-    img.onload=go;img.onerror=go;
+    img.onload=done;img.onerror=done;
     img.src=SHEET_URL+'?'+params.join('&');
-    setTimeout(go,1500);
-  }catch(e){go()}
+  }catch(e){done()}
 }
 function initForms(){
   try{
@@ -480,14 +618,22 @@ function initForms(){
 var FAQ=[
 {q:{de:'Muss ich etwas installieren?',en:'Do I need to install anything?',ru:'Нужно ли что-то устанавливать?'},
  a:{de:'Nein. WurfKit läuft direkt im Browser — Chrome, Firefox, Safari, Edge. Keine Installation, keine Updates. Sie öffnen <a href="https://wurfkit.de">wurfkit.de</a>, melden sich an und arbeiten.',en:'No. WurfKit runs directly in the browser — Chrome, Firefox, Safari, Edge. No installation, no updates. Open <a href="https://wurfkit.de">wurfkit.de</a>, sign in, and start working.',ru:'Нет. WurfKit работает прямо в браузере — Chrome, Firefox, Safari, Edge. Без установки и обновлений. Открываете <a href="https://wurfkit.de">wurfkit.de</a>, входите и работаете.'}},
+{q:{de:'Habe ich ein eigenes Konto, oder ist das nur ein PDF-Generator?',en:'Do I have my own account, or is this just a PDF generator?',ru:'У меня будет свой аккаунт или это просто генератор PDF?'},
+ a:{de:'Sie haben ein eigenes Konto mit persönlichem Arbeitsbereich. <b>Alle Hundeprofile, Würfe, Käuferdaten, Termine, Dokumente und Notizen bleiben dauerhaft gespeichert.</b> Beim nächsten Wurf verwenden Sie alles wieder — Eltern, Zwingername, Käufer-Kontakte, Standardvorlagen. Sie melden sich an, arbeiten, melden sich ab — die Daten warten, wenn Sie wiederkommen. CSV/PDF-Export jederzeit, kein Lock-in.',en:'You have your own account with a personal workspace. <b>All dog profiles, litters, buyer data, dates, documents and notes stay saved.</b> For the next litter you reuse everything — parents, kennel name, buyer contacts, your standard templates. You sign in, work, sign out — the data waits for you. CSV/PDF export anytime, no lock-in.',ru:'У вас свой аккаунт с личным рабочим пространством. <b>Все профили собак, помёты, данные покупателей, даты, документы и заметки сохраняются.</b> На следующий помёт переиспользуете всё — родителей, имя питомника, контакты покупателей, свои стандартные шаблоны. Заходите, работаете, выходите — данные ждут. Экспорт CSV/PDF в любой момент, никакого lock-in.'}},
 {q:{de:'Funktioniert es auch auf Tablet und Smartphone?',en:'Does it work on tablet and smartphone?',ru:'Работает ли на планшете и смартфоне?'},
  a:{de:'Ja. Die Oberfläche passt sich automatisch an Computer, Tablet und Smartphone an. Dokumente erstellen Sie am besten am Computer — größerer Bildschirm, einfaches Drucken und E-Mail-Versand. Unterwegs sehen Sie Hunde, Würfe und Termine auch am Smartphone.',en:'Yes. The interface adapts automatically to computer, tablet and smartphone. Documents are easiest on a computer — larger screen, simple printing and email. On the go, you can view dogs, litters and dates on your smartphone too.',ru:'Да. Интерфейс автоматически адаптируется под компьютер, планшет и смартфон. Документы удобнее делать на компьютере — больший экран, простая печать и отправка email. В дороге можно смотреть собак, помёты и даты на смартфоне.'}},
 {q:{de:'Wo werden meine Daten gespeichert?',en:'Where is my data stored?',ru:'Где хранятся мои данные?'},
  a:{de:'In einer DSGVO-konformen Datenbank in der EU. Sie können Ihre Daten jederzeit als CSV oder PDF exportieren und Ihr Konto vollständig löschen — Sie bleiben Eigentümer Ihrer Daten.',en:'In a GDPR-compliant database in the EU. You can export your data as CSV or PDF anytime and delete your account completely — you remain the owner of your data.',ru:'В GDPR-совместимой базе данных в ЕС. Вы можете в любой момент экспортировать данные в CSV или PDF и полностью удалить аккаунт — вы остаётесь владельцем своих данных.'}},
+{q:{de:'Welche Erinnerungen und Meldungen erhalte ich?',en:'What reminders and notifications do I get?',ru:'Какие напоминания и уведомления приходят?'},
+ a:{de:'Geplant für alle Tarife: <b>E-Mail</b>, <b>Browser-Push</b> (PWA) und <b>iCal-Abo</b> für Google Calendar, Apple Kalender oder Outlook. Für Pro zusätzlich <b>WhatsApp</b> und <b>SMS</b>. Sie wählen pro Ereignis, welcher Kanal — vom Decktag bis zur Welpenübergabe: Ultraschall, Wurfkiste, Entwurmung, Impfung, Chip-Termin, Wurfabnahme, HD/ED-Röntgen, ZTP, Augenuntersuchung, Zuchtschau, Käufer-Nachbetreuung.',en:'Planned for all tiers: <b>email</b>, <b>browser push</b> (PWA) and <b>iCal subscription</b> for Google Calendar, Apple Calendar or Outlook. Pro additionally: <b>WhatsApp</b> and <b>SMS</b>. You pick the channel per event — from mating day to puppy handover: ultrasound, whelping box, deworming, vaccination, chip appointment, breeding inspection, HD/ED X-ray, ZTP, eye exam, dog show, buyer follow-up.',ru:'Планируется на всех тарифах: <b>email</b>, <b>push в браузере</b> (PWA) и <b>iCal-подписка</b> для Google Calendar, Apple Calendar или Outlook. Для Pro дополнительно: <b>WhatsApp</b> и <b>SMS</b>. Вы выбираете канал для каждого события — от дня вязки до передачи щенка: УЗИ, родильный ящик, дегельминтизация, прививки, чип, осмотр помёта, HD/ED-рентген, ZTP, осмотр глаз, выставка, follow-up с покупателями.'}},
+{q:{de:'Wird KI bei der Kommunikation mit Käufern helfen?',en:'Will AI help with buyer communication?',ru:'Поможет ли AI в общении с покупателями?'},
+ a:{de:'Geplant für Pro: KI-Entwürfe für typische Anfragen („Welpen verfügbar?", „Wie sind die Preise?", „Welche Tests habt ihr gemacht?"), Klassifizierung der Anfragen (ernsthafter Käufer · einfache Frage · Spam · rote Flaggen), Vorschläge für Nachbetreuungs-Nachrichten (Tag 1, Woche 1, Monat 1, Zahnwechsel). <b>Sie prüfen jeden Entwurf vor dem Senden</b> — Ihre Stimme und Verantwortung bleiben bei Ihnen.',en:'Planned for Pro: AI drafts for typical inquiries ("Are puppies available?", "What are your prices?", "Which tests did you do?"), inquiry classification (serious buyer · simple question · spam · red flags), follow-up suggestions (day 1, week 1, month 1, teething). <b>You review every draft before sending</b> — your voice and responsibility stay yours.',ru:'Планируется для Pro: AI-черновики для типовых вопросов («Есть ли щенки?», «Какие цены?», «Какие тесты сделаны?»), классификация запросов (серьёзный покупатель · простой вопрос · спам · красные флаги), подсказки для follow-up (день 1, неделя 1, месяц 1, смена зубов). <b>Вы проверяете каждый черновик перед отправкой</b> — ваш голос и ответственность остаются вашими.'}},
+{q:{de:'Was bekommt der Käufer eines Welpen?',en:'What does the puppy buyer receive?',ru:'Что получает покупатель щенка?'},
+ a:{de:'Mit dem Welpen-Paket bekommt der Käufer ein professionelles PDF (Kaufvertrag, Stammbaum, Impfübersicht, Fütterungsplan, Pflegehinweise) plus einen <b>QR-Code</b>. Der QR führt auf die persönliche Welpen-Seite (z. B. <a href="welpe.html">wurfkit.de/welpe/aaron-waldberg</a>) mit Foto, Mikrochip, Gesundheitsdaten und <b>Züchter-Kontakt</b>. Die Seite ist über den Direkt-Link erreichbar, aber nicht in Google indexiert — Sie entscheiden, wer den Link bekommt.',en:'With the puppy packet the buyer receives a polished PDF (purchase contract, pedigree, vaccine summary, feeding plan, care tips) plus a <b>QR code</b>. The QR opens the puppy\'s personal page (e.g. <a href="welpe.html">wurfkit.de/welpe/aaron-waldberg</a>) with photo, microchip, health data and your <b>breeder contact</b>. The page is reachable via direct link but not indexed by Google — you control who gets the link.',ru:'Вместе с Welpen-Paket покупатель получает профессиональный PDF (договор, родословная, прививки, кормление, уход) плюс <b>QR-код</b>. QR ведёт на персональную страницу щенка (например <a href="welpe.html">wurfkit.de/welpe/aaron-waldberg</a>) с фото, микрочипом, данными о здоровье и <b>контактом заводчика</b>. Страница доступна только по прямой ссылке, в Google не индексируется — вы решаете, кому давать ссылку.'}},
 {q:{de:'Sind die generierten Dokumente rechtlich geprüft?',en:'Are the generated documents legally reviewed?',ru:'Проверены ли документы юридически?'},
  a:{de:'Die Vorlagen orientieren sich an VDH-Mustern und werden vor dem öffentlichen Release durch einen Rechtsanwalt mit Schwerpunkt Vertrags- und Tierrecht geprüft. Bis dahin werden Kaufverträge ausdrücklich als <i>Vorlage zur Prüfung</i> gekennzeichnet. Keine Rechtsberatung.',en:'Templates follow VDH guidelines and will be reviewed by a German lawyer specializing in contract and animal law before public release. Until then, purchase contracts are explicitly marked <i>template for review</i>. Not legal advice.',ru:'Шаблоны ориентируются на образцы VDH и будут проверены немецким юристом со специализацией по договорному и зоологическому праву до публичного релиза. До этого договоры явно помечены как <i>шаблон для проверки</i>. Это не юридическая консультация.'}},
 {q:{de:'Was kostet WurfKit?',en:'What does WurfKit cost?',ru:'Сколько стоит WurfKit?'},
- a:{de:'Geplante Tarife: <b>Einstiegsversion kostenlos</b> · <b>Starter €9,99</b>/Monat · <b>Standard €14,99</b>/Monat · <b>Pro €24,99</b>/Monat, mit 20% Jahresrabatt. Frühbucher der Warteliste erhalten zusätzlich 30% Rabatt im ersten Jahr. Die genauen Funktionsumfänge je Tarif werden vor dem Start kommuniziert.',en:'Planned tiers: <b>Free entry version</b> · <b>Starter €9.99</b>/mo · <b>Standard €14.99</b>/mo · <b>Pro €24.99</b>/mo, with 20% annual discount. Waitlist early birds get an additional 30% off the first year. Exact features per tier will be announced before launch.',ru:'Планируемые тарифы: <b>Стартовая версия бесплатно</b> · <b>Starter €9,99</b>/мес · <b>Standard €14,99</b>/мес · <b>Pro €24,99</b>/мес, скидка 20% при оплате за год. Ранние подписчики из списка ожидания получают дополнительно 30% скидки в первый год. Точный состав функций по тарифам будет объявлен до старта.'}},
+ a:{de:'Geplante Tarife: <b>Einstiegsversion kostenlos</b> · <b>Starter €9,99</b>/Monat · <b>Standard €14,99</b>/Monat · <b>Pro €24,99</b>/Monat, mit 20% Jahresrabatt. <b>Pro</b> umfasst zusätzlich opt-in öffentliches Zwinger-Profil, indexierbare Deckrüden-Profile und „Welpen verfügbar"-Anzeige. Frühbucher der Warteliste erhalten zusätzlich 30% Rabatt im ersten Jahr. Die genauen Funktionsumfänge je Tarif werden vor dem Start kommuniziert.',en:'Planned tiers: <b>Free entry version</b> · <b>Starter €9.99</b>/mo · <b>Standard €14.99</b>/mo · <b>Pro €24.99</b>/mo, with 20% annual discount. <b>Pro</b> additionally includes an opt-in public kennel profile, indexable stud-dog profiles, and a "puppies available" listing. Waitlist early birds get an additional 30% off the first year. Exact features per tier will be announced before launch.',ru:'Планируемые тарифы: <b>Стартовая версия бесплатно</b> · <b>Starter €9,99</b>/мес · <b>Standard €14,99</b>/мес · <b>Pro €24,99</b>/мес, скидка 20% при оплате за год. <b>Pro</b> дополнительно включает opt-in публичный профиль питомника, индексируемые профили кобелей и метку «Welpen verfügbar». Ранние подписчики из списка ожидания получают дополнительно 30% скидки в первый год. Точный состав функций по тарифам будет объявлен до старта.'}},
 {q:{de:'Wann wird WurfKit verfügbar sein?',en:'When will WurfKit be available?',ru:'Когда будет доступен WurfKit?'},
  a:{de:'Geschlossene Beta für Warteliste-Mitglieder im Sommer 2026, öffentlicher Release im Herbst 2026. Wer auf der Warteliste steht, erhält zuerst Zugang.',en:'Closed beta for waitlist members in summer 2026, public release in autumn 2026. Whoever is on the waitlist gets access first.',ru:'Закрытая бета для участников списка ожидания — лето 2026, публичный релиз — осень 2026. Кто в списке ожидания, тот получает доступ первым.'}},
 {q:{de:'Kann ich es ausprobieren, bevor ich mich anmelde?',en:'Can I try it before I sign up?',ru:'Можно ли попробовать до регистрации?'},
@@ -575,7 +721,7 @@ datenschutz:{
 b:{de:'RECHTLICHES',en:'LEGAL',ru:'ЮРИДИЧЕСКОЕ'},
 t:{de:'Datenschutzerklärung',en:'Privacy Policy',ru:'Политика конфиденциальности'},
 s:{de:'Informationen zum Datenschutz',en:'Privacy information',ru:'Информация о защите данных'},
-x:{de:'<p><strong>1. Verantwortlicher</strong><br>Vladimir Evseev · Talstraße 3, 42551 Velbert · hello@wurfkit.de</p><p><strong>2. Erhebung beim Besuch</strong><br>Diese Website wird über GitHub Pages (GitHub, Inc., USA) gehostet. Beim Aufruf werden technisch notwendige Daten (IP-Adresse, Browsertyp, Betriebssystem, Referrer, Zeitpunkt) durch GitHub verarbeitet. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am sicheren Betrieb).</p><p><strong>3. Kontaktformular und Warteliste</strong><br>Bei Eingabe Ihrer Daten (Name, E-Mail, Nachricht) werden diese ausschließlich zur Bearbeitung Ihrer Anfrage bzw. zur Aufnahme in die Warteliste verarbeitet. Rechtsgrundlage: Art. 6 Abs. 1 lit. a (Einwilligung) bzw. lit. b DSGVO (vorvertragliche Maßnahmen). Ihre Daten werden bis zum Widerruf bzw. bis zum Wegfall des Zwecks gespeichert.</p><p><strong>4. Auftragsverarbeitung – Google (USA)</strong><br>Formulareingaben werden über Google Apps Script (Google LLC, USA) an Google Sheets übermittelt. Es liegt eine Datenübermittlung in ein Drittland (USA) vor. Rechtsgrundlage: Art. 49 Abs. 1 lit. a DSGVO (ausdrückliche Einwilligung durch das Absenden des Formulars), ergänzt durch EU-Standardvertragsklauseln zwischen Google und dem Verantwortlichen, soweit anwendbar.</p><p><strong>5. Lokale Speicherung</strong><br>Die gewählte Sprache wird in Ihrem Browser (localStorage) gespeichert. Es werden keine Cookies zu Marketing- oder Tracking-Zwecken gesetzt.</p><p><strong>6. Ihre Rechte</strong><br>Sie haben das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21 DSGVO) sowie Beschwerderecht bei einer Aufsichtsbehörde. Kontakt: hello@wurfkit.de</p>',en:'<p><strong>1. Controller</strong><br>Vladimir Evseev · Talstraße 3, 42551 Velbert, Germany · hello@wurfkit.de</p><p><strong>2. Data on visit</strong><br>This site is hosted on GitHub Pages (GitHub, Inc., USA). On access, GitHub processes technically necessary data (IP, browser, OS, referrer, timestamp). Legal basis: Art. 6(1)(f) GDPR (legitimate interest in secure operation).</p><p><strong>3. Contact form and waitlist</strong><br>When you submit your data (name, email, message) it is used solely to process your request or list you on the waitlist. Legal basis: Art. 6(1)(a) (consent) or (b) GDPR (pre-contractual). Stored until revoked or purpose lapses.</p><p><strong>4. Processing by Google (USA)</strong><br>Form submissions are forwarded via Google Apps Script (Google LLC, USA) to Google Sheets. This is a transfer to a third country (USA). Legal basis: Art. 49(1)(a) GDPR (explicit consent by form submission), supplemented by EU Standard Contractual Clauses where applicable.</p><p><strong>5. Local storage</strong><br>Your chosen language is stored in your browser (localStorage). No marketing or tracking cookies are set.</p><p><strong>6. Your rights</strong><br>You have the right to access (Art. 15), rectification (Art. 16), erasure (Art. 17), restriction (Art. 18), portability (Art. 20), objection (Art. 21 GDPR), and to lodge a complaint with a supervisory authority. Contact: hello@wurfkit.de</p>',ru:'<p><strong>1. Ответственный</strong><br>Vladimir Evseev · Talstraße 3, 42551 Velbert, Deutschland · hello@wurfkit.de</p><p><strong>2. Данные при посещении</strong><br>Сайт размещён на GitHub Pages (GitHub, Inc., США). При посещении GitHub обрабатывает технические данные (IP, браузер, ОС, реферер, время). Правовое основание: ст. 6(1)(f) GDPR (законный интерес в безопасной эксплуатации).</p><p><strong>3. Форма контакта и список ожидания</strong><br>Отправленные вами данные (имя, email, сообщение) используются исключительно для обработки запроса или включения в список ожидания. Правовое основание: ст. 6(1)(a) (согласие) или (b) GDPR (преддоговорные меры). Хранятся до отзыва согласия или прекращения цели обработки.</p><p><strong>4. Обработка Google (США)</strong><br>Отправка форм идёт через Google Apps Script (Google LLC, США) в Google Sheets. Это передача в третью страну (США). Правовое основание: ст. 49(1)(a) GDPR (явное согласие при отправке формы), плюс стандартные договорные оговорки ЕС где применимо.</p><p><strong>5. Локальное хранение</strong><br>Выбранный язык сохраняется в браузере (localStorage). Маркетинговые и трекинговые cookies не устанавливаются.</p><p><strong>6. Ваши права</strong><br>Вы имеете право на доступ (ст. 15), исправление (ст. 16), удаление (ст. 17), ограничение (ст. 18), переносимость (ст. 20), возражение (ст. 21 GDPR) и подачу жалобы в надзорный орган. Контакт: hello@wurfkit.de</p>'}}
+x:{de:'<p><strong>1. Verantwortlicher</strong><br>Vladimir Evseev · Talstraße 3, 42551 Velbert · hello@wurfkit.de</p><p><strong>2. Erhebung beim Besuch</strong><br>Diese Website wird über GitHub Pages (GitHub, Inc., USA) gehostet. Beim Aufruf werden technisch notwendige Daten (IP-Adresse, Browsertyp, Betriebssystem, Referrer, Zeitpunkt) durch GitHub verarbeitet. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am sicheren Betrieb).</p><p><strong>3. Kontaktformular und Warteliste</strong><br>Bei Eingabe Ihrer Daten (Name, E-Mail, Nachricht) werden diese ausschließlich zur Bearbeitung Ihrer Anfrage bzw. zur Aufnahme in die Warteliste verarbeitet. Rechtsgrundlage: Art. 6 Abs. 1 lit. a (Einwilligung) bzw. lit. b DSGVO (vorvertragliche Maßnahmen). Ihre Daten werden bis zum Widerruf bzw. bis zum Wegfall des Zwecks gespeichert.</p><p><strong>4. Auftragsverarbeitung – Google (USA)</strong><br>Formulareingaben werden per verschlüsselter HTTPS-POST-Übertragung an Google Apps Script (Google LLC, USA) und von dort in Google Sheets gespeichert. Die personenbezogenen Daten werden im Anfrage-Body übermittelt und erscheinen nicht in URLs oder Server-Logs. Es liegt eine Datenübermittlung in ein Drittland (USA) vor. Rechtsgrundlage: Art. 49 Abs. 1 lit. a DSGVO (ausdrückliche Einwilligung durch das Absenden des Formulars), ergänzt durch EU-Standardvertragsklauseln zwischen Google und dem Verantwortlichen, soweit anwendbar.</p><p><strong>5. Lokale Speicherung</strong><br>Die gewählte Sprache wird in Ihrem Browser (localStorage) gespeichert. Es werden keine Cookies zu Marketing- oder Tracking-Zwecken gesetzt.</p><p><strong>6. Ihre Rechte</strong><br>Sie haben das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21 DSGVO) sowie Beschwerderecht bei einer Aufsichtsbehörde. Kontakt: hello@wurfkit.de</p>',en:'<p><strong>1. Controller</strong><br>Vladimir Evseev · Talstraße 3, 42551 Velbert, Germany · hello@wurfkit.de</p><p><strong>2. Data on visit</strong><br>This site is hosted on GitHub Pages (GitHub, Inc., USA). On access, GitHub processes technically necessary data (IP, browser, OS, referrer, timestamp). Legal basis: Art. 6(1)(f) GDPR (legitimate interest in secure operation).</p><p><strong>3. Contact form and waitlist</strong><br>When you submit your data (name, email, message) it is used solely to process your request or list you on the waitlist. Legal basis: Art. 6(1)(a) (consent) or (b) GDPR (pre-contractual). Stored until revoked or purpose lapses.</p><p><strong>4. Processing by Google (USA)</strong><br>Form submissions are sent over encrypted HTTPS POST to Google Apps Script (Google LLC, USA) and stored in Google Sheets. Personal data is transmitted in the request body and does not appear in URLs or server logs. This is a transfer to a third country (USA). Legal basis: Art. 49(1)(a) GDPR (explicit consent by form submission), supplemented by EU Standard Contractual Clauses where applicable.</p><p><strong>5. Local storage</strong><br>Your chosen language is stored in your browser (localStorage). No marketing or tracking cookies are set.</p><p><strong>6. Your rights</strong><br>You have the right to access (Art. 15), rectification (Art. 16), erasure (Art. 17), restriction (Art. 18), portability (Art. 20), objection (Art. 21 GDPR), and to lodge a complaint with a supervisory authority. Contact: hello@wurfkit.de</p>',ru:'<p><strong>1. Ответственный</strong><br>Vladimir Evseev · Talstraße 3, 42551 Velbert, Deutschland · hello@wurfkit.de</p><p><strong>2. Данные при посещении</strong><br>Сайт размещён на GitHub Pages (GitHub, Inc., США). При посещении GitHub обрабатывает технические данные (IP, браузер, ОС, реферер, время). Правовое основание: ст. 6(1)(f) GDPR (законный интерес в безопасной эксплуатации).</p><p><strong>3. Форма контакта и список ожидания</strong><br>Отправленные вами данные (имя, email, сообщение) используются исключительно для обработки запроса или включения в список ожидания. Правовое основание: ст. 6(1)(a) (согласие) или (b) GDPR (преддоговорные меры). Хранятся до отзыва согласия или прекращения цели обработки.</p><p><strong>4. Обработка Google (США)</strong><br>Данные форм отправляются через зашифрованный HTTPS POST в Google Apps Script (Google LLC, США) и сохраняются в Google Sheets. Персональные данные передаются в теле запроса и не попадают в URL или серверные логи. Это передача в третью страну (США). Правовое основание: ст. 49(1)(a) GDPR (явное согласие при отправке формы), плюс стандартные договорные оговорки ЕС где применимо.</p><p><strong>5. Локальное хранение</strong><br>Выбранный язык сохраняется в браузере (localStorage). Маркетинговые и трекинговые cookies не устанавливаются.</p><p><strong>6. Ваши права</strong><br>Вы имеете право на доступ (ст. 15), исправление (ст. 16), удаление (ст. 17), ограничение (ст. 18), переносимость (ст. 20), возражение (ст. 21 GDPR) и подачу жалобы в надзорный орган. Контакт: hello@wurfkit.de</p>'}}
 };
 function openModal(id){
   try{
