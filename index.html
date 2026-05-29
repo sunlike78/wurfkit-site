@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://script.google.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://script.google.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>WurfKit – Welpen-Unterlagen in Minuten statt Stunden | Online-Plattform für VDH-Züchter</title>
 <meta name="description" content="WurfKit ist die Online-Plattform für VDH-Hundezüchter: Kaufvertrag, Wurfmeldung und Welpen-Paket automatisch generieren. COI berechnen, Zuchtzulassung prüfen. Direkt im Browser, ohne Installation. Auf Deutsch.">
@@ -562,10 +562,15 @@ function initLang(){
 }
 
 // === MODULE: Form → Google Sheets ===
-// Primary path: fetch POST with text/plain body (avoids CORS preflight,
-// keeps PII out of URL/query logs — better for DSGVO).
-// Fallback: original new Image() GET — only triggered if POST rejects
-// (network error or server not yet updated to handle JSON body).
+// HOTFIX 2026-05-29: temporarily back to GET via new Image() because the
+// deployed Apps Script doPost (Statistics/Connection to Google/google_apps_script.js)
+// only parses JSON when postData.type === 'application/json'. Our POST sends
+// text/plain (to avoid CORS preflight) which the OLD doPost cannot decode →
+// rows end up in the "Other" sheet instead of Waitlist/Contact.
+// The new doPost (in repo, awaiting deploy) handles both. Once it is live in
+// the Google Sheets script editor, switch back to POST: fetch + mode:'no-cors'
+// + Content-Type:text/plain + JSON.stringify(formData). See git history of
+// this function for the POST version.
 function sendToSheet(formData){
   if(SHEET_URL==='YOUR_GOOGLE_APPS_SCRIPT_URL_HERE'){window.location.href='danke.html';return}
   var redirected=false;
@@ -573,32 +578,16 @@ function sendToSheet(formData){
   try{
     var lang='de';try{lang=localStorage.getItem('wk-lang')||'de'}catch(e){}
     formData['lang']=lang;
-
-    // Watchdog: navigate to danke.html within 2s even if network is slow/stuck
-    setTimeout(go,2000);
-
-    // Try POST first
-    fetch(SHEET_URL,{
-      method:'POST',
-      mode:'no-cors',
-      // text/plain content-type avoids CORS preflight while still letting
-      // Apps Script doPost read the JSON body via e.postData.contents.
-      headers:{'Content-Type':'text/plain;charset=UTF-8'},
-      body:JSON.stringify(formData)
-    }).then(go).catch(function(){fallbackGET(formData,go)});
-  }catch(e){fallbackGET(formData,go)}
-}
-function fallbackGET(formData,done){
-  try{
     var params=[];
     for(var k in formData){
       if(Object.prototype.hasOwnProperty.call(formData,k))
         params.push(encodeURIComponent(k)+'='+encodeURIComponent(formData[k]));
     }
     var img=new Image();
-    img.onload=done;img.onerror=done;
+    img.onload=go;img.onerror=go;
     img.src=SHEET_URL+'?'+params.join('&');
-  }catch(e){done()}
+    setTimeout(go,1500);
+  }catch(e){go()}
 }
 function initForms(){
   try{
@@ -721,7 +710,7 @@ datenschutz:{
 b:{de:'RECHTLICHES',en:'LEGAL',ru:'ЮРИДИЧЕСКОЕ'},
 t:{de:'Datenschutzerklärung',en:'Privacy Policy',ru:'Политика конфиденциальности'},
 s:{de:'Informationen zum Datenschutz',en:'Privacy information',ru:'Информация о защите данных'},
-x:{de:'<p><strong>1. Verantwortlicher</strong><br>Vladimir Evseev · Talstraße 3, 42551 Velbert · hello@wurfkit.de</p><p><strong>2. Erhebung beim Besuch</strong><br>Diese Website wird über GitHub Pages (GitHub, Inc., USA) gehostet. Beim Aufruf werden technisch notwendige Daten (IP-Adresse, Browsertyp, Betriebssystem, Referrer, Zeitpunkt) durch GitHub verarbeitet. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am sicheren Betrieb).</p><p><strong>3. Kontaktformular und Warteliste</strong><br>Bei Eingabe Ihrer Daten (Name, E-Mail, Nachricht) werden diese ausschließlich zur Bearbeitung Ihrer Anfrage bzw. zur Aufnahme in die Warteliste verarbeitet. Rechtsgrundlage: Art. 6 Abs. 1 lit. a (Einwilligung) bzw. lit. b DSGVO (vorvertragliche Maßnahmen). Ihre Daten werden bis zum Widerruf bzw. bis zum Wegfall des Zwecks gespeichert.</p><p><strong>4. Auftragsverarbeitung – Google (USA)</strong><br>Formulareingaben werden per verschlüsselter HTTPS-POST-Übertragung an Google Apps Script (Google LLC, USA) und von dort in Google Sheets gespeichert. Die personenbezogenen Daten werden im Anfrage-Body übermittelt und erscheinen nicht in URLs oder Server-Logs. Es liegt eine Datenübermittlung in ein Drittland (USA) vor. Rechtsgrundlage: Art. 49 Abs. 1 lit. a DSGVO (ausdrückliche Einwilligung durch das Absenden des Formulars), ergänzt durch EU-Standardvertragsklauseln zwischen Google und dem Verantwortlichen, soweit anwendbar.</p><p><strong>5. Lokale Speicherung</strong><br>Die gewählte Sprache wird in Ihrem Browser (localStorage) gespeichert. Es werden keine Cookies zu Marketing- oder Tracking-Zwecken gesetzt.</p><p><strong>6. Ihre Rechte</strong><br>Sie haben das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21 DSGVO) sowie Beschwerderecht bei einer Aufsichtsbehörde. Kontakt: hello@wurfkit.de</p>',en:'<p><strong>1. Controller</strong><br>Vladimir Evseev · Talstraße 3, 42551 Velbert, Germany · hello@wurfkit.de</p><p><strong>2. Data on visit</strong><br>This site is hosted on GitHub Pages (GitHub, Inc., USA). On access, GitHub processes technically necessary data (IP, browser, OS, referrer, timestamp). Legal basis: Art. 6(1)(f) GDPR (legitimate interest in secure operation).</p><p><strong>3. Contact form and waitlist</strong><br>When you submit your data (name, email, message) it is used solely to process your request or list you on the waitlist. Legal basis: Art. 6(1)(a) (consent) or (b) GDPR (pre-contractual). Stored until revoked or purpose lapses.</p><p><strong>4. Processing by Google (USA)</strong><br>Form submissions are sent over encrypted HTTPS POST to Google Apps Script (Google LLC, USA) and stored in Google Sheets. Personal data is transmitted in the request body and does not appear in URLs or server logs. This is a transfer to a third country (USA). Legal basis: Art. 49(1)(a) GDPR (explicit consent by form submission), supplemented by EU Standard Contractual Clauses where applicable.</p><p><strong>5. Local storage</strong><br>Your chosen language is stored in your browser (localStorage). No marketing or tracking cookies are set.</p><p><strong>6. Your rights</strong><br>You have the right to access (Art. 15), rectification (Art. 16), erasure (Art. 17), restriction (Art. 18), portability (Art. 20), objection (Art. 21 GDPR), and to lodge a complaint with a supervisory authority. Contact: hello@wurfkit.de</p>',ru:'<p><strong>1. Ответственный</strong><br>Vladimir Evseev · Talstraße 3, 42551 Velbert, Deutschland · hello@wurfkit.de</p><p><strong>2. Данные при посещении</strong><br>Сайт размещён на GitHub Pages (GitHub, Inc., США). При посещении GitHub обрабатывает технические данные (IP, браузер, ОС, реферер, время). Правовое основание: ст. 6(1)(f) GDPR (законный интерес в безопасной эксплуатации).</p><p><strong>3. Форма контакта и список ожидания</strong><br>Отправленные вами данные (имя, email, сообщение) используются исключительно для обработки запроса или включения в список ожидания. Правовое основание: ст. 6(1)(a) (согласие) или (b) GDPR (преддоговорные меры). Хранятся до отзыва согласия или прекращения цели обработки.</p><p><strong>4. Обработка Google (США)</strong><br>Данные форм отправляются через зашифрованный HTTPS POST в Google Apps Script (Google LLC, США) и сохраняются в Google Sheets. Персональные данные передаются в теле запроса и не попадают в URL или серверные логи. Это передача в третью страну (США). Правовое основание: ст. 49(1)(a) GDPR (явное согласие при отправке формы), плюс стандартные договорные оговорки ЕС где применимо.</p><p><strong>5. Локальное хранение</strong><br>Выбранный язык сохраняется в браузере (localStorage). Маркетинговые и трекинговые cookies не устанавливаются.</p><p><strong>6. Ваши права</strong><br>Вы имеете право на доступ (ст. 15), исправление (ст. 16), удаление (ст. 17), ограничение (ст. 18), переносимость (ст. 20), возражение (ст. 21 GDPR) и подачу жалобы в надзорный орган. Контакт: hello@wurfkit.de</p>'}}
+x:{de:'<p><strong>1. Verantwortlicher</strong><br>Vladimir Evseev · Talstraße 3, 42551 Velbert · hello@wurfkit.de</p><p><strong>2. Erhebung beim Besuch</strong><br>Diese Website wird über GitHub Pages (GitHub, Inc., USA) gehostet. Beim Aufruf werden technisch notwendige Daten (IP-Adresse, Browsertyp, Betriebssystem, Referrer, Zeitpunkt) durch GitHub verarbeitet. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am sicheren Betrieb).</p><p><strong>3. Kontaktformular und Warteliste</strong><br>Bei Eingabe Ihrer Daten (Name, E-Mail, Nachricht) werden diese ausschließlich zur Bearbeitung Ihrer Anfrage bzw. zur Aufnahme in die Warteliste verarbeitet. Rechtsgrundlage: Art. 6 Abs. 1 lit. a (Einwilligung) bzw. lit. b DSGVO (vorvertragliche Maßnahmen). Ihre Daten werden bis zum Widerruf bzw. bis zum Wegfall des Zwecks gespeichert.</p><p><strong>4. Auftragsverarbeitung – Google (USA)</strong><br>Formulareingaben werden über Google Apps Script (Google LLC, USA) an Google Sheets übermittelt. Es liegt eine Datenübermittlung in ein Drittland (USA) vor. Rechtsgrundlage: Art. 49 Abs. 1 lit. a DSGVO (ausdrückliche Einwilligung durch das Absenden des Formulars), ergänzt durch EU-Standardvertragsklauseln zwischen Google und dem Verantwortlichen, soweit anwendbar.</p><p><strong>5. Lokale Speicherung</strong><br>Die gewählte Sprache wird in Ihrem Browser (localStorage) gespeichert. Es werden keine Cookies zu Marketing- oder Tracking-Zwecken gesetzt.</p><p><strong>6. Ihre Rechte</strong><br>Sie haben das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21 DSGVO) sowie Beschwerderecht bei einer Aufsichtsbehörde. Kontakt: hello@wurfkit.de</p>',en:'<p><strong>1. Controller</strong><br>Vladimir Evseev · Talstraße 3, 42551 Velbert, Germany · hello@wurfkit.de</p><p><strong>2. Data on visit</strong><br>This site is hosted on GitHub Pages (GitHub, Inc., USA). On access, GitHub processes technically necessary data (IP, browser, OS, referrer, timestamp). Legal basis: Art. 6(1)(f) GDPR (legitimate interest in secure operation).</p><p><strong>3. Contact form and waitlist</strong><br>When you submit your data (name, email, message) it is used solely to process your request or list you on the waitlist. Legal basis: Art. 6(1)(a) (consent) or (b) GDPR (pre-contractual). Stored until revoked or purpose lapses.</p><p><strong>4. Processing by Google (USA)</strong><br>Form submissions are forwarded via Google Apps Script (Google LLC, USA) to Google Sheets. This is a transfer to a third country (USA). Legal basis: Art. 49(1)(a) GDPR (explicit consent by form submission), supplemented by EU Standard Contractual Clauses where applicable.</p><p><strong>5. Local storage</strong><br>Your chosen language is stored in your browser (localStorage). No marketing or tracking cookies are set.</p><p><strong>6. Your rights</strong><br>You have the right to access (Art. 15), rectification (Art. 16), erasure (Art. 17), restriction (Art. 18), portability (Art. 20), objection (Art. 21 GDPR), and to lodge a complaint with a supervisory authority. Contact: hello@wurfkit.de</p>',ru:'<p><strong>1. Ответственный</strong><br>Vladimir Evseev · Talstraße 3, 42551 Velbert, Deutschland · hello@wurfkit.de</p><p><strong>2. Данные при посещении</strong><br>Сайт размещён на GitHub Pages (GitHub, Inc., США). При посещении GitHub обрабатывает технические данные (IP, браузер, ОС, реферер, время). Правовое основание: ст. 6(1)(f) GDPR (законный интерес в безопасной эксплуатации).</p><p><strong>3. Форма контакта и список ожидания</strong><br>Отправленные вами данные (имя, email, сообщение) используются исключительно для обработки запроса или включения в список ожидания. Правовое основание: ст. 6(1)(a) (согласие) или (b) GDPR (преддоговорные меры). Хранятся до отзыва согласия или прекращения цели обработки.</p><p><strong>4. Обработка Google (США)</strong><br>Отправка форм идёт через Google Apps Script (Google LLC, США) в Google Sheets. Это передача в третью страну (США). Правовое основание: ст. 49(1)(a) GDPR (явное согласие при отправке формы), плюс стандартные договорные оговорки ЕС где применимо.</p><p><strong>5. Локальное хранение</strong><br>Выбранный язык сохраняется в браузере (localStorage). Маркетинговые и трекинговые cookies не устанавливаются.</p><p><strong>6. Ваши права</strong><br>Вы имеете право на доступ (ст. 15), исправление (ст. 16), удаление (ст. 17), ограничение (ст. 18), переносимость (ст. 20), возражение (ст. 21 GDPR) и подачу жалобы в надзорный орган. Контакт: hello@wurfkit.de</p>'}}
 };
 function openModal(id){
   try{
