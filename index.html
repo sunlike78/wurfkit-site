@@ -31,44 +31,43 @@
 <meta name="twitter:description" content="Welpen-Unterlagen in Minuten statt Stunden. Im Browser, ohne Installation. Auf Deutsch, für VDH-Züchter.">
 <meta name="twitter:image" content="https://wurfkit.de/assets/og.jpg">
 <meta name="twitter:image:alt" content="WurfKit – Online-Plattform für VDH-Hundezüchter">
-<meta name="theme-color" content="#13141A">
+<meta name="theme-color" content="#FAFAF7">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"></noscript>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"WurfKit","operatingSystem":"Web Browser","applicationCategory":"BusinessApplication","browserRequirements":"Requires JavaScript. Requires HTML5.","description":"Online-Plattform für VDH-Hundezüchter zur Verwaltung von Hunden, Würfen und automatischer Generierung von Kaufvertrag, Wurfmeldung und Welpen-Paket. Direkt im Browser, ohne Installation.","url":"https://wurfkit.de/","inLanguage":["de","en","ru"],"offers":{"@type":"Offer","priceCurrency":"EUR","price":"0","description":"Kostenlose Vormerkung auf der Warteliste"},"author":{"@type":"Organization","name":"WurfKit","email":"hello@wurfkit.de","url":"https://wurfkit.de/"}}
 </script>
 <style>
 /* === DESIGN TOKENS === */
-/* Color palette aligned with the demo app: softer green (#52B788) for accent and
-   slightly lifted near-black background so the landing reads consistently with
-   the in-app surfaces (which use #2D6A4F primary on white) instead of jumping
-   between bright #34D399 and saturated #09090B. */
-:root{--a:#52B788;--ad:#2D6A4F;--bg:#13141A;--s:#1C1D24;--s2:#23252D;--b:#2F3038;--bl:#44464E;--t:#F5F5F7;--t2:#BCBCC4;--t3:#92929A;--g:rgba(255,255,255,0.04);--g2:rgba(255,255,255,0.07);--gw:rgba(82,183,136,0.16);--gw2:rgba(82,183,136,0.08);--r:16px;--rs:10px;--rx:6px}
+/* Light palette = the demo app's design system (2026-06-12): #FAFAF7 ground,
+   white surfaces, #2D6A4F primary green / #52B788 accent, dark ink text.
+   The landing now shows exactly the product the live demo opens with. */
+:root{--a:#2D6A4F;--al:#52B788;--ad:#1B4332;--bg:#FAFAF7;--s:#FFFFFF;--s2:#F5F5F0;--b:#E8E8E0;--bl:#D4D4C8;--t:#1A1A1A;--t2:#4A4A4A;--t3:#6B6B66;--g:rgba(45,106,79,0.04);--g2:rgba(45,106,79,0.08);--gw:rgba(82,183,136,0.25);--gw2:rgba(82,183,136,0.12);--r:16px;--rs:10px;--rx:6px}
 /* === BASE === */
 *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
 html,body{overflow-x:hidden;max-width:100vw}
-body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--t);-webkit-font-smoothing:antialiased}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t);-webkit-font-smoothing:antialiased}
 img{max-width:100%;height:auto}
 /* === COMPONENT: NAV === */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:.9rem 2rem;display:flex;justify-content:space-between;align-items:center;background:rgba(9,9,11,.85);-webkit-backdrop-filter:blur(20px) saturate(1.4);backdrop-filter:blur(20px) saturate(1.4);border-bottom:1px solid var(--b)}
-.logo{font-family:'Instrument Serif',serif;font-size:1.5rem;font-weight:400;color:var(--t);letter-spacing:-.02em}.logo b{color:var(--a);font-weight:400}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:.9rem 2rem;display:flex;justify-content:space-between;align-items:center;background:rgba(250,250,247,.88);-webkit-backdrop-filter:blur(20px) saturate(1.4);backdrop-filter:blur(20px) saturate(1.4);border-bottom:1px solid var(--b)}
+.logo{font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;font-weight:400;color:var(--t);letter-spacing:-.02em}.logo b{color:var(--a);font-weight:400}
 .nr{display:flex;align-items:center;gap:10px}
 .ls{display:flex;background:var(--s);border:1px solid var(--b);border-radius:100px;overflow:hidden}
 .lb{padding:.3rem .65rem;cursor:pointer;color:var(--t3);background:0 0;border:none;font-family:inherit;font-size:.72rem;font-weight:500;transition:all .2s;letter-spacing:.5px}
-.lb.active{background:var(--a);color:var(--bg)}
-.nc{background:var(--a);color:var(--bg);padding:.5rem 1.2rem;border-radius:100px;border:none;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s}
-.nc:hover{background:#fff;box-shadow:0 0 24px var(--gw)}
+.lb.active{background:#D8F3DC;color:var(--ad);font-weight:700}
+.nc{background:var(--a);color:#fff;padding:.5rem 1.2rem;border-radius:100px;border:none;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s}
+.nc:hover{background:var(--ad);box-shadow:0 0 24px var(--gw)}
 /* === COMPONENT: HERO === */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:8rem 1.5rem 4rem;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,var(--gw) 0%,var(--gw2) 30%,transparent 70%);pointer-events:none}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:8rem 1.5rem 4rem;position:relative;overflow:hidden;background:linear-gradient(180deg,#ECF7EF 0%,var(--bg) 62%)}
+.hero::before{content:'';position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,var(--gw2) 0%,transparent 70%);pointer-events:none}
 .hc{position:relative;z-index:1;max-width:760px}
 .hb{display:inline-flex;align-items:center;gap:7px;background:var(--g);border:1px solid var(--b);color:var(--a);font-size:.75rem;font-weight:500;padding:.35rem 1rem;border-radius:100px;margin-bottom:1.75rem;letter-spacing:.3px}
 .hb::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--a);animation:p 2s infinite}
 @keyframes p{0%,100%{opacity:1}50%{opacity:.4}}
-h1{font-family:'Instrument Serif',serif;font-size:clamp(2.6rem,6vw,4.4rem);font-weight:400;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-.03em}
+h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(2.6rem,6vw,4.4rem);font-weight:600;line-height:1.1;margin-bottom:1.5rem;letter-spacing:-.03em;color:var(--ad)}
 h1 em{color:var(--a);font-style:italic}
 .hs{font-size:1.05rem;color:var(--t2);line-height:1.75;max-width:560px;margin:0 auto 2.5rem;font-weight:300}
 .hf{display:flex;gap:8px;max-width:440px;margin:0 auto}
@@ -87,40 +86,47 @@ h1 em{color:var(--a);font-style:italic}
 .hcta-trust span:first-child{font-size:.85rem;opacity:.85}
 .hf input{flex:1;padding:.85rem 1.1rem;border:1.5px solid var(--b);border-radius:var(--rs);font-family:inherit;font-size:.88rem;background:var(--s);color:var(--t);outline:none;transition:border-color .2s}
 .hf input:focus{border-color:var(--a)}.hf input::placeholder{color:var(--t3)}
-.hf button{background:var(--a);color:var(--bg);border:none;border-radius:var(--rs);padding:.85rem 1.5rem;font-family:inherit;font-size:.88rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s}
-.hf button:hover{background:#fff;box-shadow:0 0 20px var(--gw)}
+.hf button{background:var(--a);color:#fff;border:none;border-radius:var(--rs);padding:.85rem 1.5rem;font-family:inherit;font-size:.88rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s}
+.hf button:hover{background:var(--ad);box-shadow:0 0 20px var(--gw)}
 .hn{font-size:.73rem;color:var(--t3);margin-top:.75rem}
+/* Scroll cue — the hero fills the viewport, so without this nothing hints
+   that the product story continues below the fold */
+.scue{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:1px;color:var(--t3);font-size:.66rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;z-index:1;transition:color .2s}
+.scue:hover{color:var(--a)}
+.scue-ch{font-size:1.5rem;line-height:.8;animation:scueB 2s ease-in-out infinite}
+@keyframes scueB{0%,100%{transform:translateY(0);opacity:.65}50%{transform:translateY(6px);opacity:1}}
+@media (prefers-reduced-motion: reduce){.scue-ch{animation:none}}
 /* === COMPONENT: SECTION-HEADER === */
 .sl{font-size:.7rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--a);margin-bottom:.75rem;text-align:center}
-h2{font-family:'Instrument Serif',serif;font-size:clamp(1.9rem,4.5vw,2.8rem);font-weight:400;text-align:center;margin-bottom:.75rem;letter-spacing:-.02em;line-height:1.15}
+h2{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.9rem,4.5vw,2.8rem);font-weight:400;text-align:center;margin-bottom:.75rem;letter-spacing:-.02em;line-height:1.15}
 .ss{font-size:.95rem;color:var(--t2);text-align:center;max-width:540px;margin:0 auto 3.5rem;line-height:1.65;font-weight:300}
 /* === COMPONENT: SCREEN-MOCKUPS (.ps + .pcd + .pbc browser-chrome) === */
 .ps{padding:6rem 1.5rem;display:flex;flex-direction:column;align-items:center}
 /* Wide desktop mockup — anchors the "web-first" signal above the 4 phone-shaped cards */
-.dtm{width:100%;max-width:780px;background:var(--s);border-radius:12px;border:1px solid var(--b);overflow:hidden;box-shadow:0 28px 80px rgba(0,0,0,.5),0 0 40px var(--gw2);margin:0 auto 3rem;transition:transform .3s,box-shadow .3s}
-.dtm:hover{transform:translateY(-4px);box-shadow:0 32px 88px rgba(0,0,0,.55),0 0 60px var(--gw)}
+.dtm{width:100%;max-width:780px;background:var(--s);border-radius:12px;border:1px solid var(--b);overflow:hidden;box-shadow:0 28px 80px rgba(27,67,50,.14),0 0 40px var(--gw2);margin:0 auto 3rem;transition:transform .3s,box-shadow .3s}
+.dtm:hover{transform:translateY(-4px);box-shadow:0 32px 88px rgba(27,67,50,.18),0 0 60px var(--gw)}
 .dtm-body{display:grid;grid-template-columns:160px 1fr;min-height:340px}
-.dtm-side{background:#0f0f12;border-right:1px solid var(--b);padding:14px 10px;display:flex;flex-direction:column;gap:2px}
-.dtm-logo{font-family:'Instrument Serif',serif;font-size:1.05rem;font-weight:400;color:var(--t);letter-spacing:-.02em;padding:4px 8px 14px;border-bottom:1px solid var(--b);margin-bottom:8px}
+.dtm-side{background:var(--s2);border-right:1px solid var(--b);padding:14px 10px;display:flex;flex-direction:column;gap:2px}
+.dtm-logo{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:400;color:var(--t);letter-spacing:-.02em;padding:4px 8px 14px;border-bottom:1px solid var(--b);margin-bottom:8px}
 .dtm-logo b{color:var(--a)}
 .dtm-nav{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:6px;font-size:.78rem;color:var(--t2);cursor:pointer;transition:background .15s}
 .dtm-nav .ico{font-size:.95rem;width:18px;text-align:center}
-.dtm-nav.active{background:rgba(52,211,153,.12);color:var(--a)}
+.dtm-nav.active{background:rgba(45,106,79,.1);color:var(--a);font-weight:600}
 .dtm-nav:hover{background:var(--g)}
 .dtm-main{padding:18px 22px;display:flex;flex-direction:column}
 .dtm-top{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:14px;border-bottom:1px solid var(--b)}
-.dtm-title{font-family:'Instrument Serif',serif;font-size:1.35rem;font-weight:400;letter-spacing:-.01em}
+.dtm-title{font-family:'Playfair Display',Georgia,serif;font-size:1.35rem;font-weight:400;letter-spacing:-.01em}
 .dtm-sub{font-size:.7rem;color:var(--t3);margin-top:2px}
 .dtm-userpill{display:flex;align-items:center;gap:6px;background:var(--g);border:1px solid var(--b);padding:4px 10px;border-radius:99px;font-size:.7rem;color:var(--t2)}
 .dtm-userpill::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--a)}
 .dtm-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px;flex:1}
-.dtm-card{background:var(--g);border:1px solid var(--b);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px;transition:all .2s}
-.dtm-card:hover{border-color:rgba(52,211,153,.4);background:var(--g2)}
+.dtm-card{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px;transition:all .2s;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.dtm-card:hover{border-color:rgba(45,106,79,.4);background:var(--g2)}
 .dtm-card .ic{width:32px;height:32px;border-radius:8px;background:var(--g2);display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:2px}
 .dtm-card .nm{font-size:.82rem;font-weight:600;color:var(--t);line-height:1.25}
 .dtm-card .mt{font-size:.66rem;color:var(--t3);line-height:1.45;flex:1}
-.dtm-card .btn{margin-top:8px;background:var(--a);color:var(--bg);font-size:.7rem;font-weight:600;padding:6px 10px;border-radius:6px;text-align:center;letter-spacing:.2px}
-.dtm-card.featured{background:linear-gradient(135deg,rgba(52,211,153,.12),rgba(52,211,153,.04));border-color:rgba(52,211,153,.3)}
+.dtm-card .btn{margin-top:8px;background:var(--a);color:#fff;font-size:.7rem;font-weight:600;padding:6px 10px;border-radius:6px;text-align:center;letter-spacing:.2px}
+.dtm-card.featured{background:linear-gradient(135deg,#F0FDF4,#ECFDF5);border-color:rgba(45,106,79,.3)}
 .dtm-card.featured .nm{color:var(--a)}
 @media(max-width:780px){
   .dtm{max-width:100%}
@@ -133,45 +139,45 @@ h2{font-family:'Instrument Serif',serif;font-size:clamp(1.9rem,4.5vw,2.8rem);fon
 }
 .prw{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
 .pw{display:flex;flex-direction:column;align-items:center}
-.pcd{width:235px;background:var(--s);border-radius:12px;border:1px solid var(--b);overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);transition:transform .3s,box-shadow .3s}
-.pcd:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 30px var(--gw2)}
+.pcd{width:235px;background:var(--s);border-radius:12px;border:1px solid var(--b);overflow:hidden;box-shadow:0 20px 60px rgba(27,67,50,.12);transition:transform .3s,box-shadow .3s}
+.pcd:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(27,67,50,.16),0 0 30px var(--gw2)}
 .pw:nth-child(2) .pcd{margin-top:28px}.pw:nth-child(3) .pcd{margin-top:14px}.pw:nth-child(4) .pcd{margin-top:42px}
-.pbc{background:#1f1f23;padding:7px 10px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--b)}
-.pbcd{width:8px;height:8px;border-radius:50%;background:#3F3F46}
+.pbc{background:#ECECE6;padding:7px 10px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--b)}
+.pbcd{width:8px;height:8px;border-radius:50%;background:#D4D4C8}
 .pbcd:nth-child(1){background:#F87171}.pbcd:nth-child(2){background:#FACC15}.pbcd:nth-child(3){background:#34D399}
-.pbcu{flex:1;margin-left:6px;background:#0a0a0c;border:1px solid #27272A;border-radius:4px;padding:2px 7px;font-size:8px;color:var(--t3);font-family:monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pt{background:linear-gradient(135deg,#34D399,#079E5E);padding:12px 14px;color:var(--bg)}
+.pbcu{flex:1;margin-left:6px;background:#fff;border:1px solid var(--bl);border-radius:4px;padding:2px 7px;font-size:8px;color:var(--t3);font-family:monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pt{background:linear-gradient(135deg,#2D6A4F,#52B788);padding:12px 14px;color:#fff}
 .ptt{font-size:12px;font-weight:600}.pts{font-size:9px;opacity:.7;margin-top:1px}
 .pb{padding:9px;display:flex;flex-direction:column;gap:6px}
-.pc{background:var(--g);border-radius:var(--rx);padding:8px 9px;border:1px solid var(--b)}
+.pc{background:var(--s2);border-radius:var(--rx);padding:8px 9px;border:1px solid var(--b)}
 .pct{font-size:9px;font-weight:500;color:var(--t2);margin-bottom:5px}
 .pr{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
 .pl{font-size:8px;color:var(--t3)}.pv{font-size:8px;font-weight:500;color:var(--t)}
 .pb2{font-size:7.5px;padding:2px 6px;border-radius:99px;font-weight:600;letter-spacing:.3px}
-.xg{background:rgba(52,211,153,.15);color:#34D399}.xa{background:rgba(250,204,21,.15);color:#FACC15}
-.xb{background:rgba(96,165,250,.15);color:#60A5FA}.xr{background:rgba(248,113,113,.15);color:#F87171}
+.xg{background:#DCFCE7;color:#15803D}.xa{background:#FEF3C7;color:#A16207}
+.xb{background:#DBEAFE;color:#1D4ED8}.xr{background:#FEE2E2;color:#B91C1C}
 .psg{display:grid;grid-template-columns:1fr 1fr;gap:4px}
-.psi{background:var(--g);border-radius:var(--rx);padding:5px;text-align:center;border:1px solid var(--b)}
+.psi{background:var(--s2);border-radius:var(--rx);padding:5px;text-align:center;border:1px solid var(--b)}
 .psn{font-size:15px;font-weight:700;color:var(--a)}.psl{font-size:7px;color:var(--t3);margin-top:1px}
 .pdr{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--b)}
 .pdr:last-child{border-bottom:none;padding-bottom:0}
 .pav{width:24px;height:24px;border-radius:50%;background:var(--g2);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
 .pdn{font-size:9px;font-weight:500;color:var(--t)}.pdb{font-size:7px;color:var(--t3)}
-.pbtn{background:rgba(52,211,153,.12);color:var(--a);border:none;border-radius:var(--rx);padding:6px;font-size:8px;font-weight:600;width:100%;text-align:center;margin-top:2px;cursor:pointer}
+.pbtn{background:rgba(45,106,79,.1);color:var(--a);border:none;border-radius:var(--rx);padding:6px;font-size:8px;font-weight:600;width:100%;text-align:center;margin-top:2px;cursor:pointer}
 .pcap{text-align:center;font-size:11px;color:var(--t3);margin-top:8px;font-weight:500}
-.coir{background:linear-gradient(135deg,rgba(52,211,153,.15),rgba(52,211,153,.05));border:1px solid rgba(52,211,153,.2);border-radius:var(--rx);padding:8px;text-align:center}
+.coir{background:linear-gradient(135deg,#D8F3DC,#ECFDF5);border:1px solid #BBF7D0;border-radius:var(--rx);padding:8px;text-align:center}
 .coin{font-size:22px;font-weight:700;color:var(--a)}.cois{font-size:7px;color:var(--a);font-weight:500;margin-top:1px;opacity:.7}
-.coio{display:inline-block;background:var(--a);color:var(--bg);font-size:7px;font-weight:600;padding:2px 7px;border-radius:99px;margin-top:3px}
+.coio{display:inline-block;background:var(--a);color:#fff;font-size:7px;font-weight:600;padding:2px 7px;border-radius:99px;margin-top:3px}
 .tn{border-radius:4px;padding:2px 5px;font-size:7px;font-weight:500;white-space:nowrap}
-.tnr{background:var(--a);color:var(--bg)}.tnp{background:rgba(52,211,153,.15);color:var(--a)}
-.tng{background:var(--g2);color:var(--t2)}.tnh{background:rgba(250,204,21,.15);color:#FACC15;border:1px solid rgba(250,204,21,.3)}
+.tnr{background:var(--a);color:#fff}.tnp{background:#D8F3DC;color:#1B4332}
+.tng{background:var(--s2);color:var(--t2);border:1px solid var(--b)}.tnh{background:#FEF3C7;color:#A16207;border:1px solid #FDE68A}
 /* === COMPONENT: PAIN-CARDS === */
 .pas{background:var(--s);padding:6rem 1.5rem;border-top:1px solid var(--b);border-bottom:1px solid var(--b)}
 .pai{max-width:960px;margin:0 auto}
 .pag{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:3rem}
 .pac{background:var(--g);border:1px solid var(--b);border-radius:var(--r);padding:1.5rem;transition:all .25s;cursor:pointer}
 .pac:hover{border-color:var(--a);background:var(--g2);box-shadow:0 0 30px var(--gw2)}
-.pan{font-family:'Instrument Serif',serif;font-size:2rem;font-weight:400;color:var(--a);opacity:.3;margin-bottom:.5rem}
+.pan{font-family:'Playfair Display',Georgia,serif;font-size:2rem;font-weight:400;color:var(--a);opacity:.3;margin-bottom:.5rem}
 .pat{font-size:.92rem;font-weight:500;margin-bottom:.5rem}
 .pax{font-size:.8rem;color:var(--t3);line-height:1.65}
 /* === COMPONENT: KILLER-FEATURES === */
@@ -181,14 +187,14 @@ h2{font-family:'Instrument Serif',serif;font-size:clamp(1.9rem,4.5vw,2.8rem);fon
 .zzg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:3rem 0 1.6rem}
 .zzc{background:var(--g);border:1px solid var(--b);border-radius:var(--r);padding:1.7rem 1.4rem;text-align:center;transition:all .25s}
 .zzc:hover{background:var(--g2);border-color:var(--bl)}
-.zzn{font-family:'Instrument Serif',serif;font-size:3.4rem;font-weight:400;color:var(--a);line-height:1;margin-bottom:.5rem;letter-spacing:-.02em}
+.zzn{font-family:'Playfair Display',Georgia,serif;font-size:3.4rem;font-weight:400;color:var(--a);line-height:1;margin-bottom:.5rem;letter-spacing:-.02em}
 .zzt{font-size:.92rem;font-weight:600;margin-bottom:.6rem;color:var(--t);letter-spacing:-.005em}
 .zzx{font-size:.78rem;color:var(--t3);line-height:1.65}
 .zzd{display:grid;grid-template-columns:1fr auto 1fr;gap:.5rem 1.4rem;align-items:center;background:var(--g);border:1px solid var(--b);border-radius:var(--r);padding:1.5rem 1.8rem;margin-top:.6rem}
 .zzdcol{display:flex;flex-direction:column;gap:.4rem}
 .zzdh{font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);font-weight:600}
 .zzdl{font-size:.85rem;color:var(--t2);line-height:1.55}
-.zzar{font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--a);opacity:.55;line-height:1}
+.zzar{font-family:'Playfair Display',Georgia,serif;font-size:2.2rem;color:var(--a);opacity:.55;line-height:1}
 .ks{padding:6rem 1.5rem;position:relative}
 .ks::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--gw2) 0%,transparent 70%);pointer-events:none}
 .ki{max-width:960px;margin:0 auto;position:relative}
@@ -257,11 +263,11 @@ section,.hero,.ps,.pas,.ks,.ds,.fs,.cs,.ct{overflow-x:hidden;max-width:100vw}
 .dp{min-height:160px}
 }
 .kc{background:var(--s);border:1px solid var(--b);border-radius:20px;padding:2rem;position:relative;overflow:hidden;transition:all .25s;cursor:pointer}
-.kc:hover{border-color:rgba(52,211,153,.4);box-shadow:0 16px 48px rgba(0,0,0,.3),0 0 40px var(--gw2)}
-.kc.ft{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;background:linear-gradient(135deg,var(--s),#0d1a12);border-color:rgba(52,211,153,.25)}
+.kc:hover{border-color:rgba(45,106,79,.4);box-shadow:0 16px 48px rgba(27,67,50,.10),0 0 40px var(--gw2)}
+.kc.ft{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;background:linear-gradient(135deg,var(--s),#F0FDF4);border-color:rgba(45,106,79,.25)}
 @media(max-width:700px){.kc.ft{grid-template-columns:1fr;grid-column:auto}}
-.kb{display:inline-block;background:rgba(52,211,153,.12);color:var(--a);font-size:.62rem;font-weight:700;padding:3px 10px;border-radius:99px;margin-bottom:.75rem;letter-spacing:1px;border:1px solid rgba(52,211,153,.2)}
-.kt{font-family:'Instrument Serif',serif;font-size:1.35rem;font-weight:400;margin-bottom:.6rem;letter-spacing:-.01em}
+.kb{display:inline-block;background:rgba(45,106,79,.08);color:var(--a);font-size:.62rem;font-weight:700;padding:3px 10px;border-radius:99px;margin-bottom:.75rem;letter-spacing:1px;border:1px solid rgba(45,106,79,.25)}
+.kt{font-family:'Playfair Display',Georgia,serif;font-size:1.35rem;font-weight:400;margin-bottom:.6rem;letter-spacing:-.01em}
 .kx{font-size:.83rem;color:var(--t2);line-height:1.7;font-weight:300}
 .km{background:var(--g);border-radius:var(--r);padding:1.25rem;border:1px solid var(--b)}
 .kmr{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--b)}
@@ -277,31 +283,31 @@ section,.hero,.ps,.pas,.ks,.ds,.fs,.cs,.ct{overflow-x:hidden;max-width:100vw}
 .dc:hover{border-color:var(--a);box-shadow:0 0 30px var(--gw2)}
 .dp{padding:1.5rem;font-size:.72rem;color:var(--t3);line-height:1.8;border-bottom:1px solid var(--b);min-height:220px;position:relative;overflow:hidden}
 .dp::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,var(--bg))}
-.dl{position:absolute;top:12px;right:12px;background:var(--a);color:var(--bg);font-size:.6rem;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:1px;z-index:2}
+.dl{position:absolute;top:12px;right:12px;background:var(--a);color:#fff;font-size:.6rem;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:1px;z-index:2}
 .dh{font-size:.85rem;font-weight:600;color:var(--t);text-align:center;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--b)}
 .df{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed var(--b)}.df:last-child{border-bottom:none}
 .dk{color:var(--t3)}.dv{color:var(--t2);text-align:right}
 .din{padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
 .dil h3{font-size:.9rem;font-weight:600;margin-bottom:2px}.dil p{font-size:.72rem;color:var(--t3)}
-.dbd{background:var(--g2);color:var(--a);font-size:.68rem;font-weight:600;padding:4px 12px;border-radius:99px;border:1px solid rgba(52,211,153,.2)}
+.dbd{background:rgba(45,106,79,.08);color:var(--a);font-size:.68rem;font-weight:600;padding:4px 12px;border-radius:99px;border:1px solid rgba(45,106,79,.25)}
 /* === COMPONENT: FEATURE-GRID === */
 .fs{padding:6rem 1.5rem}.fi{max-width:960px;margin:0 auto;text-align:center}
 .fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:3rem;text-align:left}
 .fc{padding:1.4rem;border:1px solid var(--b);border-radius:var(--r);background:var(--s);transition:all .25s;cursor:pointer}
-.fc:hover{border-color:rgba(52,211,153,.3);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.fc:hover{border-color:rgba(45,106,79,.3);transform:translateY(-3px);box-shadow:0 8px 30px rgba(27,67,50,.08)}
 .fic{width:36px;height:36px;background:var(--g2);border-radius:var(--rx);display:flex;align-items:center;justify-content:center;margin-bottom:.8rem;font-size:16px}
 .fti{font-size:.88rem;font-weight:500;margin-bottom:.4rem}.ftx{font-size:.78rem;color:var(--t3);line-height:1.65}
-.fn{display:inline-block;background:var(--a);color:var(--bg);font-size:.55rem;font-weight:700;padding:1px 6px;border-radius:99px;margin-left:5px;vertical-align:middle;letter-spacing:.5px}
-.fn-soon{background:rgba(250,204,21,.18);color:#FACC15;border:1px solid rgba(250,204,21,.35)}
+.fn{display:inline-block;background:var(--a);color:#fff;font-size:.55rem;font-weight:700;padding:1px 6px;border-radius:99px;margin-left:5px;vertical-align:middle;letter-spacing:.5px}
+.fn-soon{background:#FEF3C7;color:#A16207;border:1px solid #FDE68A}
 /* === COMPONENT: PRIVACY-MODES === */
-.pm{padding:6rem 1.5rem;background:linear-gradient(180deg,var(--bg) 0%,#0d0d10 100%);border-top:1px solid var(--b);border-bottom:1px solid var(--b)}
+.pm{padding:6rem 1.5rem;background:linear-gradient(180deg,var(--bg) 0%,var(--s2) 100%);border-top:1px solid var(--b);border-bottom:1px solid var(--b)}
 .pmi{max-width:1000px;margin:0 auto}
 .pmg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:3rem}
 .pmc{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:1.8rem 1.5rem;text-align:left;transition:all .25s}
-.pmc:hover{border-color:rgba(52,211,153,.3);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.pmc:hover{border-color:rgba(45,106,79,.3);box-shadow:0 8px 30px rgba(27,67,50,.08)}
 .pmh{width:46px;height:46px;background:var(--g2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:1rem}
-.pmt{font-family:'Instrument Serif',serif;font-size:1.5rem;font-weight:400;letter-spacing:-.01em;margin-bottom:.6rem;display:flex;align-items:center;gap:8px}
-.pmb{background:rgba(52,211,153,.18);color:var(--a);font-size:.58rem;font-weight:700;padding:2px 9px;border-radius:99px;letter-spacing:1.5px;border:1px solid rgba(52,211,153,.25);vertical-align:middle}
+.pmt{font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;font-weight:400;letter-spacing:-.01em;margin-bottom:.6rem;display:flex;align-items:center;gap:8px}
+.pmb{background:rgba(45,106,79,.1);color:var(--a);font-size:.58rem;font-weight:700;padding:2px 9px;border-radius:99px;letter-spacing:1.5px;border:1px solid rgba(45,106,79,.3);vertical-align:middle}
 .pmx{font-size:.85rem;color:var(--t2);line-height:1.65;font-weight:300}
 @media(max-width:780px){.pm{padding:4rem 1rem}.pmg{grid-template-columns:1fr;gap:10px}.pmc{padding:1.4rem}}
 /* === COMPONENT: FAQ === */
@@ -309,19 +315,19 @@ section,.hero,.ps,.pas,.ks,.ds,.fs,.cs,.ct{overflow-x:hidden;max-width:100vw}
 .faqi{max-width:760px;margin:0 auto}
 .faqlist{display:flex;flex-direction:column;gap:10px;margin-top:3rem}
 .faqit{background:var(--g);border:1px solid var(--b);border-radius:var(--r);overflow:hidden;transition:border-color .2s}
-.faqit[open]{border-color:rgba(52,211,153,.35);background:var(--g2)}
+.faqit[open]{border-color:rgba(45,106,79,.35);background:var(--s)}
 .faqit summary{padding:1.1rem 1.4rem;font-size:.95rem;font-weight:500;color:var(--t);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem}
 .faqit summary::-webkit-details-marker{display:none}
 .faqit summary::after{content:'+';color:var(--a);font-size:1.3rem;font-weight:300;flex-shrink:0;transition:transform .2s}
 .faqit[open] summary::after{content:'−'}
 .faqit summary:hover{color:var(--a)}
 .faqa{padding:0 1.4rem 1.2rem;font-size:.85rem;color:var(--t2);line-height:1.75;font-weight:300}
-.faqa a{color:var(--a);text-decoration:none;border-bottom:1px solid rgba(52,211,153,.3)}
+.faqa a{color:var(--a);text-decoration:none;border-bottom:1px solid rgba(45,106,79,.35)}
 .faqa a:hover{border-bottom-color:var(--a)}
 /* === COMPONENT: ABOUT === */
 .about{padding:5rem 1.5rem;text-align:center}
 .abouti{max-width:560px;margin:0 auto}
-.aboutq{font-family:'Instrument Serif',serif;font-size:clamp(1.4rem,3.2vw,1.85rem);font-weight:400;font-style:italic;color:var(--t);margin:1.5rem 0 1.25rem;letter-spacing:-.01em;line-height:1.4}
+.aboutq{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.4rem,3.2vw,1.85rem);font-weight:400;font-style:italic;color:var(--t);margin:1.5rem 0 1.25rem;letter-spacing:-.01em;line-height:1.4}
 .aboutq::before,.aboutq::after{content:'„';color:var(--a);opacity:.5}
 .aboutq::after{content:'"'}
 .abouts{font-size:.85rem;color:var(--t3);font-weight:500;letter-spacing:.5px}
@@ -331,41 +337,41 @@ section,.hero,.ps,.pas,.ks,.ds,.fs,.cs,.ct{overflow-x:hidden;max-width:100vw}
 .cw{background:var(--s);border:1px solid var(--b);border-radius:20px;padding:2.5rem;max-width:520px;width:100%;margin-top:2.5rem}
 .cf{display:flex;flex-direction:column;gap:11px}
 .cf input,.cf textarea,.cf select{padding:.8rem 1rem;border:1.5px solid var(--b);border-radius:var(--rs);font-family:inherit;font-size:.88rem;background:var(--bg);color:var(--t);outline:none;transition:border-color .2s;width:100%}
-.cf input:focus,.cf textarea:focus,.cf select:focus{border-color:var(--a)}.cf select{color:var(--t3)}
+.cf input:focus,.cf textarea:focus,.cf select:focus{border-color:var(--a)}.cf select{color:var(--t3)}.cf select.has-value{color:var(--t)}
 .cf textarea{min-height:110px;resize:vertical}
-.cf button{background:var(--a);color:var(--bg);border:none;border-radius:var(--rs);padding:.85rem;font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s}
-.cf button:hover{background:#fff}
+.cf button{background:var(--a);color:#fff;border:none;border-radius:var(--rs);padding:.85rem;font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s}
+.cf button:hover{background:var(--ad)}
 .cn{font-size:.72rem;color:var(--t3);text-align:center;margin-top:6px}
 /* === COMPONENT: FINAL-CTA === */
-.ct{background:linear-gradient(135deg,#071F12,#0d2e1a);padding:6rem 1.5rem;text-align:center;border-top:1px solid rgba(52,211,153,.15)}
-.ct h2{margin-bottom:.75rem}.ct .ss{color:var(--t2)}
+.ct{background:linear-gradient(135deg,#D8F3DC,#ECFDF5);padding:6rem 1.5rem;text-align:center;border-top:1px solid rgba(45,106,79,.15)}
+.ct h2{margin-bottom:.75rem;color:var(--ad)}.ct .ss{color:var(--t2)}
 .ctf{display:flex;gap:8px;max-width:420px;margin:2rem auto 0;flex-wrap:wrap;justify-content:center}
-.ctf input{flex:1;min-width:200px;padding:.85rem 1.1rem;border:1.5px solid rgba(52,211,153,.3);border-radius:var(--rs);background:rgba(52,211,153,.06);color:var(--t);font-family:inherit;font-size:.88rem;outline:none}
+.ctf input{flex:1;min-width:200px;padding:.85rem 1.1rem;border:1.5px solid rgba(45,106,79,.3);border-radius:var(--rs);background:#fff;color:var(--t);font-family:inherit;font-size:.88rem;outline:none}
 .ctf input::placeholder{color:var(--t3)}.ctf input:focus{border-color:var(--a)}
-.ctf button{background:var(--a);color:var(--bg);border:none;border-radius:var(--rs);padding:.85rem 1.5rem;font-family:inherit;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s}
-.ctf button:hover{background:#fff}
+.ctf button{background:var(--a);color:#fff;border:none;border-radius:var(--rs);padding:.85rem 1.5rem;font-family:inherit;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s}
+.ctf button:hover{background:var(--ad)}
 .ctn{font-size:.75rem;color:var(--t3);margin-top:1rem}
 /* === COMPONENT: FOOTER === */
 footer{padding:2rem 1.5rem;text-align:center;border-top:1px solid var(--b);font-size:.75rem;color:var(--t3)}
-footer a{color:var(--a);text-decoration:underline;text-decoration-color:rgba(52,211,153,.4);text-underline-offset:2px}
+footer a{color:var(--a);text-decoration:underline;text-decoration-color:rgba(45,106,79,.4);text-underline-offset:2px}
 footer a:hover{text-decoration-color:var(--a)}
 /* === COMPONENT: MODAL === */
-.mo{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.7);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:1.5rem}
+.mo{display:none;position:fixed;inset:0;z-index:200;background:rgba(20,30,25,.45);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:1.5rem}
 .mo.open{display:flex}
 .ml{background:var(--s);border:1px solid var(--b);border-radius:20px;max-width:640px;width:100%;max-height:85vh;overflow-y:auto;position:relative;animation:mi .25s ease}
 @keyframes mi{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
 .mx{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--g2);border:1px solid var(--b);color:var(--t3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;z-index:10;transition:all .2s}
-.mx:hover{background:var(--a);color:var(--bg);border-color:var(--a)}
+.mx:hover{background:var(--a);color:#fff;border-color:var(--a)}
 .mh{padding:2rem 2rem 1rem;border-bottom:1px solid var(--b)}
-.mb2{display:inline-block;background:rgba(52,211,153,.12);color:var(--a);font-size:.6rem;font-weight:700;padding:3px 10px;border-radius:99px;margin-bottom:.5rem;letter-spacing:1px;border:1px solid rgba(52,211,153,.2)}
-.mti{font-family:'Instrument Serif',serif;font-size:1.5rem;font-weight:400;letter-spacing:-.02em;margin-bottom:.35rem}
+.mb2{display:inline-block;background:rgba(45,106,79,.08);color:var(--a);font-size:.6rem;font-weight:700;padding:3px 10px;border-radius:99px;margin-bottom:.5rem;letter-spacing:1px;border:1px solid rgba(45,106,79,.25)}
+.mti{font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;font-weight:400;letter-spacing:-.02em;margin-bottom:.35rem}
 .msu{font-size:.82rem;color:var(--t3);font-weight:300}
 .mbd{padding:1.5rem 2rem 2rem}
 .mbd p{font-size:.88rem;color:var(--t2);line-height:1.75;margin-bottom:1rem;font-weight:300}
 .mbd ul{list-style:none;margin-bottom:1.5rem}.mbd ul li{font-size:.85rem;color:var(--t2);padding:.4rem 0;border-bottom:1px solid var(--b);display:flex;align-items:center;gap:8px}
 .mbd ul li::before{content:'→';color:var(--a);font-weight:600;flex-shrink:0}
-.mct{display:inline-block;background:var(--a);color:var(--bg);padding:.7rem 1.5rem;border-radius:var(--rs);font-weight:600;font-size:.85rem;cursor:pointer;border:none;font-family:inherit;transition:all .2s;text-decoration:none}
-.mct:hover{background:#fff}
+.mct{display:inline-block;background:var(--a);color:#fff;padding:.7rem 1.5rem;border-radius:var(--rs);font-weight:600;font-size:.85rem;cursor:pointer;border:none;font-family:inherit;transition:all .2s;text-decoration:none}
+.mct:hover{background:var(--ad)}
 /* === COMPONENT: SCROLL-REVEAL === */
 /* Subtle fade + slide-up when sections enter viewport. The IntersectionObserver
    adds .rev once; transitions stay short and easing is gentle. Users who prefer
@@ -380,12 +386,12 @@ body.l-de .de{display:block}body.l-en .en{display:block}body.l-ru .ru{display:bl
 body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:inline}
 /* .pmt is a flex row — re-assert over the generic lang-visibility display:block */
 body.l-de .pmt.de,body.l-en .pmt.en,body.l-ru .pmt.ru{display:flex}
-/* Anchor jumps (#signup) must clear the fixed nav */
-#signup{scroll-margin-top:90px}
+/* Anchor jumps (#signup, #produkt) must clear the fixed nav */
+#signup,#produkt{scroll-margin-top:90px}
 </style>
 </head>
 <body id="body" class="l-de">
-<nav role="navigation" aria-label="Hauptnavigation"><div class="logo"><b>Wurf</b>Kit</div><div class="nr"><a href="demo.html" style="color:var(--a);font-size:.78rem;font-weight:600;padding:.4rem .9rem;border:1px solid rgba(52,211,153,.3);border-radius:99px;text-decoration:none;transition:all .2s;background:rgba(52,211,153,.06)" onmouseover="this.style.background='rgba(52,211,153,0.14)'" onmouseout="this.style.background='rgba(52,211,153,0.06)'">▶&nbsp;<span class="di">Live-Demo</span><span class="ei">Live Demo</span><span class="ri">Демо</span></a><div class="ls" role="group" aria-label="Sprache wählen"><button class="lb active" id="btn-de" onclick="setLang('de')" aria-pressed="true" aria-label="Deutsch">DE</button><button class="lb" id="btn-en" onclick="setLang('en')" aria-pressed="false" aria-label="English">EN</button><button class="lb" id="btn-ru" onclick="setLang('ru')" aria-pressed="false" aria-label="Русский">RU</button></div><a href="#signup" class="nc"><span class="di">Zugang sichern</span><span class="ei">Get access</span><span class="ri">Получить доступ</span></a></div></nav>
+<nav role="navigation" aria-label="Hauptnavigation"><div class="logo"><b>Wurf</b>Kit</div><div class="nr"><a href="demo.html" style="color:var(--a);font-size:.78rem;font-weight:600;padding:.4rem .9rem;border:1px solid rgba(45,106,79,.3);border-radius:99px;text-decoration:none;transition:all .2s;background:rgba(45,106,79,.06)" onmouseover="this.style.background='rgba(45,106,79,0.12)'" onmouseout="this.style.background='rgba(45,106,79,0.06)'">▶&nbsp;<span class="di">Live-Demo</span><span class="ei">Live Demo</span><span class="ri">Демо</span></a><div class="ls" role="group" aria-label="Sprache wählen"><button class="lb active" id="btn-de" onclick="setLang('de')" aria-pressed="true" aria-label="Deutsch">DE</button><button class="lb" id="btn-en" onclick="setLang('en')" aria-pressed="false" aria-label="English">EN</button><button class="lb" id="btn-ru" onclick="setLang('ru')" aria-pressed="false" aria-label="Русский">RU</button></div><a href="#signup" class="nc"><span class="di">Zugang sichern</span><span class="ei">Get access</span><span class="ri">Получить доступ</span></a></div></nav>
 
 <main id="main">
 <section class="hero"><div class="hc">
@@ -406,9 +412,11 @@ body.l-de .pmt.de,body.l-en .pmt.en,body.l-ru .pmt.ru{display:flex}
 <form name="waitlist" class="hf" id="signup" style="margin-top:0"><input type="hidden" name="form-name" value="waitlist"/><input type="email" name="email" placeholder="E-Mail" required aria-label="E-Mail-Adresse für Warteliste"/><button type="submit"><span class="di">Vormerken</span><span class="ei">Join</span><span class="ri">Записаться</span></button></form>
 <p class="hn de" style="margin-top:.5rem">Kostenlos · Kein Spam · 30% Rabatt für Frühbucher</p><p class="hn en" style="margin-top:.5rem">Free · No spam · 30% off for early birds</p><p class="hn ru" style="margin-top:.5rem">Бесплатно · Без спама · 30% скидка ранним</p>
 </div>
-</div></section>
+</div>
+<a href="#produkt" class="scue" aria-label="Nach unten scrollen — mehr erfahren"><span class="di">Mehr erfahren</span><span class="ei">Learn more</span><span class="ri">Подробнее</span><span class="scue-ch">⌄</span></a>
+</section>
 
-<section class="ps rv">
+<section class="ps rv" id="produkt">
 <div class="sl de">So sieht WurfKit aus</div><div class="sl en">WurfKit in action</div><div class="sl ru">Как выглядит WurfKit</div>
 <h2 class="de">Ihr persönlicher Bereich. Alles, was ein Züchter braucht.</h2><h2 class="en">Your personal workspace. Everything a breeder needs.</h2><h2 class="ru">Ваш личный кабинет. Всё, что нужно заводчику.</h2>
 <p class="ss de">Nach der Anmeldung: Ihr Dashboard im Browser. Für die App ist DSGVO-konforme Speicherung in der EU vorgesehen.</p><p class="ss en">After sign-in: your dashboard in the browser. The app is designed for GDPR-compliant storage in the EU.</p><p class="ss ru">После входа: ваш dashboard прямо в браузере. Для приложения предусмотрено DSGVO-совместимое хранение в ЕС.</p>
@@ -462,7 +470,7 @@ body.l-de .pmt.de,body.l-en .pmt.en,body.l-ru .pmt.ru{display:flex}
 <div class="pw"><div class="pcd"><div class="pbc"><div class="pbcd"></div><div class="pbcd"></div><div class="pbcd"></div><div class="pbcu">wurfkit.de/zwinger</div></div><div class="pt"><div class="ptt"><span class="di">Mein Zwinger</span><span class="ei">My Kennel</span><span class="ri">Питомник</span></div><div class="pts">3 <span class="di">Hunde</span><span class="ei">dogs</span><span class="ri">собаки</span></div></div><div class="pb"><div class="psg"><div class="psi"><div class="psn">3</div><div class="psl"><span class="di">Hunde</span><span class="ei">Dogs</span><span class="ri">Собаки</span></div></div><div class="psi"><div class="psn">5</div><div class="psl"><span class="di">Welpen</span><span class="ei">Pups</span><span class="ri">Щенки</span></div></div><div class="psi"><div class="psn">2</div><div class="psl"><span class="di">Würfe</span><span class="ei">Litters</span><span class="ri">Помёты</span></div></div><div class="psi"><div class="psn">1</div><div class="psl"><span class="di">Läufig</span><span class="ei">Heat</span><span class="ri">Течка</span></div></div></div><div class="pc"><div class="pdr"><div class="pav">🐕</div><div style="flex:1"><div class="pdn">Luna</div><div class="pdb">Golden Retriever · 3J</div></div><span class="pb2 xa"><span class="di">Läufig</span><span class="ei">Heat</span><span class="ri">Течка</span></span></div><div class="pdr"><div class="pav">🐩</div><div style="flex:1"><div class="pdn">Bella</div><div class="pdb">Labrador · 5J</div></div><span class="pb2 xg">✓</span></div><div class="pdr"><div class="pav">🦮</div><div style="flex:1"><div class="pdn">Rex</div><div class="pdb">Schäferhund · 2J</div></div><span class="pb2 xb"><span class="di">Rüde</span><span class="ei">Male</span><span class="ri">Кобель</span></span></div></div></div></div><div class="pcap"><span class="di">Übersicht</span><span class="ei">Overview</span><span class="ri">Обзор</span></div></div>
 <div class="pw"><div class="pcd"><div class="pbc"><div class="pbcd"></div><div class="pbcd"></div><div class="pbcd"></div><div class="pbcu">wurfkit.de/welpen-paket</div></div><div class="pt"><div class="ptt"><span class="di">Welpen-Paket</span><span class="ei">Puppy Packet</span><span class="ri">Пакет щенка</span></div><div class="pts">1 Klick · PDF + QR</div></div><div class="pb"><div class="pc"><div class="pr" style="margin-bottom:4px"><span class="pl"><span class="di">Kaufvertrag</span><span class="ei">Contract</span><span class="ri">Договор</span></span><span class="pb2 xg">✓</span></div><div class="pr" style="margin-bottom:4px"><span class="pl"><span class="di">Ahnentafel</span><span class="ei">Pedigree</span><span class="ri">Родословная</span></span><span class="pb2 xg">✓</span></div><div class="pr" style="margin-bottom:4px"><span class="pl"><span class="di">Impfnachweis</span><span class="ei">Vaccines</span><span class="ri">Прививки</span></span><span class="pb2 xg">✓</span></div><div class="pr" style="margin-bottom:4px"><span class="pl"><span class="di">Fütterungsplan</span><span class="ei">Feeding</span><span class="ri">Кормление</span></span><span class="pb2 xg">✓</span></div><div class="pr"><span class="pl">QR-Code</span><span class="pb2 xg">✓</span></div></div><div class="pbtn">📄 <span class="di">PDF generieren</span><span class="ei">Generate PDF</span><span class="ri">Создать PDF</span></div></div></div><div class="pcap"><span class="di">Welpen-Paket</span><span class="ei">Puppy packet</span><span class="ri">Пакет щенка</span></div></div>
 <div class="pw"><div class="pcd"><div class="pbc"><div class="pbcd"></div><div class="pbcd"></div><div class="pbcd"></div><div class="pbcu">wurfkit.de/zuchtpruefung</div></div><div class="pt"><div class="ptt"><span class="di">Zuchtprüfung</span><span class="ei">Breed Check</span><span class="ri">Допуск</span></div><div class="pts">Luna × Rex · VDH</div></div><div class="pb"><div class="coir" style="padding:6px;margin-bottom:4px"><div style="font-size:8px;font-weight:600;color:var(--a)"><span class="di">Verpaarung zulässig</span><span class="ei">Mating approved</span><span class="ri">Вязка допустима</span></div><div class="coio">✓ VDH-ZO</div></div><div class="pc"><div class="pr" style="margin-bottom:4px"><span class="pl">HD/ED</span><span class="pb2 xg">✓ A1/0</span></div><div class="pr" style="margin-bottom:4px"><span class="pl">Formwert</span><span class="pb2 xg">✓</span></div><div class="pr" style="margin-bottom:4px"><span class="pl">ZTP</span><span class="pb2 xg">✓</span></div><div class="pr" style="margin-bottom:4px"><span class="pl">COI</span><span class="pb2 xg">✓ 3.2%</span></div><div class="pr"><span class="pl"><span class="di">Augentest</span><span class="ei">Eye test</span><span class="ri">Глаза</span></span><span class="pb2 xr"><span class="di">Fehlt</span><span class="ei">Missing</span><span class="ri">Нет</span></span></div></div></div></div><div class="pcap"><span class="di">Zuchtprüfung</span><span class="ei">Breed check</span><span class="ri">Допуск</span></div></div>
-<div class="pw"><div class="pcd"><div class="pbc"><div class="pbcd"></div><div class="pbcd"></div><div class="pbcd"></div><div class="pbcu">wurfkit.de/coi</div></div><div class="pt"><div class="ptt"><span class="di">COI Rechner</span><span class="ei">COI Calc</span><span class="ri">COI</span></div><div class="pts">Luna × Rex</div></div><div class="pb"><div class="coir"><div class="coin">3.2%</div><div class="cois">COI</div><div class="coio"><span class="di">Niedrig ✓</span><span class="ei">Low ✓</span><span class="ri">Низкий ✓</span></div></div><div class="pc"><div class="pct"><span class="di">Stammbaum</span><span class="ei">Pedigree</span><span class="ri">Родословная</span></div><div style="display:flex;align-items:center;margin-bottom:3px"><div class="tn tnr">Luna × Rex</div></div><div style="margin-left:8px;display:flex;flex-direction:column;gap:2px"><div style="display:flex;align-items:center;gap:2px"><div style="width:8px;height:.5px;background:var(--b)"></div><div class="tn tnp">Baron</div><div class="tn tng">Ares</div><div class="tn tng">Stella</div></div><div style="display:flex;align-items:center;gap:2px"><div style="width:8px;height:.5px;background:var(--b)"></div><div class="tn tnp">Cleo</div><div class="tn tnh">Ares*</div><div class="tn tng">Hera</div></div></div></div><div class="pc"><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px"><div class="pl" style="width:45px"><span class="di">Ihr COI</span><span class="ei">Your COI</span><span class="ri">Ваш COI</span></div><div style="flex:1;height:4px;background:var(--b);border-radius:2px"><div style="width:16%;height:4px;background:var(--a);border-radius:2px"></div></div><div class="pv">3.2%</div></div><div style="display:flex;align-items:center;gap:5px"><div class="pl" style="width:45px"><span class="di">Rasse Ø</span><span class="ei">Breed Ø</span><span class="ri">Порода Ø</span></div><div style="flex:1;height:4px;background:var(--b);border-radius:2px"><div style="width:40%;height:4px;background:#FACC15;border-radius:2px"></div></div><div class="pv">8.1%</div></div></div></div></div><div class="pcap"><span class="di">COI Rechner</span><span class="ei">COI calc</span><span class="ri">COI</span></div></div>
+<div class="pw"><div class="pcd"><div class="pbc"><div class="pbcd"></div><div class="pbcd"></div><div class="pbcd"></div><div class="pbcu">wurfkit.de/coi</div></div><div class="pt"><div class="ptt"><span class="di">COI Rechner</span><span class="ei">COI Calc</span><span class="ri">COI</span></div><div class="pts">Luna × Rex</div></div><div class="pb"><div class="coir"><div class="coin">3.2%</div><div class="cois">COI</div><div class="coio"><span class="di">Niedrig ✓</span><span class="ei">Low ✓</span><span class="ri">Низкий ✓</span></div></div><div class="pc"><div class="pct"><span class="di">Stammbaum</span><span class="ei">Pedigree</span><span class="ri">Родословная</span></div><div style="display:flex;align-items:center;margin-bottom:3px"><div class="tn tnr">Luna × Rex</div></div><div style="margin-left:8px;display:flex;flex-direction:column;gap:2px"><div style="display:flex;align-items:center;gap:2px"><div style="width:8px;height:.5px;background:var(--b)"></div><div class="tn tnp">Baron</div><div class="tn tng">Ares</div><div class="tn tng">Stella</div></div><div style="display:flex;align-items:center;gap:2px"><div style="width:8px;height:.5px;background:var(--b)"></div><div class="tn tnp">Cleo</div><div class="tn tnh">Ares*</div><div class="tn tng">Hera</div></div></div></div><div class="pc"><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px"><div class="pl" style="width:45px"><span class="di">Ihr COI</span><span class="ei">Your COI</span><span class="ri">Ваш COI</span></div><div style="flex:1;height:4px;background:var(--b);border-radius:2px"><div style="width:16%;height:4px;background:var(--a);border-radius:2px"></div></div><div class="pv">3.2%</div></div><div style="display:flex;align-items:center;gap:5px"><div class="pl" style="width:45px"><span class="di">Rasse Ø</span><span class="ei">Breed Ø</span><span class="ri">Порода Ø</span></div><div style="flex:1;height:4px;background:var(--b);border-radius:2px"><div style="width:40%;height:4px;background:#F59E0B;border-radius:2px"></div></div><div class="pv">8.1%</div></div></div></div></div><div class="pcap"><span class="di">COI Rechner</span><span class="ei">COI calc</span><span class="ri">COI</span></div></div>
 </div></section>
 
 <section class="ds rv"><div class="di2">
@@ -536,7 +544,7 @@ body.l-de .pmt.de,body.l-en .pmt.en,body.l-ru .pmt.ru{display:flex}
 <h2 class="de">Funktionen, die Züchtern wirklich Arbeit abnehmen.</h2><h2 class="en">Features that genuinely save breeders work.</h2><h2 class="ru">Функции, которые действительно снимают рутину с заводчика.</h2>
 <div class="kg">
 <div class="kc ft" onclick="openModal('welpenpaket')"><div><div class="kb"><span class="di">KERNFUNKTION</span><span class="ei">CORE FEATURE</span><span class="ri">КЛЮЧЕВАЯ ФУНКЦИЯ</span></div><div class="kt de">Welpen-Paket mit QR-Code</div><div class="kt en">Puppy Packet + QR Code</div><div class="kt ru">Пакет щенка + QR-код</div><div class="kx de">Ein Klick — Kaufvertrag, Ahnentafel, Impfnachweis, Fütterungsplan und QR-Code. Käufer können die Unterlagen einfach weitergeben — das wirkt professionell und schafft Vertrauen.</div><div class="kx en">One click — contract, pedigree, vaccines, feeding plan and QR. Buyers can easily share the package — it looks professional and builds trust.</div><div class="kx ru">Один клик — договор, родословная, прививки, кормление и QR. Покупатели могут легко передать пакет дальше — это выглядит профессионально и формирует доверие.</div></div><div class="km"><div style="text-align:center;margin-bottom:8px;font-size:.7rem;color:var(--t3)">PDF</div><div style="background:var(--g);border-radius:var(--rs);padding:12px"><div style="font-size:.82rem;font-weight:600;margin-bottom:8px">🐾 Luna W1</div><div class="kmr"><div class="kmi">📄</div><div><div class="kml">Kaufvertrag</div></div><div class="kmc">✓</div></div><div class="kmr"><div class="kmi">🧬</div><div><div class="kml">Ahnentafel</div></div><div class="kmc">✓</div></div><div class="kmr"><div class="kmi">💉</div><div><div class="kml"><span class="di">Impfnachweis</span><span class="ei">Vaccines</span><span class="ri">Прививки</span></div></div><div class="kmc">✓</div></div><div class="kmr" style="border:none"><div class="kmi">◻️</div><div><div class="kml">QR-Code</div></div><div class="kmc">✓</div></div></div></div></div>
-<div class="kc" onclick="openModal('zuchtpruefung')"><div class="kb"><span class="di">EINZIGARTIG</span><span class="ei">UNIQUE</span><span class="ri">УНИКАЛЬНО</span></div><div class="kt de">Automatische Zuchtprüfung</div><div class="kt en">Auto Breeding Compliance</div><div class="kt ru">Автопроверка допуска</div><div class="kx de" style="margin-bottom:1rem">Prüft alle VDH-Kriterien: HD, Formwert, ZTP, COI. Grün = ok. Rot = fehlt.</div><div class="kx en" style="margin-bottom:1rem">Checks all VDH criteria: HD, conformation, ZTP, COI. Green = ok. Red = missing.</div><div class="kx ru" style="margin-bottom:1rem">Проверяет все критерии VDH: HD, экстерьер, ZTP, COI. Зелёный = ок. Красный = нет.</div><div class="km"><div class="kmr"><div class="kmi" style="color:var(--a)">✓</div><div class="kml">HD/ED</div><div style="margin-left:auto;font-size:.72rem;color:var(--a);font-weight:600">A1/0</div></div><div class="kmr"><div class="kmi" style="color:var(--a)">✓</div><div class="kml">ZTP</div><div style="margin-left:auto;font-size:.72rem;color:var(--a);font-weight:600">✓</div></div><div class="kmr" style="border:none"><div class="kmi" style="color:#F87171">!</div><div class="kml"><span class="di">Augentest</span><span class="ei">Eye test</span><span class="ri">Глаза</span></div><div style="margin-left:auto;font-size:.72rem;color:#F87171;font-weight:600"><span class="di">Fehlt</span><span class="ei">Missing</span><span class="ri">Нет</span></div></div></div></div>
+<div class="kc" onclick="openModal('zuchtpruefung')"><div class="kb"><span class="di">EINZIGARTIG</span><span class="ei">UNIQUE</span><span class="ri">УНИКАЛЬНО</span></div><div class="kt de">Automatische Zuchtprüfung</div><div class="kt en">Auto Breeding Compliance</div><div class="kt ru">Автопроверка допуска</div><div class="kx de" style="margin-bottom:1rem">Prüft alle VDH-Kriterien: HD, Formwert, ZTP, COI. Grün = ok. Rot = fehlt.</div><div class="kx en" style="margin-bottom:1rem">Checks all VDH criteria: HD, conformation, ZTP, COI. Green = ok. Red = missing.</div><div class="kx ru" style="margin-bottom:1rem">Проверяет все критерии VDH: HD, экстерьер, ZTP, COI. Зелёный = ок. Красный = нет.</div><div class="km"><div class="kmr"><div class="kmi" style="color:var(--a)">✓</div><div class="kml">HD/ED</div><div style="margin-left:auto;font-size:.72rem;color:var(--a);font-weight:600">A1/0</div></div><div class="kmr"><div class="kmi" style="color:var(--a)">✓</div><div class="kml">ZTP</div><div style="margin-left:auto;font-size:.72rem;color:var(--a);font-weight:600">✓</div></div><div class="kmr" style="border:none"><div class="kmi" style="color:#DC2626">!</div><div class="kml"><span class="di">Augentest</span><span class="ei">Eye test</span><span class="ri">Глаза</span></div><div style="margin-left:auto;font-size:.72rem;color:#DC2626;font-weight:600"><span class="di">Fehlt</span><span class="ei">Missing</span><span class="ri">Нет</span></div></div></div></div>
 <div class="kc" onclick="openModal('deckruede')"><div class="kb"><span class="di">TEILBARES PROFIL</span><span class="ei">SHAREABLE PROFILE</span><span class="ri">ПУБЛИЧНЫЙ ПРОФИЛЬ</span></div><div class="kt de">Deckrüden-Profil zum Teilen</div><div class="kt en">Shareable Stud Profile</div><div class="kt ru">Профиль кобеля</div><div class="kx de" style="margin-bottom:1rem">Öffentliche Profilseite. Link teilen → andere Züchter sehen WurfKit.</div><div class="kx en" style="margin-bottom:1rem">Public profile page. Share link → other breeders discover WurfKit.</div><div class="kx ru" style="margin-bottom:1rem">Публичная страница. Делитесь ссылкой → другие видят WurfKit.</div><div class="km" style="text-align:center;padding:1rem"><div style="width:48px;height:48px;border-radius:50%;background:var(--g2);margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:22px">🦮</div><div style="font-size:.88rem;font-weight:600">Rex vom Waldberg</div><div style="font-size:.72rem;color:var(--t3);margin:4px 0 8px">Dt. Schäferhund · HD A1 · COI 2.8%</div><div style="display:flex;gap:4px;justify-content:center;flex-wrap:wrap"><span class="pb2 xg" style="font-size:7px">V</span><span class="pb2 xb" style="font-size:7px">SchH3</span><span class="pb2 xa" style="font-size:7px">Angekört</span></div><div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--b);font-size:.7rem;color:var(--a);font-weight:500">wurfkit.de/rex-waldberg →</div></div></div>
 </div></div></section>
 
@@ -619,6 +627,60 @@ body.l-de .pmt.de,body.l-en .pmt.en,body.l-ru .pmt.ru{display:flex}
 var SHEET_URL = 'https://script.google.com/macros/s/AKfycbyP0hHaZk4Qo95kHdc7-cr6E52QAQ-VDqz8DUkdg9HHymtTIiW9lpqN0hmP8jPlQXRxSw/exec';
 
 // === MODULE: Language ===
+// === MODULE: Form localization ===
+// Localizes placeholders, aria-labels and select options for the contact form
+// and waitlist inputs — all of which are static HTML and cannot use the
+// .de/.en/.ru span pattern because they live in attribute values.
+var FORM_STRINGS={
+  name:{de:'Name',en:'Name',ru:'Имя'},
+  nameLabel:{de:'Ihr Name',en:'Your name',ru:'Ваше имя'},
+  emailLabel:{de:'Ihre E-Mail-Adresse',en:'Your email address',ru:'Ваш email'},
+  topicLabel:{de:'Thema der Anfrage',en:'Subject of inquiry',ru:'Тема обращения'},
+  topicPlaceholder:{de:'Thema',en:'Subject',ru:'Тема'},
+  feedback:{de:'Feedback',en:'Feedback',ru:'Обратная связь'},
+  feature:{de:'Feature',en:'Feature suggestion',ru:'Предложение функции'},
+  beta:{de:'Beta-Tester',en:'Beta tester',ru:'Бета-тестер'},
+  breeder:{de:'Züchter',en:'Breeder',ru:'Заводчик'},
+  other:{de:'Sonstiges',en:'Other',ru:'Другое'},
+  message:{de:'Nachricht...',en:'Message...',ru:'Сообщение...'},
+  messageLabel:{de:'Ihre Nachricht',en:'Your message',ru:'Ваше сообщение'},
+  waitlistEmail:{de:'E-Mail-Adresse für Warteliste',en:'Email for waitlist',ru:'Email для списка ожидания'}
+};
+function localizeForms(l){
+  try{
+    var f=FORM_STRINGS;
+    // Contact form
+    var cf=document.querySelector('form[name="contact"]');
+    if(cf){
+      var nInp=cf.querySelector('input[name="name"]');
+      if(nInp){nInp.placeholder=f.name[l];nInp.setAttribute('aria-label',f.nameLabel[l])}
+      var eInp=cf.querySelector('input[name="email"]');
+      if(eInp){eInp.setAttribute('aria-label',f.emailLabel[l])}
+      var sel=cf.querySelector('select[name="topic"]');
+      if(sel){
+        sel.setAttribute('aria-label',f.topicLabel[l]);
+        var opts=sel.options;
+        if(opts.length>=6){
+          opts[0].text=f.topicPlaceholder[l];
+          opts[1].text=f.feedback[l];
+          opts[2].text=f.feature[l];
+          opts[3].text=f.beta[l];
+          opts[4].text=f.breeder[l];
+          opts[5].text=f.other[l];
+        }
+      }
+      var ta=cf.querySelector('textarea[name="message"]');
+      if(ta){ta.placeholder=f.message[l];ta.setAttribute('aria-label',f.messageLabel[l])}
+    }
+    // Waitlist email inputs (hero + final-CTA)
+    document.querySelectorAll('input[type="email"][name="email"]').forEach(function(inp){
+      if(inp.closest('form[name="waitlist"]')||inp.closest('form[name="waitlist-cta"]')||inp.closest('.hf')||inp.closest('.ctf')){
+        inp.setAttribute('aria-label',f.waitlistEmail[l]);
+      }
+    });
+  }catch(e){/* form localization failed — attributes stay as-is */}
+}
+
 function setLang(l){
   try{
     /* classList.remove preserves any future body-classes (e.g. theme/modal-open). */
@@ -629,6 +691,7 @@ function setLang(l){
     if(btn){btn.classList.add('active');btn.setAttribute('aria-pressed','true')}
     document.documentElement.lang=l==='ru'?'ru':l==='en'?'en':'de';
     try{localStorage.setItem('wk-lang',l)}catch(e){}
+    localizeForms(l);
   }catch(e){/* lang switch failed — page continues in current state */}
 }
 function gl(){try{if(document.body.classList.contains('l-en'))return'en';if(document.body.classList.contains('l-ru'))return'ru';return'de'}catch(e){return'de'}}
@@ -676,6 +739,13 @@ function sendToSheet(formData){
 }
 function initForms(){
   try{
+    // Make the contact-form select turn full-text-color once a real option is chosen
+    var topicSel=document.querySelector('form[name="contact"] select[name="topic"]');
+    if(topicSel){
+      topicSel.addEventListener('change',function(){
+        if(this.value){this.classList.add('has-value')}else{this.classList.remove('has-value')}
+      });
+    }
     document.addEventListener('submit',function(e){
       var form=e.target;if(!form||!form.name)return;
       e.preventDefault();

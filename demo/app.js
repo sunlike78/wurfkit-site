@@ -87,7 +87,7 @@ function restoreFromHash() {
 }
 
 // Cache-busting version for photo URLs (bump when photos change)
-const PHOTO_V = 'v3';
+const PHOTO_V = 'v4';
 function photoURL(item) {
   if (!item || !item.photo || !item.photo.startsWith('demo/')) return null;
   return item.photo + '?' + PHOTO_V;
@@ -99,8 +99,10 @@ function avatar(item, size) {
   const fb = item.photoFallback || '🐕';
   const url = photoURL(item);
   if (url) {
-    const lbCall = `openLightbox('${url}','${escapeHtml(item.name || '')}',event)`;
-    return `<div class="${cls}"><img src="${url}" alt="${escapeHtml(item.name || '')}" loading="lazy" decoding="async" onclick="${lbCall}" style="cursor:zoom-in" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><div class="dav-fb" style="display:none">${fb}</div></div>`;
+    // Name goes through a data attribute, not a JS string literal — names with
+    // quotes/apostrophes must never reach the JS parser inside onclick.
+    const nameAttr = escapeHtml(item.name || '');
+    return `<div class="${cls}"><img src="${url}" data-lbname="${nameAttr}" alt="${nameAttr}" loading="lazy" decoding="async" onclick="openLightbox(this.getAttribute('src'),this.dataset.lbname,event)" style="cursor:zoom-in" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><div class="dav-fb" style="display:none">${fb}</div></div>`;
   }
   return `<div class="${cls}">${fb}</div>`;
 }
@@ -109,8 +111,8 @@ function avatarSmall(item) {
   const fb = item.photoFallback || '🐶';
   const url = photoURL(item);
   if (url) {
-    const lbCall = `openLightbox('${url}','${escapeHtml(item.name || '')}',event)`;
-    return `<div class="pliav"><img src="${url}" alt="" loading="lazy" decoding="async" onclick="${lbCall}" style="cursor:zoom-in" onerror="this.style.display='none';this.parentNode.innerHTML='${fb}'"/></div>`;
+    const nameAttr = escapeHtml(item.name || '');
+    return `<div class="pliav"><img src="${url}" data-lbname="${nameAttr}" alt="" loading="lazy" decoding="async" onclick="openLightbox(this.getAttribute('src'),this.dataset.lbname,event)" style="cursor:zoom-in" onerror="this.style.display='none';this.parentNode.innerHTML='${fb}'"/></div>`;
   }
   return `<div class="pliav">${fb}</div>`;
 }
@@ -119,8 +121,8 @@ function avatarLarge(item) {
   const fb = item.photoFallback || '🐕';
   const url = photoURL(item);
   if (url) {
-    const lbCall = `openLightbox('${url}','${escapeHtml(item.name || '')}',event)`;
-    return `<div class="dxa"><img src="${url}" alt="${escapeHtml(item.name || '')}" loading="lazy" decoding="async" onclick="${lbCall}" style="cursor:zoom-in" onerror="this.outerHTML='<div class=&quot;dxa&quot;>${fb}</div>'"/></div>`;
+    const nameAttr = escapeHtml(item.name || '');
+    return `<div class="dxa"><img src="${url}" data-lbname="${nameAttr}" alt="${nameAttr}" loading="lazy" decoding="async" onclick="openLightbox(this.getAttribute('src'),this.dataset.lbname,event)" style="cursor:zoom-in" onerror="this.outerHTML='<div class=&quot;dxa&quot;>${fb}</div>'"/></div>`;
   }
   return `<div class="dxa">${fb}</div>`;
 }
@@ -172,7 +174,7 @@ function openHint(key, ev) {
   pop.id = 'hint-pop';
   pop.setAttribute('role', 'dialog');
   pop.innerHTML =
-    `<button class="hint-x" aria-label="Schließen" onclick="closeHint()">✕</button>
+    `<button class="hint-x" aria-label="${L === 'de' ? 'Schließen' : L === 'en' ? 'Close' : 'Закрыть'}" onclick="closeHint()">✕</button>
      <div class="hint-h">${h.label[L] || h.label.de}</div>
      <div class="hint-t">${h.text[L] || h.text.de}</div>`;
   document.body.appendChild(pop);
@@ -415,7 +417,7 @@ function renderLitters() {
         <div>
           <div class="lim">${l.name}</div>
           <div class="lis">${dam.fullName} × ${sireName}</div>
-          <div class="lis">${formatDateDE(l.birthDate)} · ${l.wurfStaerke.total} ${t('common.welpen')} (${l.wurfStaerke.male} R / ${l.wurfStaerke.female} H)</div>
+          <div class="lis">${formatDateDE(l.birthDate)} · ${l.wurfStaerke.total} ${t('common.welpen')} (${l.wurfStaerke.male} ${STATE.lang === 'de' ? 'R' : STATE.lang === 'en' ? 'M' : 'К'} / ${l.wurfStaerke.female} ${STATE.lang === 'de' ? 'H' : STATE.lang === 'en' ? 'F' : 'С'})</div>
         </div>
         <div class="bd"><span class="bg info">${STATE.lang === 'de' ? 'Wurfabnahme ✓' : STATE.lang === 'en' ? 'Inspected ✓' : 'Осмотрен ✓'}</span></div>
       </div>
@@ -449,7 +451,7 @@ function renderLitterDetail() {
         <div class="kvr"><span class="kvk">${t('common.sire')}</span><span class="kvv">${sire.name} (${sire.zbNr}, HD ${sire.hd})</span></div>
         <div class="kvr"><span class="kvk">${t('common.deckdate')}</span><span class="kvv">${formatDateDE(litter.deckDate)}</span></div>
         <div class="kvr"><span class="kvk">${t('common.wurfdate')}</span><span class="kvv">${formatDateDE(litter.birthDate)}</span></div>
-        <div class="kvr"><span class="kvk">${t('common.wurfstaerke')}</span><span class="kvv">${litter.wurfStaerke.total} (${litter.wurfStaerke.male} R / ${litter.wurfStaerke.female} H)</span></div>
+        <div class="kvr"><span class="kvk">${t('common.wurfstaerke')}</span><span class="kvv">${litter.wurfStaerke.total} (${litter.wurfStaerke.male} ${STATE.lang === 'de' ? 'R' : STATE.lang === 'en' ? 'M' : 'К'} / ${litter.wurfStaerke.female} ${STATE.lang === 'de' ? 'H' : STATE.lang === 'en' ? 'F' : 'С'})</span></div>
         <div class="kvr"><span class="kvk">${t('common.wurfabnahme')}</span><span class="kvv">${formatDateDE(litter.wurfabnahmeDate)} ✓</span></div>
         <div class="kvr"><span class="kvk">${t('common.wurfmeldung')}</span><span class="kvv">${litter.wurfmeldungSubmitted ? '✓ ' + formatDateDE(litter.wurfmeldungDate) : '—'}</span></div>
       </div>
@@ -478,7 +480,7 @@ function renderLitterDetail() {
 
     <div class="btn-row">
       <button class="btn primary" onclick="openPDFPreview('wurfmeldung','${litter.id}')">📋 ${STATE.lang === 'de' ? 'Wurfmeldung-Datenblatt' : STATE.lang === 'en' ? 'Litter Reg. data sheet' : 'Лист данных Wurfmeldung'}</button>
-      <button class="btn secondary" onclick="goTab('coi')">🧬 COI Rechner</button>
+      <button class="btn secondary" onclick="goTab('coi')">🧬 ${STATE.lang === 'de' ? 'COI Rechner' : STATE.lang === 'en' ? 'COI Calculator' : 'COI Калькулятор'}</button>
     </div>
   `;
 
@@ -496,7 +498,7 @@ async function initWeightChart(puppies) {
   weightChart = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: puppies[0].weights.map(w => w.week + ' Wo'),
+      labels: puppies[0].weights.map(w => w.week + ' ' + (STATE.lang === 'de' ? 'Wo' : STATE.lang === 'en' ? 'wk' : 'нед')),
       datasets: puppies.map((p, i) => ({
         label: p.name,
         data: p.weights.map(w => w.g / 1000),
@@ -546,12 +548,12 @@ function openPuppy(id) {
         <div class="kv" style="margin-bottom:1rem">
           <div class="kvr"><span class="kvk">${STATE.lang === 'de' ? 'Name' : STATE.lang === 'en' ? 'Name' : 'Имя'}</span><span class="kvv">${p.buyer.name}</span></div>
           <div class="kvr"><span class="kvk">${STATE.lang === 'de' ? 'Anschrift' : STATE.lang === 'en' ? 'Address' : 'Адрес'}</span><span class="kvv">${p.buyer.address}</span></div>
-          <div class="kvr"><span class="kvk">${STATE.lang === 'de' ? 'Telefon' : 'Phone'}</span><span class="kvv">${p.buyer.phone}</span></div>
+          <div class="kvr"><span class="kvk">${STATE.lang === 'de' ? 'Telefon' : STATE.lang === 'en' ? 'Phone' : 'Телефон'}</span><span class="kvv">${p.buyer.phone}</span></div>
           <div class="kvr"><span class="kvk">E-Mail</span><span class="kvv">${p.buyer.email}</span></div>
         </div>
       ` : ''}
       <div class="btn-row">
-        <button class="btn primary" onclick="openPDFPreview('kaufvertrag','${p.id}'); closePuppy()">📄 Kaufvertrag</button>
+        <button class="btn primary" onclick="openPDFPreview('kaufvertrag','${p.id}'); closePuppy()">📄 ${STATE.lang === 'de' ? 'Kaufvertrag' : STATE.lang === 'en' ? 'Purchase Contract' : 'Договор'}</button>
         <button class="btn primary" onclick="openPDFPreview('welpenpaket','${p.id}'); closePuppy()">📦 ${t('docs.welpenpaket')}</button>
         <button class="btn secondary" onclick="closePuppy()">${t('common.close')}</button>
       </div>
@@ -584,7 +586,7 @@ function renderDocs() {
     items.push({
       icon: '📋',
       title: STATE.lang === 'de' ? 'Wurfmeldung-Datenblatt' : STATE.lang === 'en' ? 'Litter Registration data sheet' : 'Лист данных Wurfmeldung',
-      sub: `Wurf «${l.litterLetter}» · ${l.breed}`,
+      sub: `${STATE.lang === 'de' ? 'Wurf' : STATE.lang === 'en' ? 'Litter' : 'Помёт'} «${l.litterLetter}» · ${l.breed}`,
       desc: t('docs.wurfmeldung_desc'),
       action: () => openPDFPreview('wurfmeldung', l.id)
     });

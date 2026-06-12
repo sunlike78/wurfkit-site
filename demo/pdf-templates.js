@@ -37,7 +37,7 @@ function pdfPageStyles() {
     .footer{position:absolute;bottom:30px;left:70px;right:70px;font-size:9px;color:#A1A1AA;text-align:center;border-top:1px solid #E8E8E0;padding-top:8px;display:flex;justify-content:space-between}
     .footer .lg-mini{font-family:'Playfair Display',Georgia,serif;color:#2D6A4F;font-weight:500}
     .stamp{display:inline-block;padding:8px 18px;border:2px solid #2D6A4F;border-radius:50%;color:#2D6A4F;font-weight:700;font-family:'Playfair Display',Georgia,serif;font-size:11px;letter-spacing:2px;transform:rotate(-6deg);background:rgba(216,243,220,.4)}
-    .cover{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:1003px}
+    .cover{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:988px}
     .cover-name{font-family:'Playfair Display',Georgia,serif;font-size:54px;font-weight:500;color:#1B4332;margin:30px 0 12px;letter-spacing:-1px}
     .cover-sub{font-size:16px;color:#2D6A4F;font-weight:500;margin-bottom:8px}
     .cover-meta{font-size:13px;color:#4A4A4A;margin-bottom:30px}
@@ -57,6 +57,12 @@ function pdfPageStyles() {
     .stats-grid .stat{padding:10px;background:#F5F5F0;border-radius:5px;text-align:center}
     .stats-grid .stat-n{font-family:'Playfair Display',Georgia,serif;font-size:24px;font-weight:600;color:#2D6A4F;line-height:1}
     .stats-grid .stat-l{font-size:10px;color:#71717A;font-weight:500;letter-spacing:0.4px;text-transform:uppercase;margin-top:4px}
+    /* Defensive overrides: demo.html's app CSS also defines .disc (flex + emoji
+       ::before) and leaks into the in-DOM preview and the offscreen html2canvas
+       wrapper — a flex .disc splits its text/<b> children into columns. Scope to
+       .pg (offscreen page) and .pdfdoc (preview wrapper) so app UI stays intact. */
+    .pg .disc,.pdfdoc .disc{display:block}
+    .pg .disc::before,.pdfdoc .disc::before{content:none}
   `;
 }
 
@@ -67,7 +73,7 @@ function escapeHtml(s) {
 
 // Visual separator between pages inside the preview modal (NOT used for actual PDF).
 // PDF generation uses the array boundaries directly — see renderPageToCanvas + downloadPDF.
-const PAGE_BREAK_HTML = '<div style="margin:18px -70px;padding:6px 70px;background:#F5F5F0;border-top:1px dashed #D4D4C8;border-bottom:1px dashed #D4D4C8;font-size:9px;color:#A1A1AA;letter-spacing:1.5px;text-transform:uppercase;text-align:center">— Seitenumbruch —</div>';
+const PAGE_BREAK_HTML = '<div style="margin:18px 0;padding:6px 0;background:#F5F5F0;border-top:1px dashed #D4D4C8;border-bottom:1px dashed #D4D4C8;font-size:9px;color:#A1A1AA;letter-spacing:1.5px;text-transform:uppercase;text-align:center">— Seitenumbruch —</div>';
 
 // === Kaufvertrag — manual 3-page layout (§1 / §2-§5 / §6-§10+Hinweis+Sig) ===
 // Returns an array of HTML strings, one per A4 page. Each fits in one canvas without slicing.
@@ -523,8 +529,9 @@ function buildImpfuebersichtHTML(puppy) {
   `;
 }
 
-// === Fütterungsplan page ===
-function buildFuetterungsplanHTML(puppy) {
+// === Fütterungsplan — 2 pages (single page overflowed A4 by ~190px and
+// clipped the Züchter-Kontakt block; split at "Empfehlung Tierarzt") ===
+function buildFuetterungsplanPages(puppy) {
   const litter = LITTERS.find(l => l.id === puppy.litterId);
   const qrUrl = `https://wurfkit.de/welpe/${puppy.id}`;
   // PNG dataURL <img> instead of inline SVG: html2canvas v1 stalls / hits
@@ -542,7 +549,7 @@ function buildFuetterungsplanHTML(puppy) {
     }
   } catch(e) {}
 
-  return `
+  const page1 = `
     <h1>FÜTTERUNGSPLAN &amp; PFLEGE</h1>
     <div class="sub">${escapeHtml(puppy.fullName)} · ${escapeHtml(litter.breed)} · Empfehlungen für die ersten 12 Monate</div>
 
@@ -578,6 +585,11 @@ function buildFuetterungsplanHTML(puppy) {
       <li><b>Welpenschule</b> ab 10–12 Wochen empfohlen.</li>
       <li><b>Aktivität:</b> Welpenregel 1 Minute / Lebenswoche / Spaziergang. Nicht überlasten — Wachstumsplatten brauchen Schutz bis 12–18 Monate.</li>
     </ul>
+  `;
+
+  const page2 = `
+    <h1>FÜTTERUNGSPLAN &amp; PFLEGE</h1>
+    <div class="sub">${escapeHtml(puppy.fullName)} · Fortsetzung — Tierarzt, digitales Profil &amp; Kontakt</div>
 
     <div class="par">Empfehlung Tierarzt</div>
     <ul>
@@ -606,6 +618,8 @@ function buildFuetterungsplanHTML(puppy) {
       <b>Verein</b><span>${escapeHtml(BREEDER.zuchtverein)}</span>
     </div>
   `;
+
+  return [page1, page2];
 }
 
 function addDaysISO(iso, days) {
@@ -617,7 +631,6 @@ function addDaysISO(iso, days) {
 // Single-page wrappers — uniform `Pages()` API so downloadPDF can iterate consistently.
 function buildWelpenpaketCoverPages(puppy) { return [buildWelpenpaketCoverHTML(puppy)]; }
 function buildImpfuebersichtPages(puppy) { return [buildImpfuebersichtHTML(puppy)]; }
-function buildFuetterungsplanPages(puppy) { return [buildFuetterungsplanHTML(puppy)]; }
 
 // ===== HTML → PDF rendering =====
 // New model (2026-05-28): every builder returns an ARRAY of page-HTML strings.
@@ -846,5 +859,5 @@ function buildPreviewHTML(type, id) {
       .concat(buildFuetterungsplanPages(p));
   }
   const inner = pages.join(PAGE_BREAK_HTML);
-  return styles + '<div style="background:#fff;color:#1a1a1a">' + inner + '</div>';
+  return styles + '<div class="pdfdoc" style="background:#fff;color:#1a1a1a">' + inner + '</div>';
 }
