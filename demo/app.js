@@ -46,7 +46,7 @@ function goTab(tab, opts) {
   setActiveTabUI(tab);
   if (!opts.fromPopState) {
     const url = buildHashURL();
-    if (location.hash !== url.slice(1)) {
+    if (location.hash !== url) {
       try { history.pushState({ tab, dog: STATE.currentDog, litter: STATE.currentLitter }, '', url); } catch(e){}
     }
   }
@@ -438,7 +438,7 @@ function renderLitterDetail() {
       <div>
         <div class="dxn">${litter.name}</div>
         <div class="dxs">${litter.breed} · ${formatDateDE(litter.birthDate)} · ${litter.weeks} ${STATE.lang === 'de' ? 'Wochen' : STATE.lang === 'en' ? 'weeks' : 'недель'}</div>
-        <div class="dxbg"><span class="bg info">Wurfbuchstabe ${litter.litterLetter}</span><span class="bg ok">${litter.wurfStaerke.alive} lebend</span></div>
+        <div class="dxbg"><span class="bg info">${STATE.lang === 'de' ? 'Wurfbuchstabe' : STATE.lang === 'en' ? 'Litter letter' : 'Буква помёта'} ${litter.litterLetter}</span><span class="bg ok">${litter.wurfStaerke.alive} ${STATE.lang === 'de' ? 'lebend' : STATE.lang === 'en' ? 'alive' : 'живы'}</span></div>
       </div>
     </div>
 
@@ -536,7 +536,7 @@ function openPuppy(id) {
       <div class="kv" style="margin-bottom:1rem">
         <div class="kvr"><span class="kvk">${t('common.microchip')}</span><span class="kvv" style="font-family:monospace;font-size:.82rem">${p.microchip}</span></div>
         <div class="kvr"><span class="kvk">${STATE.lang === 'de' ? 'Geburtsgewicht' : STATE.lang === 'en' ? 'Birth weight' : 'Вес при рождении'}</span><span class="kvv">${p.birthWeight} g</span></div>
-        <div class="kvr"><span class="kvk">${STATE.lang === 'de' ? 'Aktuelles Gewicht' : STATE.lang === 'en' ? 'Current weight' : 'Текущий вес'}</span><span class="kvv">${(p.weights[p.weights.length-1].g/1000).toFixed(2)} kg (${litter.weeks} ${STATE.lang === 'de' ? 'Wo' : STATE.lang === 'en' ? 'wk' : 'нед'})</span></div>
+        <div class="kvr"><span class="kvk">${STATE.lang === 'de' ? 'Aktuelles Gewicht' : STATE.lang === 'en' ? 'Current weight' : 'Текущий вес'}</span><span class="kvv">${(p.weights[p.weights.length-1].g/1000).toFixed(2)} kg (${p.weights[p.weights.length-1].week} ${STATE.lang === 'de' ? 'Wo' : STATE.lang === 'en' ? 'wk' : 'нед'})</span></div>
         <div class="kvr"><span class="kvk">Status</span><span class="kvv">${statusBadge(p)}</span></div>
         ${p.salePrice ? `<div class="kvr"><span class="kvk">${t('common.saleprice')}</span><span class="kvv">${formatPrice(p.salePrice)}</span></div>` : ''}
         ${p.saleDate ? `<div class="kvr"><span class="kvk">${t('common.saledate')}</span><span class="kvv">${formatDateDE(p.saleDate)}</span></div>` : ''}
@@ -671,7 +671,14 @@ async function openPDFPreview(type, id) {
   setTimeout(() => { const x = m.querySelector('.mx'); if (x) x.focus(); trapFocus(m); }, 50);
 
   try { await PDFLibs(); } catch (e) { console.warn('PDF libs load failed:', e); }
-  document.getElementById('pdf-prev').innerHTML = buildPreviewHTML(type, id);
+  // Never leave the modal stuck on the loading spinner if a template builder throws
+  try {
+    document.getElementById('pdf-prev').innerHTML = buildPreviewHTML(type, id);
+  } catch (e) {
+    console.error('Preview build failed:', e);
+    const errTxt = STATE.lang === 'de' ? 'Vorschau konnte nicht erstellt werden.' : STATE.lang === 'en' ? 'Preview could not be generated.' : 'Не удалось построить превью.';
+    document.getElementById('pdf-prev').innerHTML = '<div style="padding:80px 40px;text-align:center;color:#888;font-size:14px">' + errTxt + '</div>';
+  }
 }
 
 // === Account & Settings modal — opens from header "Mein Konto" button ===
@@ -897,8 +904,8 @@ document.addEventListener('keydown', function(e) {
   if (document.getElementById('lightbox')?.classList.contains('open')) { closeLightbox(); return; }
   if (document.getElementById('ancestor-modal')?.classList.contains('open')) { closeAncestor(); return; }
   if (document.getElementById('settings-modal')?.classList.contains('open')) { closeSettings(); return; }
-  closePDF();
-  closePuppy();
+  if (document.getElementById('pdf-modal')?.classList.contains('open')) { closePDF(); return; }
+  if (document.getElementById('puppy-modal')?.classList.contains('open')) { closePuppy(); return; }
 });
 
 // Focus trap helper for modals

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://script.google.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://script.google.com https://script.googleusercontent.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>WurfKit – Welpen-Unterlagen in Minuten statt Stunden | Online-Plattform für VDH-Züchter</title>
 <meta name="description" content="WurfKit ist die Online-Plattform für VDH-Hundezüchter: Kaufvertrag, Wurfmeldung und Welpen-Paket automatisch generieren. COI berechnen, Zuchtzulassung prüfen. Direkt im Browser, ohne Installation. Auf Deutsch.">
@@ -31,7 +31,7 @@
 <meta name="twitter:description" content="Welpen-Unterlagen in Minuten statt Stunden. Im Browser, ohne Installation. Auf Deutsch, für VDH-Züchter.">
 <meta name="twitter:image" content="https://wurfkit.de/assets/og.jpg">
 <meta name="twitter:image:alt" content="WurfKit – Online-Plattform für VDH-Hundezüchter">
-<meta name="theme-color" content="#09090B">
+<meta name="theme-color" content="#13141A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
@@ -378,6 +378,10 @@ footer a:hover{text-decoration-color:var(--a)}
 body.l-de .de{display:block}body.l-en .en{display:block}body.l-ru .ru{display:block}
 .di,.ri,.ei{display:none}
 body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:inline}
+/* .pmt is a flex row — re-assert over the generic lang-visibility display:block */
+body.l-de .pmt.de,body.l-en .pmt.en,body.l-ru .pmt.ru{display:flex}
+/* Anchor jumps (#signup) must clear the fixed nav */
+#signup{scroll-margin-top:90px}
 </style>
 </head>
 <body id="body" class="l-de">
@@ -394,7 +398,7 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 <div class="hctas">
   <a href="demo.html" class="hcta-primary"><span class="hcta-icon">▶</span><span><span class="di">Live-Demo öffnen</span><span class="ei">Open live demo</span><span class="ri">Открыть демо</span></span><span class="hcta-arrow">→</span></a>
   <div class="hcta-info"><span class="hcta-dot"></span><span class="di">Im Browser · keine Installation · echte PDFs</span><span class="ei">In browser · no install · real PDFs</span><span class="ri">В браузере · без установки · реальные PDF</span></div>
-  <div class="hcta-trust"><span>🔒</span><span class="di">Persönlicher Bereich · DSGVO-konform · Daten in der EU</span><span class="ei">Personal workspace · DSGVO-compliant · data hosted in the EU</span><span class="ri">Личный кабинет · DSGVO · данные в ЕС</span></div>
+  <div class="hcta-trust"><span>🔒</span><span class="di">Persönlicher Bereich · DSGVO-konform</span><span class="ei">Personal workspace · DSGVO-compliant</span><span class="ri">Личный кабинет · DSGVO</span></div>
 </div>
 
 <div style="margin:2.5rem auto 0;max-width:480px;padding:1.25rem 1.5rem;background:var(--g);border:1px solid var(--b);border-radius:var(--r)">
@@ -407,10 +411,10 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 <section class="ps rv">
 <div class="sl de">So sieht WurfKit aus</div><div class="sl en">WurfKit in action</div><div class="sl ru">Как выглядит WurfKit</div>
 <h2 class="de">Ihr persönlicher Bereich. Alles, was ein Züchter braucht.</h2><h2 class="en">Your personal workspace. Everything a breeder needs.</h2><h2 class="ru">Ваш личный кабинет. Всё, что нужно заводчику.</h2>
-<p class="ss de">Nach der Anmeldung: Ihr Dashboard im Browser. Daten DSGVO-konform in der EU.</p><p class="ss en">After sign-in: your dashboard in the browser. Data DSGVO-compliant in the EU.</p><p class="ss ru">После входа: ваш dashboard прямо в браузере. Данные по DSGVO в ЕС.</p>
+<p class="ss de">Nach der Anmeldung: Ihr Dashboard im Browser. Für die App ist DSGVO-konforme Speicherung in der EU vorgesehen.</p><p class="ss en">After sign-in: your dashboard in the browser. The app is designed for GDPR-compliant storage in the EU.</p><p class="ss ru">После входа: ваш dashboard прямо в браузере. Для приложения предусмотрено DSGVO-совместимое хранение в ЕС.</p>
 
 <!-- === Wide desktop mockup — anchors web-first + dashboard signal === -->
-<div class="dtm rv">
+<div class="dtm rv" role="img" aria-label="WurfKit Dashboard – Vorschau">
   <div class="pbc"><div class="pbcd"></div><div class="pbcd"></div><div class="pbcd"></div><div class="pbcu">wurfkit.de/dashboard · Maria Schmidt</div></div>
   <div class="dtm-body">
     <aside class="dtm-side">
@@ -422,7 +426,7 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
       <div class="dtm-nav"><span class="ico">🧬</span><span>COI</span></div>
       <div class="dtm-nav"><span class="ico">⚙️</span><span><span class="di">Einstellungen</span><span class="ei">Settings</span><span class="ri">Настройки</span></span></div>
     </aside>
-    <main class="dtm-main">
+    <div class="dtm-main">
       <div class="dtm-top">
         <div>
           <div class="dtm-title de">Wurf «A» vom Waldberg</div><div class="dtm-title en">Litter «A» vom Waldberg</div><div class="dtm-title ru">Помёт «A» vom Waldberg</div>
@@ -446,11 +450,11 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
         <div class="dtm-card">
           <div class="ic">✅</div>
           <div class="nm"><span class="di">Zuchtvoraussetzungen</span><span class="ei">Breeding prerequisites</span><span class="ri">Условия допуска</span></div>
-          <div class="mt"><span class="di">HD/ED ✓ · COI 3.2% · ZTP ✓</span><span class="ei">HD/ED ✓ · COI 3.2% · ZTP ✓</span><span class="ri">HD/ED ✓ · COI 3.2% · ZTP ✓</span></div>
+          <div class="mt"><span class="di">HD/ED ✓ · COI 2.34% · ZTP ✓</span><span class="ei">HD/ED ✓ · COI 2.34% · ZTP ✓</span><span class="ri">HD/ED ✓ · COI 2.34% · ZTP ✓</span></div>
           <div class="btn"><span class="di">Details ansehen</span><span class="ei">View details</span><span class="ri">Подробности</span></div>
         </div>
       </div>
-    </main>
+    </div>
   </div>
 </div>
 
@@ -467,7 +471,7 @@ body.l-de .di{display:inline}body.l-en .ei{display:inline}body.l-ru .ri{display:
 <p class="ss de">Professionell, an VDH-Vorgaben orientiert, automatisch befüllt.</p><p class="ss en">Professional, aligned with VDH guidelines, auto-filled.</p><p class="ss ru">Профессионально, по образцам VDH, с автозаполнением.</p>
 <div class="dg">
 <div class="dc" onclick="openModal('kaufvertrag')"><div class="dl"><span class="di">AUTOGENERIERT</span><span class="ei">AUTO-GENERATED</span><span class="ri">АВТОГЕНЕРАЦИЯ</span></div><div class="dp"><div class="dh" style="display:flex;align-items:center;justify-content:center;gap:8px"><span style="font-size:1rem">🐾</span><div><div style="font-size:.9rem;font-weight:600;color:var(--t)">Kaufvertrag über einen Welpen</div><div style="font-size:.65rem;color:var(--t3);margin-top:2px">WurfKit · VDH-konform</div></div></div><div style="font-size:.7rem;color:var(--t3);line-height:1.9"><div class="df"><span class="dk">Verkäufer</span><span class="dv">Maria Schmidt, München</span></div><div class="df"><span class="dk">Käufer</span><span class="dv">Thomas Weber, Berlin</span></div><div class="df"><span class="dk">Rasse</span><span class="dv">Golden Retriever</span></div><div class="df"><span class="dk">Wurfname</span><span class="dv">Luna vom Waldberg</span></div><div class="df"><span class="dk">Chip-Nr.</span><span class="dv">276 098 106 123 456</span></div><div class="df"><span class="dk">Kaufpreis</span><span class="dv">1.800,00 €</span></div><div style="margin-top:8px;font-size:.68rem">§1 Der Verkäufer erklärt, dass der Hund gegen Hepatitis, Staupe, Parvovirose und Zwingerhusten geimpft wurde...</div></div></div><div class="din"><div class="dil"><h3>Kaufvertrag</h3><p>4 <span class="di">Seiten</span><span class="ei">pages</span><span class="ri">стр.</span> · PDF</p></div><div class="dbd"><span class="di">Vorschau</span><span class="ei">Preview</span><span class="ri">Просмотр</span></div></div></div>
-<div class="dc" onclick="openModal('wurfmeldung')"><div class="dl"><span class="di">AUTOGENERIERT</span><span class="ei">AUTO-GENERATED</span><span class="ri">АВТОГЕНЕРАЦИЯ</span></div><div class="dp"><div class="dh" style="display:flex;align-items:center;justify-content:center;gap:8px"><span style="font-size:1rem">📋</span><div><div style="font-size:.9rem;font-weight:600;color:var(--t)">VDH Wurfmeldung</div><div style="font-size:.65rem;color:var(--t3);margin-top:2px">Litter Registration</div></div></div><div style="font-size:.7rem;color:var(--t3);line-height:1.9"><div class="df"><span class="dk">Zwingername</span><span class="dv">vom Waldberg</span></div><div class="df"><span class="dk">Zuchtverein</span><span class="dv">DRC e.V.</span></div><div class="df"><span class="dk">Zuchthündin</span><span class="dv">Luna vom Waldberg</span></div><div class="df"><span class="dk">ZB-Nr.</span><span class="dv">DRC 24-12345</span></div><div class="df"><span class="dk">Deckrüde</span><span class="dv">Rex von der Sonnenhöhe</span></div><div class="df"><span class="dk">Wurfdatum</span><span class="dv">12.01.2026</span></div><div class="df"><span class="dk">Welpen</span><span class="dv">5 (3R, 2H)</span></div><div style="margin-top:8px;font-size:.68rem">Hiermit melde ich den Wurf gemäß §8 VDH-Zuchtordnung...</div></div></div><div class="din"><div class="dil"><h3>VDH Wurfmeldung</h3><p>2 <span class="di">Seiten</span><span class="ei">pages</span><span class="ri">стр.</span> · PDF</p></div><div class="dbd"><span class="di">Vorschau</span><span class="ei">Preview</span><span class="ri">Просмотр</span></div></div></div>
+<div class="dc" onclick="openModal('wurfmeldung')"><div class="dl"><span class="di">AUTOGENERIERT</span><span class="ei">AUTO-GENERATED</span><span class="ri">АВТОГЕНЕРАЦИЯ</span></div><div class="dp"><div class="dh" style="display:flex;align-items:center;justify-content:center;gap:8px"><span style="font-size:1rem">📋</span><div><div style="font-size:.9rem;font-weight:600;color:var(--t)">VDH Wurfmeldung</div><div style="font-size:.65rem;color:var(--t3);margin-top:2px">Litter Registration</div></div></div><div style="font-size:.7rem;color:var(--t3);line-height:1.9"><div class="df"><span class="dk">Zwingername</span><span class="dv">vom Waldberg</span></div><div class="df"><span class="dk">Zuchtverein</span><span class="dv">DRC e.V.</span></div><div class="df"><span class="dk">Zuchthündin</span><span class="dv">Luna vom Waldberg</span></div><div class="df"><span class="dk">ZB-Nr.</span><span class="dv">DRC 24-12345</span></div><div class="df"><span class="dk">Deckrüde</span><span class="dv">Rex von der Sonnenhöhe</span></div><div class="df"><span class="dk">Wurfdatum</span><span class="dv">12.01.2026</span></div><div class="df"><span class="dk">Welpen</span><span class="dv">5 (3R, 2H)</span></div><div style="margin-top:8px;font-size:.68rem">Hiermit melde ich den Wurf gemäß VDH-Zuchtordnung...</div></div></div><div class="din"><div class="dil"><h3>VDH Wurfmeldung</h3><p>2 <span class="di">Seiten</span><span class="ei">pages</span><span class="ri">стр.</span> · PDF</p></div><div class="dbd"><span class="di">Vorschau</span><span class="ei">Preview</span><span class="ri">Просмотр</span></div></div></div>
 </div></div></section>
 
 <section class="pas rv"><div class="pai">
@@ -631,7 +635,10 @@ function gl(){try{if(document.body.classList.contains('l-en'))return'en';if(docu
 function initLang(){
   try{
     var l=null;try{l=localStorage.getItem('wk-lang')}catch(e){}
-    if(!l||(l!=='en'&&l!=='ru'&&l!=='de'))l='de';
+    if(!l||(l!=='en'&&l!=='ru'&&l!=='de')){
+      var n=((navigator.language||navigator.userLanguage||'')+'').slice(0,2).toLowerCase();
+      l=(n==='ru'||n==='en'||n==='de')?n:'de';
+    }
     setLang(l);
   }catch(e){/* fallback: HTML lang="de" stays */}
 }
@@ -661,7 +668,10 @@ function sendToSheet(formData){
     var img=new Image();
     img.onload=go;img.onerror=go;
     img.src=SHEET_URL+'?'+params.join('&');
-    setTimeout(go,1500);
+    /* Fallback only: normally go() fires via img.onload/onerror once the
+       request completed. 4s gives slow mobile + Apps-Script cold start a
+       real chance to land the row before we navigate away. */
+    setTimeout(go,4000);
   }catch(e){go()}
 }
 function initForms(){
@@ -669,6 +679,10 @@ function initForms(){
     document.addEventListener('submit',function(e){
       var form=e.target;if(!form||!form.name)return;
       e.preventDefault();
+      /* Disable the submit button — impatient double-clicks would create
+         duplicate rows in the sheet before the redirect fires. */
+      var sb=form.querySelector('button[type="submit"],button:not([type])');
+      if(sb)sb.disabled=true;
       var fd={};var inputs=form.elements;
       for(var i=0;i<inputs.length;i++){
         if(inputs[i].name&&inputs[i].type!=='submit')fd[inputs[i].name]=inputs[i].value;
@@ -687,13 +701,13 @@ var FAQ=[
 {q:{de:'Funktioniert es auch auf Tablet und Smartphone?',en:'Does it work on tablet and smartphone?',ru:'Работает ли на планшете и смартфоне?'},
  a:{de:'Ja. Die Oberfläche passt sich automatisch an Computer, Tablet und Smartphone an. Dokumente erstellen Sie am besten am Computer — größerer Bildschirm, einfaches Drucken und E-Mail-Versand. Unterwegs sehen Sie Hunde, Würfe und Termine auch am Smartphone.',en:'Yes. The interface adapts automatically to computer, tablet and smartphone. Documents are easiest on a computer — larger screen, simple printing and email. On the go, you can view dogs, litters and dates on your smartphone too.',ru:'Да. Интерфейс автоматически адаптируется под компьютер, планшет и смартфон. Документы удобнее делать на компьютере — больший экран, простая печать и отправка email. В дороге можно смотреть собак, помёты и даты на смартфоне.'}},
 {q:{de:'Wo werden meine Daten gespeichert?',en:'Where is my data stored?',ru:'Где хранятся мои данные?'},
- a:{de:'In einer DSGVO-konformen Datenbank in der EU. Sie können Ihre Daten jederzeit als CSV oder PDF exportieren und Ihr Konto vollständig löschen — Sie bleiben Eigentümer Ihrer Daten.',en:'In a GDPR-compliant database in the EU. You can export your data as CSV or PDF anytime and delete your account completely — you remain the owner of your data.',ru:'В GDPR-совместимой базе данных в ЕС. Вы можете в любой момент экспортировать данные в CSV или PDF и полностью удалить аккаунт — вы остаётесь владельцем своих данных.'}},
+ a:{de:'Die WurfKit-App wird Ihre Daten in einer DSGVO-konformen Datenbank in der EU speichern. Sie können Ihre Daten jederzeit als CSV oder PDF exportieren und Ihr Konto vollständig löschen — Sie bleiben Eigentümer Ihrer Daten. Warteliste und Kontaktformular werden über die in der <a href="#" onclick="openModal(\'datenschutz\');return false">Datenschutzerklärung</a> genannten Dienste verarbeitet.',en:'The WurfKit app will store your data in a GDPR-compliant database in the EU. You can export your data as CSV or PDF anytime and delete your account completely — you remain the owner of your data. Waitlist and contact form entries are processed via the services listed in the <a href="#" onclick="openModal(\'datenschutz\');return false">privacy policy</a>.',ru:'Приложение WurfKit будет хранить ваши данные в GDPR-совместимой базе данных в ЕС. Вы можете в любой момент экспортировать данные в CSV или PDF и полностью удалить аккаунт — вы остаётесь владельцем своих данных. Заявки waitlist и контактной формы обрабатываются через сервисы, указанные в <a href="#" onclick="openModal(\'datenschutz\');return false">Datenschutzerklärung</a>.'}},
 {q:{de:'Welche Erinnerungen und Meldungen erhalte ich?',en:'What reminders and notifications do I get?',ru:'Какие напоминания и уведомления приходят?'},
  a:{de:'Geplant für alle Tarife: <b>E-Mail</b>, <b>Browser-Push</b> (PWA) und <b>iCal-Abo</b> für Google Calendar, Apple Kalender oder Outlook. Für Pro zusätzlich <b>WhatsApp</b> und <b>SMS</b>. Sie wählen pro Ereignis, welcher Kanal — vom Decktag bis zur Welpenübergabe: Ultraschall, Wurfkiste, Entwurmung, Impfung, Chip-Termin, Wurfabnahme, HD/ED-Röntgen, ZTP, Augenuntersuchung, Zuchtschau, Käufer-Nachbetreuung.',en:'Planned for all tiers: <b>email</b>, <b>browser push</b> (PWA) and <b>iCal subscription</b> for Google Calendar, Apple Calendar or Outlook. Pro additionally: <b>WhatsApp</b> and <b>SMS</b>. You pick the channel per event — from mating day to puppy handover: ultrasound, whelping box, deworming, vaccination, chip appointment, breeding inspection, HD/ED X-ray, ZTP, eye exam, dog show, buyer follow-up.',ru:'Планируется на всех тарифах: <b>email</b>, <b>push в браузере</b> (PWA) и <b>iCal-подписка</b> для Google Calendar, Apple Calendar или Outlook. Для Pro дополнительно: <b>WhatsApp</b> и <b>SMS</b>. Вы выбираете канал для каждого события — от дня вязки до передачи щенка: УЗИ, родильный ящик, дегельминтизация, прививки, чип, осмотр помёта, HD/ED-рентген, ZTP, осмотр глаз, выставка, follow-up с покупателями.'}},
 {q:{de:'Wird KI bei der Kommunikation mit Käufern helfen?',en:'Will AI help with buyer communication?',ru:'Поможет ли AI в общении с покупателями?'},
  a:{de:'Geplant für Pro: KI-Entwürfe für typische Anfragen („Welpen verfügbar?", „Wie sind die Preise?", „Welche Tests habt ihr gemacht?"), Klassifizierung der Anfragen (ernsthafter Käufer · einfache Frage · Spam · rote Flaggen), Vorschläge für Nachbetreuungs-Nachrichten (Tag 1, Woche 1, Monat 1, Zahnwechsel). <b>Sie prüfen jeden Entwurf vor dem Senden</b> — Ihre Stimme und Verantwortung bleiben bei Ihnen.',en:'Planned for Pro: AI drafts for typical inquiries ("Are puppies available?", "What are your prices?", "Which tests did you do?"), inquiry classification (serious buyer · simple question · spam · red flags), follow-up suggestions (day 1, week 1, month 1, teething). <b>You review every draft before sending</b> — your voice and responsibility stay yours.',ru:'Планируется для Pro: AI-черновики для типовых вопросов («Есть ли щенки?», «Какие цены?», «Какие тесты сделаны?»), классификация запросов (серьёзный покупатель · простой вопрос · спам · красные флаги), подсказки для follow-up (день 1, неделя 1, месяц 1, смена зубов). <b>Вы проверяете каждый черновик перед отправкой</b> — ваш голос и ответственность остаются вашими.'}},
 {q:{de:'Was bekommt der Käufer eines Welpen?',en:'What does the puppy buyer receive?',ru:'Что получает покупатель щенка?'},
- a:{de:'Mit dem Welpen-Paket bekommt der Käufer ein professionelles PDF (Kaufvertrag, Stammbaum, Impfübersicht, Fütterungsplan, Pflegehinweise) plus einen <b>QR-Code</b>. Der QR führt auf die persönliche Welpen-Seite (z. B. <a href="welpe.html">wurfkit.de/welpe/aaron-waldberg</a>) mit Foto, Mikrochip, Gesundheitsdaten und <b>Züchter-Kontakt</b>. Die Seite ist über den Direkt-Link erreichbar, aber nicht in Google indexiert — Sie entscheiden, wer den Link bekommt.',en:'With the puppy packet the buyer receives a polished PDF (purchase contract, pedigree, vaccine summary, feeding plan, care tips) plus a <b>QR code</b>. The QR opens the puppy\'s personal page (e.g. <a href="welpe.html">wurfkit.de/welpe/aaron-waldberg</a>) with photo, microchip, health data and your <b>breeder contact</b>. The page is reachable via direct link but not indexed by Google — you control who gets the link.',ru:'Вместе с Welpen-Paket покупатель получает профессиональный PDF (договор, родословная, прививки, кормление, уход) плюс <b>QR-код</b>. QR ведёт на персональную страницу щенка (например <a href="welpe.html">wurfkit.de/welpe/aaron-waldberg</a>) с фото, микрочипом, данными о здоровье и <b>контактом заводчика</b>. Страница доступна только по прямой ссылке, в Google не индексируется — вы решаете, кому давать ссылку.'}},
+ a:{de:'Mit dem Welpen-Paket bekommt der Käufer ein professionelles PDF (Kaufvertrag, Stammbaum, Impfübersicht, Fütterungsplan, Pflegehinweise) plus einen <b>QR-Code</b>. Der QR führt auf die persönliche Welpen-Seite (z. B. <a href="welpe.html?id=aaron">wurfkit.de/welpe/aaron</a>) mit Foto, Mikrochip, Gesundheitsdaten und <b>Züchter-Kontakt</b>. Die Seite ist über den Direkt-Link erreichbar, aber nicht in Google indexiert — Sie entscheiden, wer den Link bekommt.',en:'With the puppy packet the buyer receives a polished PDF (purchase contract, pedigree, vaccine summary, feeding plan, care tips) plus a <b>QR code</b>. The QR opens the puppy\'s personal page (e.g. <a href="welpe.html?id=aaron">wurfkit.de/welpe/aaron</a>) with photo, microchip, health data and your <b>breeder contact</b>. The page is reachable via direct link but not indexed by Google — you control who gets the link.',ru:'Вместе с Welpen-Paket покупатель получает профессиональный PDF (договор, родословная, прививки, кормление, уход) плюс <b>QR-код</b>. QR ведёт на персональную страницу щенка (например <a href="welpe.html?id=aaron">wurfkit.de/welpe/aaron</a>) с фото, микрочипом, данными о здоровье и <b>контактом заводчика</b>. Страница доступна только по прямой ссылке, в Google не индексируется — вы решаете, кому давать ссылку.'}},
 {q:{de:'Sind die generierten Dokumente rechtlich geprüft?',en:'Are the generated documents legally reviewed?',ru:'Проверены ли документы юридически?'},
  a:{de:'Die Vorlagen orientieren sich an VDH-Mustern und werden vor dem öffentlichen Release durch einen Rechtsanwalt mit Schwerpunkt Vertrags- und Tierrecht geprüft. Bis dahin werden Kaufverträge ausdrücklich als <i>Vorlage zur Prüfung</i> gekennzeichnet. Keine Rechtsberatung.',en:'Templates follow VDH guidelines and will be reviewed by a German lawyer specializing in contract and animal law before public release. Until then, purchase contracts are explicitly marked <i>template for review</i>. Not legal advice.',ru:'Шаблоны ориентируются на образцы VDH и будут проверены немецким юристом со специализацией по договорному и зоологическому праву до публичного релиза. До этого договоры явно помечены как <i>шаблон для проверки</i>. Это не юридическая консультация.'}},
 {q:{de:'Was kostet WurfKit?',en:'What does WurfKit cost?',ru:'Сколько стоит WurfKit?'},
@@ -749,8 +763,8 @@ x:{de:'<p>Der Kaufvertrag wird automatisch aus Ihren Profilen befüllt. Alle Dat
 wurfmeldung:{
 b:{de:'AN VDH ORIENTIERT',en:'ALIGNED WITH VDH',ru:'ПО ОБРАЗЦАМ VDH'},
 t:{de:'VDH Wurfmeldung',en:'VDH Litter Registration',ru:'Регистрация помёта VDH'},
-s:{de:'Gemäß §8 VDH-Zuchtordnung',en:'Per §8 VDH breeding regulations',ru:'Согласно §8 племенного положения VDH'},
-x:{de:'<p>Muss innerhalb von 49 Tagen eingereicht werden. WurfKit generiert das Formular automatisch.</p><ul><li>Zwingername und Zuchtverein</li><li>Zuchthündin mit ZB-Nr. und Chip</li><li>Deckrüde mit ZB-Nr.</li><li>Deckdatum und Wurfdatum</li><li>Welpenzahl nach Geschlecht</li><li>Totgeburten und Verluste</li></ul>',en:'<p>Must be submitted within 49 days. WurfKit generates the form automatically.</p><ul><li>Kennel name and breed club</li><li>Dam with stud book no. and chip</li><li>Sire with stud book no.</li><li>Mating date and whelp date</li><li>Puppy count by sex</li><li>Stillbirths and losses</li></ul>',ru:'<p>Должна быть подана в течение 49 дней. WurfKit генерирует форму автоматически.</p><ul><li>Название питомника и породный клуб</li><li>Племенная сука с номером ZB и чипом</li><li>Кобель-производитель с номером ZB</li><li>Дата вязки и дата рождения</li><li>Количество щенков по полу</li><li>Мертворождённые и потери</li></ul>'}},
+s:{de:'Gemäß VDH-Zuchtordnung und Vorgaben Ihres Zuchtvereins',en:'Per VDH breeding regulations and your breed club\'s requirements',ru:'Согласно племенному положению VDH и требованиям вашего клуба'},
+x:{de:'<p>Die Meldefrist legt Ihr Zuchtverein fest — häufig wenige Tage bis mehrere Wochen nach dem Wurftag. WurfKit bereitet alle Angaben für die Wurfmeldung vor.</p><ul><li>Zwingername und Zuchtverein</li><li>Zuchthündin mit ZB-Nr. und Chip</li><li>Deckrüde mit ZB-Nr.</li><li>Deckdatum und Wurfdatum</li><li>Welpenzahl nach Geschlecht</li><li>Totgeburten und Verluste</li></ul>',en:'<p>The deadline is set by your breed club — typically from a few days to several weeks after the whelp date. WurfKit prepares all the details for your litter registration.</p><ul><li>Kennel name and breed club</li><li>Dam with stud book no. and chip</li><li>Sire with stud book no.</li><li>Mating date and whelp date</li><li>Puppy count by sex</li><li>Stillbirths and losses</li></ul>',ru:'<p>Срок подачи определяет ваш племенной клуб — обычно от нескольких дней до нескольких недель после рождения помёта. WurfKit подготавливает все данные для Wurfmeldung.</p><ul><li>Название питомника и породный клуб</li><li>Племенная сука с номером ZB и чипом</li><li>Кобель-производитель с номером ZB</li><li>Дата вязки и дата рождения</li><li>Количество щенков по полу</li><li>Мертворождённые и потери</li></ul>'}},
 welpenpaket:{
 b:{de:'KERNFUNKTION',en:'CORE FEATURE',ru:'КЛЮЧЕВАЯ ФУНКЦИЯ'},
 t:{de:'Welpen-Paket mit QR-Code',en:'Puppy Packet with QR Code',ru:'Пакет щенка с QR-кодом'},
@@ -808,6 +822,7 @@ function openModal(id){
     document.getElementById('mhd').innerHTML='<div class="mb2">'+m.b[l]+'</div><div class="mti">'+m.t[l]+'</div><div class="msu">'+m.s[l]+'</div>';
     document.getElementById('mbd').innerHTML=m.x[l]+'<a href="#signup" class="mct" onclick="cm()"><span class="di">Jetzt vormerken</span><span class="ei">Join waitlist</span><span class="ri">Записаться</span></a>';
     var mo=document.getElementById('mo');
+    mo._opener=document.activeElement;
     mo.classList.add('open');
     mo.setAttribute('aria-hidden','false');
     document.body.style.overflow='hidden';
@@ -820,6 +835,8 @@ function cm(){
     mo.classList.remove('open');
     mo.setAttribute('aria-hidden','true');
     document.body.style.overflow='';
+    if(mo._opener&&mo._opener.focus){try{mo._opener.focus()}catch(e){}}
+    mo._opener=null;
   }catch(e){}
 }
 function initModal(){

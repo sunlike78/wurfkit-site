@@ -34,7 +34,7 @@ const I18N = {
     pedigree: { de: 'Stammbaum', en: 'Pedigree', ru: 'Родословная' },
     welpen: { de: 'Welpen', en: 'Puppies', ru: 'Щенки' },
     yes: { de: 'Ja', en: 'Yes', ru: 'Да' },
-    no: { de: 'Nein', en: 'Nein', ru: 'Нет' },
+    no: { de: 'Nein', en: 'No', ru: 'Нет' },
     deckdate: { de: 'Deckdatum', en: 'Mating date', ru: 'Дата вязки' },
     wurfdate: { de: 'Wurfdatum', en: 'Whelping date', ru: 'Дата рождения' },
     wurfabnahme: { de: 'Wurfabnahme', en: 'Litter inspection', ru: 'Осмотр помёта' },

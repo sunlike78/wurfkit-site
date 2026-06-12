@@ -309,7 +309,7 @@ const ZUCHTPRUEFUNG_LUNA = [
   { id: 'fw', label: { de: 'Formwert', en: 'Conformation', ru: 'Экстерьер' }, status: 'ok', detail: 'V (vorzüglich)' },
   { id: 'ztp', label: { de: 'ZTP bestanden', en: 'ZTP passed', ru: 'ZTP сдан' }, status: 'ok', detail: '10.09.2024' },
   { id: 'eye', label: { de: 'Augenuntersuchung', en: 'Eye examination', ru: 'Обследование глаз' }, status: 'ok', detail: 'frei (15.08.2024)' },
-  { id: 'coi', label: { de: 'COI < 6.25%', en: 'COI < 6.25%', ru: 'COI < 6.25%' }, status: 'ok', detail: '3.2% (mit Apollo vom Sonnenhof)' }
+  { id: 'coi', label: { de: 'COI < 6.25%', en: 'COI < 6.25%', ru: 'COI < 6.25%' }, status: 'ok', detail: '2.34% (mit Apollo vom Sonnenhof)' }
 ];
 
 // Documents (already generated for the demo)

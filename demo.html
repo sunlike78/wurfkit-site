@@ -22,6 +22,7 @@
   --t:#1A1A1A;--t2:#4A4A4A;--t3:#8A8A8A;
   --b:#E8E8E0;--bl:#D4D4C8;
   --err:#DC2626;--warn:#F59E0B;--ok:#16A34A;--info:#3B82F6;
+  --ink:#1A1A1A;--g:#F5F5F0;
   --r:14px;--rs:10px;--rx:6px;
   --sh:0 1px 3px rgba(0,0,0,.04),0 1px 2px rgba(0,0,0,.02);
   --sh2:0 4px 12px rgba(0,0,0,.06),0 2px 4px rgba(0,0,0,.03);
@@ -548,7 +549,6 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
   <span class="de"><b>Demo mit Beispieldaten.</b> Sie können hier die wichtigsten Abläufe mit vorbereiteten Daten (Zwinger «vom Waldberg») durchspielen. Funktionen wie eigene Hunde anlegen, Ahnentafel-Import, Erinnerungen und Käufer-Versand sind im Live-Produkt mit Ihrem Konto verfügbar.</span>
   <span class="en"><b>Demo with sample data.</b> Walk through the main flows with prepared data (kennel «vom Waldberg»). Features like adding your own dogs, Ahnentafel import, reminders and buyer dispatch are available in the live product with your account.</span>
   <span class="ru"><b>Демо с примерными данными.</b> Здесь можно пройти основные сценарии на подготовленных данных (питомник «vom Waldberg»). Добавление своих собак, импорт родословных, напоминания и отправка покупателям — в live-продукте после регистрации.</span>
-  <span class="ru"><b>Демо-режим.</b> Все данные вымышленные. Питомник Maria Schmidt &laquo;vom Waldberg&raquo; не существует. Попробуйте все функции.</span>
 </div>
 
 <main>
@@ -575,7 +575,7 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
           <button class="oc-card oc-primary" type="button" onclick="openPDFPreview('welpenpaket','aaron')">
             <div class="oc-ic">📦</div>
             <div class="oc-tx">
-              <div class="oc-nm"><span class="de">Welpen-Paket erstellen</span><span class="en">Generate puppy packet</span><span class="ru">Собрать Welpen-Paket</span><span class="info-i" onclick="event.stopPropagation();openHint('paket',event)" role="button" tabindex="0" aria-label="Was ist im Welpen-Paket?">i</span></div>
+              <div class="oc-nm"><span class="de">Welpen-Paket erstellen</span><span class="en">Generate puppy packet</span><span class="ru">Собрать Welpen-Paket</span><span class="info-i" onclick="event.stopPropagation();openHint('paket',event)" aria-hidden="true">i</span></div>
               <div class="oc-mt"><span class="de">PDF + QR-Code für Aaron · 5 Welpen verfügbar</span><span class="en">PDF + QR for Aaron · 5 puppies available</span><span class="ru">PDF + QR для Aaron · 5 щенков</span></div>
             </div>
             <span class="oc-ar">→</span>
@@ -592,7 +592,7 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
             <div class="oc-ic">🧬</div>
             <div class="oc-tx">
               <div class="oc-nm"><span class="de">Zuchtprüfung</span><span class="en">Breeding check</span><span class="ru">Допуск к разведению</span></div>
-              <div class="oc-mt"><span class="de">COI 3.2% · HD/ED ✓ · ZTP ✓</span><span class="en">COI 3.2% · HD/ED ✓ · ZTP ✓</span><span class="ru">COI 3.2% · HD/ED ✓ · ZTP ✓</span></div>
+              <div class="oc-mt"><span class="de">COI 2.34% · HD/ED ✓ · ZTP ✓</span><span class="en">COI 2.34% · HD/ED ✓ · ZTP ✓</span><span class="ru">COI 2.34% · HD/ED ✓ · ZTP ✓</span></div>
             </div>
             <span class="oc-ar">→</span>
           </button>
@@ -671,19 +671,19 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
         </div>
 
         <div class="coires">
-          <div class="coibig" id="coi-value">3.2%</div>
-          <div class="coilbl">COI · <span class="de">Wright Formel</span><span class="en">Wright formula</span><span class="ru">формула Райта</span></div>
+          <div class="coibig" id="coi-value">2.34%</div>
+          <div class="coilbl">COI · <span class="de">Wright-Formel · 4 Generationen</span><span class="en">Wright formula · 4 generations</span><span class="ru">формула Райта · 4 поколения</span></div>
           <div class="coist ok" id="coi-status"><span class="de">Niedrig — Verpaarung empfohlen</span><span class="en">Low — mating recommended</span><span class="ru">Низкий — вязка рекомендована</span></div>
         </div>
 
         <div>
-          <div class="cmpr"><div class="cmpl"><span class="de">Dieser COI</span><span class="en">This COI</span><span class="ru">Этот COI</span></div><div class="cmpb"><div class="cmpf" id="bar-this" style="background:var(--p);width:16%"></div></div><div class="cmpv" id="bar-this-v">3.2%</div></div>
+          <div class="cmpr"><div class="cmpl"><span class="de">Dieser COI</span><span class="en">This COI</span><span class="ru">Этот COI</span></div><div class="cmpb"><div class="cmpf" id="bar-this" style="background:var(--p);width:12%"></div></div><div class="cmpv" id="bar-this-v">2.34%</div></div>
           <div class="cmpr"><div class="cmpl"><span class="de">Rasse Ø</span><span class="en">Breed Ø</span><span class="ru">Порода Ø</span></div><div class="cmpb"><div class="cmpf" style="background:var(--warn);width:36%"></div></div><div class="cmpv" id="bar-avg-v">7.1%</div></div>
         </div>
       </div>
 
       <div class="pedw">
-        <div class="pedt"><span class="de">Stammbaum (3 Generationen)</span><span class="en">Pedigree (3 generations)</span><span class="ru">Родословная (3 поколения)</span></div>
+        <div class="pedt"><span class="de">Stammbaum (4 Generationen)</span><span class="en">Pedigree (4 generations)</span><span class="ru">Родословная (4 поколения)</span></div>
         <div class="pedhint">
           <div class="pedhint-ic">💡</div>
           <div>

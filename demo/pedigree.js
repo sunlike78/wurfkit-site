@@ -1,6 +1,8 @@
-// SVG pedigree tree renderer (3 generations)
-// Layout: animal (col 0) -> parents (col 1, 2 cells) -> grandparents (col 2, 4 cells) -> great-grandparents (col 3, 8 cells)
-// Total cells: 1 + 2 + 4 + 8 = 15
+// SVG pedigree tree renderer (4 ancestor generations for the prospective litter)
+// Layout: litter (col 0) -> parents (col 1, 2) -> grandparents (col 2, 4)
+//         -> great-grandparents (col 3, 8) -> great-great-grandparents (col 4, 16)
+// Litter gen N = each parent's gen N-1 (parent trees from buildPedigreeTree hold 3 generations).
+// The common ancestors driving the demo COI sit in the parents' gen3 = litter gen4 (col 4).
 
 function renderPedigreeSVG(sireDog, damDog, ancestorsPool, container) {
   if (!sireDog || !damDog) {
@@ -18,8 +20,8 @@ function renderPedigreeSVG(sireDog, damDog, ancestorsPool, container) {
   const result = calculateCOI(sireDog, damDog, ancestorsPool);
   const commonIds = new Set(result.commonAncestors.map(c => c.id));
 
-  const W = 920, H = 460;
-  const colX = [10, 200, 400, 640]; // x positions of generation columns
+  const W = 940, H = 580;
+  const colX = [10, 196, 382, 568, 754]; // x positions of generation columns
   const cellW = 170, cellH = 34;
 
   let svg = `<svg class="ped" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
@@ -66,48 +68,53 @@ function renderPedigreeSVG(sireDog, damDog, ancestorsPool, container) {
   svg += `<text class="t" x="${colX[0] + cellW / 2}" y="${yMid + 14}" text-anchor="middle" font-weight="700" fill="#1B4332">A × Wurf</text>`;
   svg += `<text class="s" x="${colX[0] + cellW / 2}" y="${yMid + 27}" text-anchor="middle">${sireDog.name} × ${damDog.name}</text>`;
 
+  // Center Y of cell i in a column of n cells
+  const yAt = (n, i) => H * (2 * i + 1) / (2 * n) - cellH / 2;
+  // Gen-1 parents that are own dogs link to their profile, external ones to the ancestor modal
+  const dogOpts = d => (typeof DOGS !== 'undefined' && d && d.id && DOGS.some(x => x.id === d.id)) ? { dogId: d.id } : undefined;
+
   // Generation 1: parents
-  const sireY = H / 4 - cellH / 2;
-  const damY = (3 * H) / 4 - cellH / 2;
-  cell(colX[1], sireY, { name: sireDog.fullName || sireDog.name, zbNr: sireDog.zbNr, hd: sireDog.hd, formwert: sireDog.formwert }, 'sire', false);
-  cell(colX[1], damY, { name: damDog.fullName || damDog.name, zbNr: damDog.zbNr, hd: damDog.hd, formwert: damDog.formwert }, 'dam', false);
+  const sireY = yAt(2, 0);
+  const damY = yAt(2, 1);
+  cell(colX[1], sireY, { name: sireDog.fullName || sireDog.name, zbNr: sireDog.zbNr, hd: sireDog.hd, formwert: sireDog.formwert }, 'sire', false, dogOpts(sireDog));
+  cell(colX[1], damY, { name: damDog.fullName || damDog.name, zbNr: damDog.zbNr, hd: damDog.hd, formwert: damDog.formwert }, 'dam', false, dogOpts(damDog));
   line(colX[0] + cellW, yMid + cellH / 2, colX[1], sireY + cellH / 2);
   line(colX[0] + cellW, yMid + cellH / 2, colX[1], damY + cellH / 2);
 
-  // Generation 2: grandparents
-  // Sire side: pgs (top), pgd (below pgs)
-  // Dam side: mgs (above mgd), mgd (bottom)
-  const sireTop = H * 0.10, sireBot = H * 0.40;
-  const damTop = H * 0.60, damBot = H * 0.90;
-  const grandparentYs = [sireTop - cellH / 2, sireBot - cellH / 2, damTop - cellH / 2, damBot - cellH / 2];
-  const sireGen2 = sireTree ? [sireTree.gen2.pgs, sireTree.gen2.pgd] : [null, null];
-  const damGen2 = damTree ? [damTree.gen2.mgs, damTree.gen2.mgd] : [null, null];
-  const allGen2 = [...sireGen2, ...damGen2];
-  const allGen2Side = ['sire', 'sire', 'dam', 'dam'];
-
+  // Generation 2: litter grandparents = each parent's parents (gen1 of the parent trees)
+  const allGen2 = [
+    sireTree ? sireTree.gen1.sire : null, sireTree ? sireTree.gen1.dam : null,
+    damTree ? damTree.gen1.sire : null, damTree ? damTree.gen1.dam : null
+  ];
+  const gen2Ys = allGen2.map((_, i) => yAt(4, i));
   allGen2.forEach((node, i) => {
-    cell(colX[2], grandparentYs[i], node, allGen2Side[i], node && commonIds.has(node.id));
-    // line from parent to grandparent
+    cell(colX[2], gen2Ys[i], node, i < 2 ? 'sire' : 'dam', node && commonIds.has(node.id));
     const parentY = i < 2 ? sireY : damY;
-    line(colX[1] + cellW, parentY + cellH / 2, colX[2], grandparentYs[i] + cellH / 2);
+    line(colX[1] + cellW, parentY + cellH / 2, colX[2], gen2Ys[i] + cellH / 2);
   });
 
-  // Generation 3: great-grandparents (8 cells)
-  const ggYs = [];
-  const step = H / 8;
-  for (let i = 0; i < 8; i++) {
-    ggYs.push(step / 2 + i * step - cellH / 2);
-  }
-  const sireGen3 = sireTree ? [sireTree.gen3.ggs1, sireTree.gen3.ggd1, sireTree.gen3.ggs2, sireTree.gen3.ggd2] : [null, null, null, null];
-  const damGen3 = damTree ? [damTree.gen3.ggs3, damTree.gen3.ggd3, damTree.gen3.ggs4, damTree.gen3.ggd4] : [null, null, null, null];
-  const allGen3 = [...sireGen3, ...damGen3];
-  const allGen3Side = ['sire','sire','sire','sire','dam','dam','dam','dam'];
-
+  // Generation 3: litter great-grandparents = each parent's grandparents (gen2 of the parent trees)
+  const allGen3 = [
+    ...(sireTree ? [sireTree.gen2.pgs, sireTree.gen2.pgd, sireTree.gen2.mgs, sireTree.gen2.mgd] : [null, null, null, null]),
+    ...(damTree ? [damTree.gen2.pgs, damTree.gen2.pgd, damTree.gen2.mgs, damTree.gen2.mgd] : [null, null, null, null])
+  ];
+  const gen3Ys = allGen3.map((_, i) => yAt(8, i));
   allGen3.forEach((node, i) => {
-    cell(colX[3], ggYs[i], node, allGen3Side[i], node && commonIds.has(node.id));
-    // line from grandparent to great-grandparent
-    const gpIdx = Math.floor(i / 2);
-    line(colX[2] + cellW, grandparentYs[gpIdx] + cellH / 2, colX[3], ggYs[i] + cellH / 2);
+    cell(colX[3], gen3Ys[i], node, i < 4 ? 'sire' : 'dam', node && commonIds.has(node.id));
+    line(colX[2] + cellW, gen2Ys[Math.floor(i / 2)] + cellH / 2, colX[3], gen3Ys[i] + cellH / 2);
+  });
+
+  // Generation 4: each parent's great-grandparents (gen3 of the parent trees) —
+  // this is where the demo's common ancestors live, so the COI highlight stays visible
+  const g3keys = ['ggs1', 'ggd1', 'ggs2', 'ggd2', 'ggs3', 'ggd3', 'ggs4', 'ggd4'];
+  const allGen4 = [
+    ...g3keys.map(k => sireTree ? sireTree.gen3[k] : null),
+    ...g3keys.map(k => damTree ? damTree.gen3[k] : null)
+  ];
+  const gen4Ys = allGen4.map((_, i) => yAt(16, i));
+  allGen4.forEach((node, i) => {
+    cell(colX[4], gen4Ys[i], node, i < 8 ? 'sire' : 'dam', node && commonIds.has(node.id));
+    line(colX[3] + cellW, gen3Ys[Math.floor(i / 2)] + cellH / 2, colX[4], gen4Ys[i] + cellH / 2);
   });
 
   svg += '</svg>';

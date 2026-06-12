@@ -616,7 +616,6 @@ function addDaysISO(iso, days) {
 
 // Single-page wrappers — uniform `Pages()` API so downloadPDF can iterate consistently.
 function buildWelpenpaketCoverPages(puppy) { return [buildWelpenpaketCoverHTML(puppy)]; }
-function buildAhnentafelPages(puppy) { return [buildAhnentafelHTML(puppy)]; }
 function buildImpfuebersichtPages(puppy) { return [buildImpfuebersichtHTML(puppy)]; }
 function buildFuetterungsplanPages(puppy) { return [buildFuetterungsplanHTML(puppy)]; }
 
