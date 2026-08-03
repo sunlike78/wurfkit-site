@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>WurfKit Demo – Interaktive Vorschau</title>
-<meta name="description" content="Interaktive Browser-Demo von WurfKit: Hundeprofile, Würfe, automatische Kaufvertrag- und Wurfmeldung-Generierung, COI-Rechner — alles in 30 Sekunden, ohne Installation.">
+<meta name="description" content="Interaktive WurfKit-Vorschau mit Beispieldaten. Dokumente sind Demo-Vorlagen; der Umfang einer späteren geschlossenen Beta wird invite-only freigegeben.">
 <meta name="robots" content="noindex,follow">
 <link rel="canonical" href="https://wurfkit.de/demo.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%BE%3C/text%3E%3C/svg%3E">
@@ -487,7 +487,9 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
 
 @media(max-width:520px){
   body{font-size:14.5px}
-  .hd{padding:.7rem .85rem;gap:.6rem}
+  .hd{padding:.7rem .75rem;gap:.35rem}
+  .hr{gap:.35rem;min-width:0}
+  .bk-exit{display:none}
   .lg{font-size:1.15rem}
   .lg .sub{font-size:.55rem;padding:1px 6px}
   .ls{transform:scale(.9)}
@@ -509,6 +511,10 @@ body.l-en .en-block{display:block}body.l-ru .ru-block{display:block}
   /* Pedigree font smaller */
   .ped text{font-size:9px}
   .ped text.s{font-size:7.5px}
+  /* Grid children must be allowed to shrink below their text width. */
+  .oc{padding:1rem}
+  .oc-actions{grid-template-columns:minmax(0,1fr);min-width:0}
+  .oc-card{min-width:0}
 }
 
 @media(max-width:380px){

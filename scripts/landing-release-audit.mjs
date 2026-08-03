@@ -18,8 +18,10 @@ const forbidden = [
   [index, "Persönlicher Bereich · DSGVO-konform", "unverified GDPR claim"],
   [index, "geplant ab 9,99 €/Monat", "pricing claim"],
   [index, "Founder-Angebot von <b>99 €", "founder-price claim"],
+  [index, "persönliche Welpen-Seite", "unreleased public puppy-page claim"],
   [demo, "sind im Live-Produkt mit Ihrem Konto verfügbar", "unreleased demo feature claim"],
   [demo, "Im Live-Produkt wird der Kaufvertrag durch einen Rechtsanwalt", "unverified legal-review claim"],
+  [demo, "COI-Rechner — alles in 30 Sekunden", "unreleased demo metadata claim"],
 ];
 
 const failures = [
