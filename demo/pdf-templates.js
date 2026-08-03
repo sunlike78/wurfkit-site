@@ -1,5 +1,6 @@
 // PDF templates — HTML→PDF via html2canvas + jsPDF
-// Source: 0_Doc/templates_research/ (real German VDH templates)
+// Research source: 0_Doc/templates_research/. Demo output is not an approved
+// legal or association template and must stay visibly marked as such.
 
 // ===== HTML BUILDERS =====
 
@@ -89,13 +90,13 @@ function buildKaufvertragPages(puppy) {
   // === Page 1: Title + §1 (Verkäufer / Käufer / Welpe) ===
   const page1 = `
     <h1>WELPEN-KAUFVERTRAG</h1>
-    <div class="sub">Verbraucher zu Verbraucher · Stand: 25.04.2026 · Vorlage v1.0</div>
+    <div class="sub">UNGEPRÜFTE DEMO-VORLAGE · keine Rechtsberatung · Vorlage v0.1</div>
 
     <div class="par">§ 1 Vertragsgegenstand</div>
     <p><b>Verkäufer und Züchter:</b></p>
     <div class="ku">
       <b>Name</b><span>${escapeHtml(BREEDER.fullName)}</span>
-      <b>Zwingername</b><span>${escapeHtml(BREEDER.kennelName)} (FCI/VDH-geschützt)</span>
+      <b>Zwingername</b><span>${escapeHtml(BREEDER.kennelName)} (Demo-Angabe)</span>
       <b>Anschrift</b><span>${escapeHtml(BREEDER.street)}, ${escapeHtml(BREEDER.postalCode)} ${escapeHtml(BREEDER.city)}</span>
       <b>Verein / Mitgl.-Nr.</b><span>${escapeHtml(BREEDER.zuchtverein)} / ${escapeHtml(BREEDER.vdhMember)}</span>
       <b>Telefon / E-Mail</b><span>${escapeHtml(BREEDER.phone)} / ${escapeHtml(BREEDER.email)}</span>
@@ -126,8 +127,8 @@ function buildKaufvertragPages(puppy) {
 
   // === Page 2: §2-§5 (Beschaffenheit, Kaufpreis, Übergabe, Gesundheit) ===
   const page2 = `
-    <div class="par">§ 2 Beschaffenheit / Verkaufsart</div>
-    <p>Der Hund wird als <b>Liebhaber- und Familienhund</b> verkauft. Er stammt aus eigener Zucht des Verkäufers und wurde nach den Bestimmungen der Zuchtordnung des ${escapeHtml(BREEDER.zuchtverein)} aufgezogen. Die Eintragungen in der Ahnentafel und im EU-Heimtierausweis entsprechen der Wahrheit. Mit der Wurfabnahme durch den Zuchtwart wurden alle erforderlichen Identitäts- und Gesundheitsprüfungen durchgeführt.</p>
+    <div class="par">§ 2 Angaben zum Hund — vor Verwendung zu prüfen</div>
+    <p>Die hier gezeigten Angaben stammen aus erfundenen Demo-Profilen. Im Live-Produkt muss der Verkäufer Rasse, Herkunft, Verwendungszweck, Ahnentafel, Heimtierausweis, Wurfabnahme und bekannte Besonderheiten vor jeder Verwendung selbst prüfen und bestätigen.</p>
 
     <div class="par">§ 3 Kaufpreis und Zahlung</div>
     <p>Der Kaufpreis beträgt <b>${formatPrice(price)}</b> (in Worten: ${priceWords} Euro). Eine Anzahlung in Höhe von 300,00 € wurde bei Vertragsunterzeichnung geleistet. Die Restzahlung erfolgt Zug um Zug bei Übergabe in bar oder per Überweisung auf folgendes Konto:</p>
@@ -141,35 +142,28 @@ function buildKaufvertragPages(puppy) {
     <div class="par">§ 4 Übergabe / Gefahr- und Eigentumsübergang</div>
     <p>Die Übergabe des Hundes erfolgt am <b>${formatDateDE(saleDate)}</b> in ${escapeHtml(BREEDER.city)}. Die Gefahr einer zufälligen Verschlechterung oder eines Untergangs des Welpen geht mit der Übergabe auf den Käufer über. Das <b>Eigentum am Hund geht erst mit vollständiger Bezahlung</b> des Kaufpreises auf den Käufer über (Eigentumsvorbehalt).</p>
 
-    <div class="par">§ 5 Gesundheitszustand</div>
-    <p>Der Hund ist nach aktuellem Kenntnisstand des Verkäufers gesund und in einwandfreiem Zustand. Bis zum heutigen Tag wurden folgende Maßnahmen durchgeführt: <b>begonnene Grundimmunisierung gemäß StIKo Vet (6. Auflage 2025)</b> mit SHP + Leptospirose im Alter von 8 Wochen, mehrfache Entwurmung und tierärztliche Allgemeinuntersuchung mit Mikrochip-Implantation. Sämtliche Daten sind im EU-Heimtierausweis dokumentiert. Die <b>Grundimmunisierung wird erst durch die nachfolgenden Impfungen mit 12 und 16 Wochen sowie die Auffrischung mit ca. 15 Monaten vollständig wirksam</b> und ist vom Käufer durch den eigenen Tierarzt fortzuführen.</p>
-    <p><b>Bekannte Mängel/Erkrankungen:</b> <i>(individuell vom Verkäufer auszufüllen — beispielhaft: keine bekannt)</i></p>
-    <p>Der Käufer bestätigt, den Hund ausführlich besichtigt zu haben. Der Hund war zum Zeitpunkt der Übergabe gesund und wies keine Krankheits- oder Mangelerscheinungen auf.</p>
-    <p style="font-size:11px;color:#71717A"><i>Hinweis nach § 90a BGB: Tiere sind keine Sachen. Es handelt sich beim verkauften Hund um ein Lebewesen, das in der Wachstumsphase Veränderungen unterworfen ist. Der Verkäufer kann keine Gewähr für künftige Größe, Gebäude, Charakter, innere Organe, Sinnesorgane oder noch nicht erkannte Erbkrankheiten übernehmen.</i></p>
+    <div class="par">§ 5 Gesundheit — Demo-Daten, fachlich prüfen</div>
+    <p><b>Impfungen, Entwurmungen, Untersuchungen und bekannte Befunde:</b> Diese Felder werden später aus dem Profil übernommen. Maßgeblich bleiben die Originaleinträge des Tierarztes und der EU-Heimtierausweis.</p>
+    <p><b>Bekannte Besonderheiten:</b> <i>(vom Verkäufer vollständig und wahrheitsgemäß auszufüllen)</i></p>
+    <p>Ein Fachanwalt prüft vor dem öffentlichen Release, welche Erklärungen, Bestätigungen und Haftungshinweise für die jeweilige Verkäuferrolle zulässig und erforderlich sind.</p>
   `;
 
   // === Page 3: §6-§10 + Hinweis + Sig ===
   const page3 = `
-    <div class="par">§ 6 Sachmängelhaftung (Verbraucher zu Verbraucher)</div>
-    <p>Da beide Vertragsparteien Verbraucher im Sinne des § 13 BGB sind, vereinbaren sie hiermit individuell ausgehandelt den <b>Ausschluss der Sachmängelhaftung nach §§ 434 ff. BGB</b>. Hiervon ausgenommen sind und bleiben in jedem Fall:</p>
-    <ul style="font-size:11px;margin:6px 0 8px 0">
-      <li>die Haftung für Arglist (§ 444 BGB),</li>
-      <li>die Haftung für Vorsatz und grobe Fahrlässigkeit (§ 276 Abs. 3 BGB),</li>
-      <li>Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit,</li>
-      <li>vom Verkäufer ausdrücklich übernommene Garantien für eine bestimmte Beschaffenheit (insbesondere die unter § 5 dokumentierten Maßnahmen).</li>
-    </ul>
+    <div class="par">§ 6 Rechtstext — noch nicht freigegeben</div>
+    <p><b>Platzhalter:</b> Gewährleistung und Haftung hängen unter anderem davon ab, ob der Verkäufer rechtlich als Verbraucher oder Unternehmer handelt. Dieser Abschnitt wird erst nach Fachanwaltsprüfung veröffentlicht und darf in der Demo nicht als Vertragsklausel verwendet werden.</p>
 
     <div class="par">§ 7 Pflichten des Käufers (Tierschutz)</div>
     <p>Der Käufer versichert, dass er über die für die Aufzucht und Haltung eines Hundes der oben genannten Rasse notwendigen Kenntnisse, Fähigkeiten und Möglichkeiten verfügt. Er verpflichtet sich zur Haltung mit Familienanschluss und zur ausreichenden Sozialisierung des Welpen. Die Bestimmungen des Tierschutzgesetzes (TierSchG) und der Tierschutz-Hundeverordnung (TierSchHuV) sind ihm bekannt und werden eingehalten. Anketten oder dauerhafte Zwingerhaltung sind ausgeschlossen.</p>
 
-    <div class="par">§ 8 Zuchtbeschränkung</div>
-    <p>Der Hund wird als Liebhaberhund verkauft. Eine zuchtmäßige Verwendung ist ohne ausdrückliche schriftliche Zustimmung des Verkäufers nicht gestattet. Sollte der Käufer den Hund zur Zucht einsetzen wollen, ist eine Zucht ausschließlich im Rahmen eines FCI/VDH-anerkannten Vereins unter Beachtung der dortigen Vorschriften zulässig.</p>
+    <div class="par">§ 8 Zuchtnutzung — individuell zu vereinbaren</div>
+    <p><b>Platzhalter:</b> Eine etwaige Vereinbarung zur Zuchtnutzung muss zur konkreten Situation, zum zuständigen Zuchtverein und zum geprüften Vertrag passen.</p>
 
-    <div class="par">§ 9 Andienungspflicht / Rückkaufoption des Verkäufers</div>
-    <p>Sollte der Käufer den Hund aus zwingenden Gründen abgeben müssen, verpflichtet er sich, den Hund vor einer Weitergabe an Dritte zunächst dem Verkäufer schriftlich anzudienen (Andienungspflicht). Der Verkäufer hat 2 Wochen Zeit, den Hund zurückzunehmen; der Rückkaufpreis beträgt höchstens den ursprünglichen Kaufpreis abzüglich angemessener Wertminderung. Die Andienungspflicht bezweckt den Tierschutz und die Verhinderung einer Weitergabe an gewerbliche Vermittlung oder den Tierhandel.</p>
+    <div class="par">§ 9 Rückgabe / Kontakt zum Züchter — noch zu prüfen</div>
+    <p><b>Platzhalter:</b> Eine Rückgabe- oder Rückkaufregelung wird erst nach juristischer Prüfung angeboten. In der Demo wird keine bindende Frist oder Preisformel vorgegeben.</p>
 
-    <div class="par">§ 10 Schlussbestimmungen / Anlagen</div>
-    <p>Mündliche Nebenabreden bestehen nicht. Änderungen oder Ergänzungen dieses Vertrages bedürfen der Schriftform. Sollten einzelne Bestimmungen unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt (Salvatorische Klausel). Jede Vertragspartei erhält eine Ausfertigung dieses Vertrages.</p>
+    <div class="par">§ 10 Anlagen und Abschlussprüfung</div>
+    <p>Vor einer späteren Verwendung werden alle übernommenen Angaben, Anlagen und die dann juristisch geprüften Klauseln in einer Abschlussübersicht bestätigt. Diese Demo enthält noch keinen freigegebenen Vertragstext.</p>
     <p><b>Bestandteile dieses Vertrages sind folgende Anlagen:</b></p>
     <ul style="font-size:11px;margin:4px 0 8px 0">
       <li>Anlage 1 — Ahnentafel / Original-Wurfkopie</li>
@@ -179,7 +173,7 @@ function buildKaufvertragPages(puppy) {
       <li>Anlage 5 — Welpen-Paket: Fütterungs- und Pflegeempfehlung</li>
     </ul>
 
-    <div class="disc"><b>Hinweis:</b> Diese Vorlage berücksichtigt die §§ 90a, 433, 434 ff., 444 BGB, das Tierschutzgesetz (TierSchG) und die Tierschutz-Hundeverordnung (TierSchHuV) sowie die VDH-Zuchtordnung (aktuelle Fassung) und orientiert sich am Muster des Verbands für Kleine Münsterländer e.V. (Verbraucher-zu-Verbraucher). Sie ist als Hilfsmittel gedacht und ersetzt keine individuelle Rechtsberatung. Vor finaler Verwendung wird die Prüfung durch einen Rechtsanwalt mit Schwerpunkt Vertrags-/Tierrecht empfohlen.</div>
+    <div class="disc"><b>Nicht verwenden:</b> Dies ist eine ungeprüfte Demo-Vorlage mit erfundenen Daten. Sie ist kein offizielles VDH- oder Vereinsdokument, kein freigegebener Kaufvertrag und keine Rechtsberatung. Der Rechtstext wird vor einem öffentlichen Release durch einen Fachanwalt für Vertrags-/Tierrecht geprüft.</div>
 
     <p style="margin-top:16px"><b>Ort, Datum:</b> ${escapeHtml(BREEDER.city)}, ${formatDateDE(saleDate)}</p>
 
@@ -326,7 +320,7 @@ function buildWelpenpaketCoverHTML(puppy) {
       <div style="position:relative;margin:36px 0 20px">
         <img class="cover-photo" src="${puppy.photo}" alt="${escapeHtml(puppy.name)}" crossorigin="anonymous"/>
         <div style="position:absolute;bottom:-8px;right:-8px;background:#fff;border-radius:50%;padding:6px;box-shadow:0 4px 12px rgba(0,0,0,.15)">
-          <div style="background:linear-gradient(135deg,#52B788,#2D6A4F);color:#fff;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:12px;letter-spacing:.5px">VDH</div>
+          <div style="background:linear-gradient(135deg,#52B788,#2D6A4F);color:#fff;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:9px;letter-spacing:.5px">DEMO</div>
         </div>
       </div>
 
@@ -342,7 +336,7 @@ function buildWelpenpaketCoverHTML(puppy) {
       <div style="margin-top:36px;width:100%;max-width:460px;background:#fff;padding:24px 30px;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.06);border:1px solid #E8E8E0">
         <div style="text-align:center;font-family:'Playfair Display',Georgia,serif;font-size:16px;color:#1B4332;font-weight:600;letter-spacing:.5px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #D8F3DC">Inhalt dieses Pakets</div>
         <ol style="text-align:left;font-size:12.5px;line-height:1.9;padding-left:20px;margin:0;color:#2D6A4F">
-          <li><b>Welpen-Kaufvertrag</b> <span style="color:#A1A1AA;font-size:11px">— Verbraucher zu Verbraucher</span></li>
+          <li><b>Welpen-Kaufvertrag</b> <span style="color:#A1A1AA;font-size:11px">— ungeprüfte Demo-Vorlage</span></li>
           <li><b>Stammbaum-Übersicht</b> <span style="color:#A1A1AA;font-size:11px">— 3 Generationen mit COI</span></li>
           <li><b>Impfübersicht</b> <span style="color:#A1A1AA;font-size:11px">— nach StIKo Vet 2025</span></li>
           <li><b>Fütterungsplan</b> <span style="color:#A1A1AA;font-size:11px">— erste 12 Monate</span></li>
@@ -352,7 +346,7 @@ function buildWelpenpaketCoverHTML(puppy) {
       </div>
 
       <div style="margin-top:30px;font-size:12px;color:#2D6A4F;font-weight:500;letter-spacing:.3px">
-        Mitglied im ${escapeHtml(BREEDER.zuchtverein)} · FCI/VDH-anerkannt
+        Demo-Profil · Mitglied im ${escapeHtml(BREEDER.zuchtverein)}
       </div>
 
       <div style="margin-top:auto;font-size:10.5px;color:#A1A1AA;padding-top:24px;text-align:center">
@@ -468,7 +462,7 @@ function buildAhnentafelPages(puppy) {
       </div>
       ${commonBlock}
       <div class="slot" style="${hasCommon ? '' : 'margin-top:6px;'}">
-        <div class="disc" style="font-size:9.5px;padding:8px 12px;margin:0"><b>Hinweis:</b> Diese Stammbaum-Übersicht ist eine <b>Vorbereitung</b> auf die offizielle VDH-Ahnentafel. Die rechtlich verbindliche Ahnentafel mit Zuchtbuchnummer wird vom Zuchtbuchamt des ${escapeHtml(BREEDER.zuchtverein)} ausgestellt.</div>
+        <div class="disc" style="font-size:9.5px;padding:8px 12px;margin:0"><b>Hinweis:</b> Diese Demo-Übersicht ersetzt keine offizielle Ahnentafel. Maßgeblich ist ausschließlich das Dokument des zuständigen Zuchtbuchamts.</div>
       </div>
     </div>
   `];
@@ -595,7 +589,7 @@ function buildFuetterungsplanPages(puppy) {
     <ul>
       <li>Erste eigene Untersuchung beim Tierarzt innerhalb der ersten 7 Tage nach Übergabe.</li>
       <li>Kastration / Sterilisation: nicht vor 12–15 Monaten (Wachstum, Hormonsystem).</li>
-      <li>Hüftkontrolle (HD-Röntgen): nach 12 Monaten möglich, für Zuchtanmeldung VDH typischerweise frühestens nach 15 Monaten.</li>
+      <li>Hüftkontrolle (HD-Röntgen): Zeitpunkt und Voraussetzungen mit Tierarzt und zuständigem Zuchtverein abstimmen.</li>
     </ul>
 
     <h2>Digitales Welpen-Profil</h2>

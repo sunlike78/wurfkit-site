@@ -1,6 +1,8 @@
-// COI calculation — Wright formula
+// COI calculation — simplified Wright formula for the interactive demo.
 // COI = Σ [(0.5)^(n1+n2+1) × (1 + Fa)]
-// where n1 = generations from common ancestor to sire, n2 = to dam, Fa = COI of common ancestor (0 simplified)
+// where n1 = generations from common ancestor to sire, n2 = to dam.
+// Fa is assumed to be 0 here; production use needs validated, complete pedigrees
+// and must not turn this display into a breeding approval decision.
 
 function buildPedigreeTree(dog, ancestorsPool) {
   // Returns tree as { id, name, sire, dam, generation }
@@ -87,9 +89,9 @@ function coiStatus(coi) {
 
 function coiStatusLabel(status, lang) {
   const labels = {
-    low: { de: 'Niedrig — Verpaarung empfohlen', en: 'Low — mating recommended', ru: 'Низкий — вязка рекомендована' },
+    low: { de: 'Niedrig — Angaben auf Vollständigkeit prüfen', en: 'Low — verify that the data is complete', ru: 'Низкий — проверьте полноту данных' },
     medium: { de: 'Mittel — Vorsicht geboten', en: 'Medium — caution', ru: 'Средний — осторожно' },
-    high: { de: 'Hoch — Verpaarung nicht empfohlen', en: 'High — mating not recommended', ru: 'Высокий — не рекомендована' }
+    high: { de: 'Hoch — Zuchtverein oder Fachperson einbeziehen', en: 'High — consult your breed club or a qualified professional', ru: 'Высокий — обратитесь в породный клуб или к специалисту' }
   };
   return labels[status.key][lang] || labels[status.key].de;
 }

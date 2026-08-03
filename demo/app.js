@@ -333,10 +333,10 @@ function renderDogDetail() {
       return `<div class="chkr"><div class="chki ${cls}">${icon}</div><div class="chkl">${it.label[STATE.lang] || it.label.de}</div><div class="chks">${it.detail}</div></div>`;
     }).join('');
     const allOk = ZUCHTPRUEFUNG_LUNA.every(it => it.status === 'ok');
-    const totalCls = allOk ? 'ok' : 'err';
+    const totalCls = allOk ? 'ok' : 'warn';
     const totalLbl = allOk
-      ? { de: '✓ Zuchtfähig nach VDH-Zuchtordnung', en: '✓ Breeding-eligible per VDH', ru: '✓ Допущена к разведению по VDH' }
-      : { de: '✗ Nicht zuchtfähig — fehlende Nachweise', en: '✗ Not eligible — missing checks', ru: '✗ Не допущена — нет проверок' };
+      ? { de: '✓ Angaben vollständig — Verein prüft', en: '✓ Details complete — breed club reviews', ru: '✓ Данные заполнены — проверяет клуб' }
+      : { de: '! Angaben unvollständig — Verein entscheidet', en: '! Details incomplete — breed club decides', ru: '! Данные неполные — решение за клубом' };
     zuchtSection = `
       <div class="sec">
         <div class="sech">${t('common.breeding')}</div>

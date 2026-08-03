@@ -1,6 +1,6 @@
 // WurfKit Demo — Mock data
 // Realistische Demo-Welt: Maria Schmidt, Zwinger «vom Waldberg», München, Golden Retriever
-// Daten basierend auf realer VDH-Struktur (Quelle: 0_Doc/templates_research/)
+// Erfundenes Demo-Datenset, strukturell an deutschen Zuchtunterlagen orientiert.
 
 const BREEDER = {
   fullName: 'Maria Schmidt',
@@ -104,7 +104,7 @@ const DOGS = [
     pedigree: null,
     photo: 'demo/img/bella.jpg',
     photoFallback: '🐩',
-    statusBadge: { type: 'ok', de: 'Zuchtfähig', en: 'Breeding-eligible', ru: 'Допущена' },
+    statusBadge: { type: 'ok', de: 'Angaben vollständig', en: 'Details complete', ru: 'Данные заполнены' },
     notes: 'Erfahrene Zuchthündin, 2 Würfe. Aktuell pausiert.'
   },
   {
